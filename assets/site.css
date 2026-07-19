@@ -80,7 +80,8 @@ img { max-width: 100%; height: auto; }
   font-family: var(--sc); font-size: 15px; letter-spacing: .3em;
 }
 .nav-brand svg { display: block; }
-.nav-brand img { height: 19px; width: auto; display: block; margin: 0 -2px 2px; }
+.nav-brand { gap: 0; }
+.nav-brand img { height: 19px; width: auto; display: block; margin: 0 5px 2px 6px; }
 .nav-links { display: flex; align-items: center; gap: clamp(14px, 3vw, 34px); }
 .nav-links a {
   font-family: var(--sans); font-size: 10.5px; letter-spacing: .28em; text-transform: uppercase;
@@ -189,14 +190,24 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 }
 
 /* ─── Dress ─── */
-.dress-row {
-  display: flex; justify-content: center; align-items: flex-start;
-  gap: clamp(36px, 8vw, 90px); flex-wrap: wrap;
-  margin-top: clamp(24px, 4vw, 36px);
+.dress-photos {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 10px; margin-top: clamp(26px, 4vw, 36px);
 }
-.dress-fig { margin: 0; width: 130px; text-align: center; }
-.dress-fig svg { display: block; margin: 0 auto 8px; }
-.dress-note { font-style: italic; font-size: 14.5px; color: var(--muted); line-height: 1.5; }
+.dress-photos figure {
+  margin: 0; border: 1px solid var(--hairline);
+  padding: 5px; background: var(--paper);
+}
+.dress-photos img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 3 / 4; object-fit: cover;
+}
+.dress-credit {
+  margin: 16px 0 0; text-align: center;
+  font-style: italic; font-size: 14px; color: var(--muted);
+}
+@media (max-width: 860px) { .dress-photos { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .dress-photos { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
 
 /* ─── Venues ─── */
 .map-fig {

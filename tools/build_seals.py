@@ -20,7 +20,7 @@ INK = (29, 26, 22, 255)
 CLEAR = (0, 0, 0, 0)
 DID = "/System/Library/Fonts/Didot.ttc"
 
-C_X, A_X = 0.218, 0.762  # optically corrected
+C_X, A_X = 0.209, 0.753  # optically corrected: measured ink gaps, blend of min/mean equalisation
 
 
 def bl(d, baseline, text, font, fill, cx):
