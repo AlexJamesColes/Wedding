@@ -177,7 +177,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 
 /* ─── The Day: timeline ─── */
 .stops {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(4, 1fr);
   gap: clamp(24px, 4vw, 48px);
   text-align: center;
   position: relative;
