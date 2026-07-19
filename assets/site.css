@@ -308,7 +308,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 .course { margin-top: clamp(36px, 6vw, 48px); }
 .course-head { text-align: center; margin-bottom: 28px; }
 .course-head .eyebrow { display: block; } /* text-indent centering fix needs a block box */
-.course-head .orn { width: 110px; margin-top: 10px; }
+.course-head .orn { width: 110px; margin-top: 18px; }
 .dishes { display: flex; flex-direction: column; gap: 10px; }
 .dish { position: relative; display: block; cursor: pointer; }
 .dish input {
