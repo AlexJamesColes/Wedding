@@ -110,6 +110,68 @@
         <h2 class="eyebrow" style="font-size:12px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">The Venues</h2>
         <div class="orn"><span></span></div>
       </div>
+      <figure class="map-fig" role="img" aria-label="Sketch map of central London: Old Marylebone Town Hall in Marylebone and The Ned in the City, about three miles apart, with the Thames, Regent's Park and Hyde Park">
+        <svg viewBox="0 0 900 457" aria-hidden="true" focusable="false">
+          <!-- parks -->
+          <path d="M169,0 L183,131 Q257,151 332,139 L372,0 Z" fill="#1d1a16" fill-opacity="0.07" stroke="#1d1a16" stroke-opacity="0.18" stroke-width="0.8"></path>
+          <path d="M34,256 L291,252 L298,359 L0,364 L0,258 Z" fill="#1d1a16" fill-opacity="0.07" stroke="#1d1a16" stroke-opacity="0.18" stroke-width="0.8"></path>
+          <text x="270" y="70" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="14" letter-spacing="2.5" fill="#1d1a16" opacity="0.45">Regent&rsquo;s Park</text>
+          <text x="150" y="312" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="14" letter-spacing="2.5" fill="#1d1a16" opacity="0.45">Hyde Park</text>
+
+          <!-- streets -->
+          <g stroke="#1d1a16" stroke-opacity="0.16" stroke-width="1" fill="none">
+            <path d="M115,154 L216,147 L332,120 L440,98"></path>
+            <path d="M250,246 L440,212"></path>
+            <path d="M453,305 L528,256 L616,239 L710,247"></path>
+          </g>
+
+          <!-- the Thames -->
+          <path id="thames" d="M494,384 C 505,362 520,340 548,305 C 578,268 598,286 653,288 C 690,289 700,295 726,306 C 756,319 785,330 809,332 C 842,334 872,312 900,294"
+                fill="none" stroke="#1d1a16" stroke-opacity="0.055" stroke-width="34" stroke-linecap="round"></path>
+          <use href="#thames" fill="none" stroke="#1d1a16" stroke-opacity="0.10" stroke-width="21" stroke-linecap="round"></use>
+          <text font-family="'Cormorant Garamond', serif" font-style="italic" font-size="15.5" letter-spacing="1.5" fill="#1d1a16" opacity="0.55">
+            <textPath href="#thames" startOffset="12%">The Thames</textPath>
+          </text>
+
+          <!-- St Paul's -->
+          <g stroke="#1d1a16" stroke-opacity="0.55" stroke-width="0.9" fill="none">
+            <path d="M645,241 L663,241"></path>
+            <path d="M647,241 A 7 7 0 0 1 661,241"></path>
+            <path d="M654,234 L654,229 M652,231 L656,231"></path>
+          </g>
+          <text x="654" y="262" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55" style="paint-order:stroke;stroke:#ece7d8;stroke-width:5">St Paul&rsquo;s</text>
+
+          <!-- journey -->
+          <path d="M216,147 C 340,212 530,218 704,243" fill="none" stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1.4" stroke-dasharray="1 7" stroke-linecap="round"></path>
+
+          <!-- venue markers -->
+          <g>
+            <ellipse cx="216" cy="147" rx="8.5" ry="9.5" fill="#ece7d8" stroke="#1d1a16" stroke-width="0.9" stroke-opacity="0.65"></ellipse>
+            <rect x="212.5" y="143.5" width="7" height="7" fill="#1d1a16" transform="rotate(45 216 147)"></rect>
+            <text x="216" y="122" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="21" letter-spacing="1.8" fill="#1d1a16" style="paint-order:stroke;stroke:#ece7d8;stroke-width:6">Old Marylebone Town Hall</text>
+            <text x="216" y="176" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="15" fill="#1d1a16" opacity="0.6" style="paint-order:stroke;stroke:#ece7d8;stroke-width:5">the ceremony</text>
+          </g>
+          <g>
+            <ellipse cx="714" cy="246" rx="8.5" ry="9.5" fill="#ece7d8" stroke="#1d1a16" stroke-width="0.9" stroke-opacity="0.65"></ellipse>
+            <rect x="710.5" y="242.5" width="7" height="7" fill="#1d1a16" transform="rotate(45 714 246)"></rect>
+            <text x="714" y="221" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="21" letter-spacing="1.8" fill="#1d1a16" style="paint-order:stroke;stroke:#ece7d8;stroke-width:6">The Ned</text>
+            <text x="714" y="275" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="15" fill="#1d1a16" opacity="0.6" style="paint-order:stroke;stroke:#ece7d8;stroke-width:5">the reception</text>
+          </g>
+
+          <!-- compass -->
+          <g transform="translate(858,42)">
+            <path d="M0,-14 L4,0 L0,14 L-4,0 Z" fill="#1d1a16" opacity="0.55"></path>
+            <text x="0" y="-22" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="13" fill="#1d1a16" opacity="0.6">N</text>
+          </g>
+
+          <!-- scale -->
+          <g stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1">
+            <path d="M32,420 L190,420 M32,415 L32,425 M190,415 L190,425"></path>
+          </g>
+          <text x="111" y="440" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55">one mile</text>
+        </svg>
+        <figcaption>Marylebone to the City &mdash; some three miles across town</figcaption>
+      </figure>
       <div class="venues">
         <div class="venue">
           <p class="venue-role" style="margin:0">Ceremony</p>

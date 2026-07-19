@@ -186,6 +186,18 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 }
 
 /* ─── Venues ─── */
+.map-fig {
+  margin: 0 0 clamp(28px, 5vw, 44px);
+  border: 1px solid var(--hairline-strong);
+  outline: 1px solid var(--hairline); outline-offset: 5px;
+  padding: clamp(10px, 2vw, 18px);
+  background: var(--paper);
+}
+.map-fig svg { display: block; width: 100%; height: auto; }
+.map-fig figcaption {
+  margin-top: 10px; text-align: center;
+  font-style: italic; font-size: 14.5px; color: var(--muted);
+}
 .venues { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 4vw, 36px); }
 .venue {
   border: 1px solid var(--hairline-strong);
