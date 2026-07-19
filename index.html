@@ -143,8 +143,6 @@
           <g clip-path="url(#mapclip)">
           <g fill="#1d1a16" fill-opacity="0.055" stroke="#1d1a16" stroke-opacity="0.13" stroke-width="0.7">
           <path d="M137,366 L136,372 L97,375 L85,374 L51,365 L45,346 L54,344 L51,334 L49,336 L34,283 L84,277 L141,264 L142,267 L147,268 L164,283 L166,311 L161,318 L156,316 L153,318 L138,351 L137,366 Z"></path>
-          <path d="M862,44 L863,52 L871,49 L877,34 L874,31 L875,28 L870,26 L868,28 L868,14 L861,14 L861,11 L846,12 L848,40 L854,40 L855,44 L862,44 Z"></path>
-          <path d="M22,82 L47,64 L50,68 L54,65 L45,54 L47,51 L44,53 L35,42 L29,44 L26,43 L24,46 L17,47 L6,67 L22,82 Z"></path>
           <path d="M246,260 L260,290 L268,297 L288,325 L290,338 L287,346 L295,349 L296,353 L293,348 L290,350 L291,355 L261,365 L261,363 L253,362 L222,367 L181,368 L181,371 L137,371 L137,355 L148,329 L153,318 L156,316 L161,318 L166,309 L163,282 L147,268 L142,267 L141,264 L224,250 L228,256 L228,259 L245,256 L246,260 Z"></path>
           <path d="M386,362 L436,330 L443,336 L446,351 L441,362 L440,376 L379,385 L374,378 L377,369 L386,362 Z"></path>
           <path d="M378,357 L356,318 L308,357 L307,362 L362,367 L366,366 L364,363 L367,362 L375,365 L381,362 L378,357 Z"></path>
@@ -157,10 +155,7 @@
           <path d="M652,38 L657,37 L668,65 L665,65 L652,38 Z"></path>
           <path d="M155,321 L151,328 L142,320 L130,295 L131,281 L134,281 L139,298 L151,319 L155,321 Z"></path>
           <path d="M823,303 L825,302 L837,307 L836,312 L827,314 L826,318 L821,317 L823,303 Z"></path>
-          <path d="M160,104 L173,98 L183,89 L194,69 L196,44 L212,17 L226,8 L242,1 L266,-8 L287,-13 L265,-7 L228,8 L214,16 L206,27 L198,44 L195,69 L185,89 L175,100 L161,105 L160,104 Z"></path>
-          <path d="M911,17 L916,20 L925,19 L945,10 L955,8 L965,12 L987,25 L962,12 L951,10 L925,21 L912,21 L900,8 L889,4 L902,6 L911,17 Z"></path>
           <path d="M841,314 L839,312 L840,307 L850,305 L856,317 L848,321 L845,316 L843,317 L841,314 Z"></path>
-          <path d="M869,3 L887,4 L886,5 L865,5 L823,-1 L822,3 L821,-1 L748,-15 L729,-10 L694,17 L684,24 L682,23 L698,13 L728,-12 L748,-17 L800,-5 L869,3 Z"></path>
           <path d="M70,333 L68,327 L73,321 L81,319 L88,322 L90,328 L85,334 L77,336 L70,333 Z"></path>
           </g>
           <g mask="url(#labelmask)">
@@ -420,6 +415,7 @@
           </g>
           <path d="M321,240 L326,241.1 L321,242.4 Z" fill="#1d1a16" opacity="0.55"></path>
           <text x="321" y="267" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">Claridge&rsquo;s</text>
+          <path d="M804,320 L814,344" stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1.6" fill="none"></path>
           <rect x="805" y="324" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
           <rect x="809" y="335" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
           <g stroke="#1d1a16" stroke-opacity="0.55" stroke-width="0.9" fill="none">
@@ -566,8 +562,9 @@
       var vh = window.innerHeight;
       var p = (vh * 0.9 - r.top) / (r.height + vh * 0.55);
       p = Math.max(0, Math.min(1, p));
+      var park = [0.085, 0.05, 0.015];
       cabs.forEach(function (cab, i) {
-        var q = Math.max(0, Math.min(1, p * 1.14 - offs[i]));
+        var q = Math.max(park[i], Math.min(1, p * 1.14 - offs[i]));
         var pt = path.getPointAtLength(q * L);
         cab.setAttribute('transform', 'translate(' + (pt.x - 17).toFixed(1) + ',' + (pt.y - 16).toFixed(1) + ')');
       });

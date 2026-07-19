@@ -150,6 +150,13 @@ for cls, lines in raw.items():
 # ── parks / lakes / thames ─────────────────────────────────────────
 parks, lakes, thames_raw = [], [], []
 
+def edge_speck(pts):
+    """Small polygon clipped at the plate edge reads as a blemish."""
+    if ring_area(pts) > 2500:
+        return False
+    xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
+    return (min(xs) < 22 or max(xs) > 878 or min(ys) < 22 or max(ys) > 435)
+
 def stitch_rel(members):
     segs = [[(g["lon"], g["lat"]) for g in m["geometry"]]
             for m in members if m.get("role") == "outer" and "geometry" in m]
@@ -174,11 +181,11 @@ for e in gw_json["elements"]:
         closed = e["geometry"][0] == e["geometry"][-1]
         if tags.get("leisure") == "park" and closed:
             simp = dp(pts, 1.5)
-            if ring_area(simp) > 700:
+            if ring_area(simp) > 700 and not edge_speck(simp):
                 parks.append(simp)
         elif tags.get("natural") == "water" and closed:
             simp = dp(pts, 1.2)
-            if ring_area(simp) > 90:
+            if ring_area(simp) > 90 and not edge_speck(simp):
                 lakes.append(simp)
         elif tags.get("waterway") == "river" and "thames" in tags.get("name", "").lower():
             thames_raw.append(pts)
@@ -367,6 +374,7 @@ overlay = f'''
           </g>
           <path d="M321,240 L326,241.1 L321,242.4 Z" fill="#1d1a16" opacity="0.55"></path>
           <text x="321" y="267" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">Claridge&rsquo;s</text>
+          <path d="M804,320 L814,344" stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1.6" fill="none"></path>
           <rect x="805" y="324" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
           <rect x="809" y="335" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
           <g stroke="#1d1a16" stroke-opacity="0.55" stroke-width="0.9" fill="none">
