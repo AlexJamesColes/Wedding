@@ -292,6 +292,7 @@ for p in parks:
 A('</g>')
 A(f'<path d="{path_d(thames)}" fill="none" stroke="#1d1a16" stroke-opacity="0.05" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"></path>')
 A(f'<path id="thamespath" d="{path_d(thames)}" fill="none" stroke="#1d1a16" stroke-opacity="0.10" stroke-width="19" stroke-linecap="round" stroke-linejoin="round"></path>')
+A(f'<path id="thameslabel" d="{path_d([(x, y + 6) for x, y in thames])}" fill="none" stroke="none"></path>')
 A('<g fill="#1d1a16" fill-opacity="0.11" stroke="#1d1a16" stroke-opacity="0.2" stroke-width="0.6">')
 for p in lakes:
     A(f'<path d="{path_d(p, True)}"></path>')
@@ -324,7 +325,7 @@ cab_uses = "".join(
 
 overlay = f'''
           <text font-family="'Cormorant Garamond', serif" font-style="italic" font-size="15.5" letter-spacing="1.5" fill="#1d1a16" opacity="0.55">
-            <textPath href="#thamespath" startOffset="42%">The Thames</textPath>
+            <textPath href="#thameslabel" startOffset="42%">The Thames</textPath>
           </text>
           <g font-family="'Cormorant SC', serif" font-size="13" letter-spacing="3" fill="#1d1a16" opacity="0.42" text-anchor="middle">{district_texts}</g>
           <g font-family="'Cormorant Garamond', serif" font-style="italic" font-size="12" fill="#1d1a16" opacity="0.55" text-anchor="middle">{street_texts}</g>
@@ -409,10 +410,7 @@ overlay = f'''
             <path d="M0,-18 L0,18 M-11,0 L11,0" stroke="#1d1a16" stroke-opacity="0.3" stroke-width="0.8"></path>
             <text x="0" y="-24" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="13" fill="#1d1a16" opacity="0.6">N</text>
           </g>
-          <g stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1">
-            <path d="M32,420 L190,420 M32,415 L32,425 M190,415 L190,425 M111,417 L111,423"></path>
-          </g>
-          <text x="111" y="440" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">one mile</text>'''
+'''
 
 frag = "\n          ".join(parts)
 figure = ('      <figure class="map-fig">\n'
