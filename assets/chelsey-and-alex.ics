@@ -27,7 +27,9 @@ DTSTART;TZID=Europe/London:20260814T170000
 DTEND;TZID=Europe/London:20260815T000000
 SUMMARY:The Wedding of Chelsey & Alex
 LOCATION:Old Marylebone Town Hall\, 97 Marylebone Road\, London NW1 5PT
-DESCRIPTION:Ceremony at half past five\, Old Marylebone Town Hall. Guests arrive by five o'clock\, seated by a quarter past. Carriages to The Ned thereafter. Black tie.\nhttps://coleswedding.com
+DESCRIPTION:Ceremony at half past five\, Old Marylebone Town Hall. Guests 
+ arrive by five o'clock\, seated by a quarter past. Carriages to The Ned t
+ hereafter. Black tie.\nhttps://coleswedding.com
 URL:https://coleswedding.com
 END:VEVENT
 END:VCALENDAR

@@ -212,13 +212,13 @@ def point_at(frac):
         acc += seg
     return route[-1]
 
-# a small convoy — the couple has booked five or six cabs
+# a small convoy; the couple has booked five or six cabs
 CAB_FRACS = [0.40, 0.33, 0.26]
 cab_pts = [point_at(f) for f in CAB_FRACS]
 cab_x, cab_y = round(cab_pts[0][0]), round(cab_pts[0][1])
 
 # ── labels + clearings ─────────────────────────────────────────────
-# (text, x, y_baseline, kind) — kinds set font/size; clearing boxes derive
+# (text, x, y_baseline, kind); kinds set font/size, clearing boxes derive
 # from estimated tracked width. rot rotates both text and clearing.
 SC_D, IT = "sc-district", "italic"
 LABELS = [
@@ -365,7 +365,7 @@ overlay = f'''
             <path d="M321,245 L321,240"></path>
           </g>
           <path d="M321,240 L326,241.1 L321,242.4 Z" fill="#1d1a16" opacity="0.55"></path>
-          <text x="321" y="267" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="12.5" fill="#1d1a16" opacity="0.55">Claridge&rsquo;s</text>
+          <text x="321" y="267" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">Claridge&rsquo;s</text>
           <rect x="805" y="324" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
           <rect x="809" y="335" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
           <g stroke="#1d1a16" stroke-opacity="0.55" stroke-width="0.9" fill="none">
@@ -373,7 +373,7 @@ overlay = f'''
             <path d="M647,241 A 7 7 0 0 1 661,241"></path>
             <path d="M654,234 L654,229 M652,231 L656,231"></path>
           </g>
-          <text x="654" y="262" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55">St Paul&rsquo;s</text>
+          <text x="654" y="262" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">St Paul&rsquo;s</text>
           <!-- marginalia -->
           <g stroke="#1d1a16" stroke-opacity="0.5" stroke-width="1.1" fill="none" stroke-linecap="round">
             <path d="M118,392 L45,407 M52,410 L45,407 L51,403"></path>
@@ -412,11 +412,11 @@ overlay = f'''
           <g stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1">
             <path d="M32,420 L190,420 M32,415 L32,425 M190,415 L190,425 M111,417 L111,423"></path>
           </g>
-          <text x="111" y="440" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55">one mile</text>'''
+          <text x="111" y="440" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">one mile</text>'''
 
 frag = "\n          ".join(parts)
-figure = ('      <figure class="map-fig" role="img" aria-label="Street map of central London in the wedding\'s ink-on-paper style: the real road network, the Thames, and the black-cab route east from Old Marylebone Town Hall past Soho and St Paul\'s to The Ned">\n'
-          '        <svg viewBox="0 0 900 457" aria-hidden="true" focusable="false">\n'
+figure = ('      <figure class="map-fig">\n'
+          '        <svg viewBox="0 0 900 457" role="img" focusable="false" aria-label="Street map of central London in the wedding\'s ink-on-paper style: the real road network, the Thames, and the black-cab route east from Old Marylebone Town Hall past Soho and St Paul\'s to The Ned">\n'
           '          ' + frag + overlay + '\n        </svg>\n'
           '        <figcaption>Marylebone to the City, carriages provided.</figcaption>\n'
           '      </figure>')

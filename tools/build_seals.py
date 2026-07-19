@@ -2,10 +2,9 @@
 """Render the C & A seal artwork (approved design G2·4) from macOS Didot.
 
 Outputs:
-  assets/img/seal.png      hero/404 seal — double ring, apex diamond, date band
   assets/img/amp.png       the seal's italic ampersand alone (nav wordmark)
-  favicon.ico              16/32/48 — circular paper disc, transparent corners
-  apple-touch-icon.png     180 — opaque paper square (iOS masks its own corners)
+  favicon.ico              16/32/48, circular paper disc, transparent corners
+  apple-touch-icon.png     180, opaque paper square (iOS masks its own corners)
 
 Optical correction: the italic ampersand leans right, so the A is nudged
 inward (cx 0.762, not the geometric 0.785) and the C out a hair (0.218)
@@ -145,7 +144,6 @@ def emboss_seal(S=480, date_band=False):
     return out
 
 
-hero_seal(800).resize((208, 237), Image.LANCZOS).save(ROOT / "assets/img/seal.png", optimize=True)
 emboss_seal(480).resize((120, 120), Image.LANCZOS).save(ROOT / "assets/img/seal-emboss.png", optimize=True)
 emboss_seal(880).resize((220, 220), Image.LANCZOS).save(ROOT / "assets/img/seal-emboss-lg.png", optimize=True)
 amp = ampersand()
@@ -156,4 +154,4 @@ f32 = round_favicon(320).resize((32, 32), Image.LANCZOS)
 f16 = round_favicon(64, tiny=True).resize((16, 16), Image.LANCZOS)
 f48.save(ROOT / "favicon.ico", sizes=[(48, 48), (32, 32), (16, 16)], append_images=[f32, f16])
 touch_icon(720).resize((180, 180), Image.LANCZOS).save(ROOT / "apple-touch-icon.png", optimize=True)
-print("seal.png, amp.png, favicon.ico (circular), apple-touch-icon.png written")
+print("amp.png, favicon.ico (circular), apple-touch-icon.png written")

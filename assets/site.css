@@ -1,22 +1,16 @@
-/* ─── Chelsey & Alex · coleswedding.com ─────────────────────────── */
+/* Chelsey & Alex, coleswedding.com */
 
-/* Fonts — latin subsets, self-hosted */
+/* Fonts: latin subsets, self-hosted */
 @font-face { font-family: 'Italiana'; font-style: normal; font-weight: 400; font-display: swap;
   src: url("/assets/fonts/italiana-400-latin.woff2") format('woff2'); }
-@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300; font-display: swap;
-  src: url("/assets/fonts/cormorant-garamond-300-latin.woff2") format('woff2'); }
 @font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 400; font-display: swap;
   src: url("/assets/fonts/cormorant-garamond-400-latin.woff2") format('woff2'); }
-@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 500; font-display: swap;
-  src: url("/assets/fonts/cormorant-garamond-500-latin.woff2") format('woff2'); }
 @font-face { font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 300; font-display: swap;
   src: url("/assets/fonts/cormorant-garamond-300-italic-latin.woff2") format('woff2'); }
 @font-face { font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 400; font-display: swap;
   src: url("/assets/fonts/cormorant-garamond-400-italic-latin.woff2") format('woff2'); }
 @font-face { font-family: 'Cormorant SC'; font-style: normal; font-weight: 400; font-display: swap;
   src: url("/assets/fonts/cormorant-sc-400-latin.woff2") format('woff2'); }
-@font-face { font-family: 'Cormorant SC'; font-style: normal; font-weight: 500; font-display: swap;
-  src: url("/assets/fonts/cormorant-sc-500-latin.woff2") format('woff2'); }
 @font-face { font-family: 'Tenor Sans'; font-style: normal; font-weight: 400; font-display: swap;
   src: url("/assets/fonts/tenor-sans-400-latin.woff2") format('woff2'); }
 
@@ -230,10 +224,6 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   break-inside: avoid;
 }
 .dress-photos img { display: block; width: 100%; height: auto; }
-.dress-credit {
-  margin: 16px 0 0; text-align: center;
-  font-style: italic; font-size: 14px; color: var(--muted);
-}
 
 
 /* ─── Venues ─── */
@@ -399,5 +389,11 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; text-align: center; padding: 40px 20px;
 }
-.lost-code { font-family: var(--display); font-size: clamp(56px, 14vw, 96px); letter-spacing: .12em; line-height: 1; }
 .lost-line { font-style: italic; font-size: 18px; color: var(--muted); margin: 18px 0 30px; }
+
+/* print */
+@media print {
+  .nav, body::after, #diary-line, .dress-fold, .nav-links { display: none; }
+  .hero { min-height: 0; padding-top: 20px; }
+  section, .footer { break-inside: avoid; }
+}
