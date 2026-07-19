@@ -224,6 +224,10 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   break-inside: avoid;
 }
 .dress-photos img { display: block; width: 100%; height: auto; }
+.dress-foot {
+  margin: 18px 0 0; text-align: center;
+  font-style: italic; font-size: 14.5px; color: var(--muted);
+}
 
 
 /* ─── Venues ─── */
