@@ -304,11 +304,6 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 }
 .footer .orn { margin-bottom: 26px; }
 .seal-emboss { display: block; margin: 0 auto 22px; }
-.colophon {
-  margin: 34px 0 0;
-  font-family: var(--sc); font-size: 11px; letter-spacing: .22em; text-indent: .22em;
-  color: var(--muted); opacity: .8;
-}
 .footer-line { font-style: italic; font-size: 16.5px; color: var(--muted); }
 .footer-mark {
   margin-top: 16px;
