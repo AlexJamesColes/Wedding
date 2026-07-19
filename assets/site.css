@@ -185,6 +185,16 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   .stop::before { left: 0; top: 7px; margin-left: 0; }
 }
 
+/* ─── Dress ─── */
+.dress-row {
+  display: flex; justify-content: center; align-items: flex-start;
+  gap: clamp(36px, 8vw, 90px); flex-wrap: wrap;
+  margin-top: clamp(24px, 4vw, 36px);
+}
+.dress-fig { margin: 0; width: 130px; text-align: center; }
+.dress-fig svg { display: block; margin: 0 auto 8px; }
+.dress-note { font-style: italic; font-size: 14.5px; color: var(--muted); line-height: 1.5; }
+
 /* ─── Venues ─── */
 .map-fig {
   margin: 0 0 clamp(28px, 5vw, 44px);

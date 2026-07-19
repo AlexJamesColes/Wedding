@@ -297,7 +297,7 @@ for cls, (op, wdt) in {"secondary": (0.08, 0.75), "primary": (0.14, 1.1),
     for p in buckets[cls]:
         A(f'<path d="{path_d(p)}"></path>')
     A('</g>')
-A(f'<path d="{path_d(route)}" fill="none" stroke="#1d1a16" stroke-opacity="0.55" stroke-width="1.6" stroke-dasharray="2 6" stroke-linecap="round" stroke-linejoin="round"></path>')
+A(f'<path id="cabroute" d="{path_d(route)}" fill="none" stroke="#1d1a16" stroke-opacity="0.55" stroke-width="1.6" stroke-dasharray="2 6" stroke-linecap="round" stroke-linejoin="round"></path>')
 A('</g>')
 A('</g>')
 
@@ -364,7 +364,7 @@ overlay = f'''
             <path d="M654,234 L654,229 M652,231 L656,231"></path>
           </g>
           <text x="654" y="262" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55">St Paul&rsquo;s</text>
-          <g transform="translate({cab_x - 17},{cab_y - 17})">
+          <g id="cab" transform="translate({cab_x - 17},{cab_y - 17})">
             <path d="M2,14 Q0,14 0,11 L0,8 Q0,5 4,5 L9,5 L12,1.5 Q12.5,0.5 14,0.5 L25,0.5 Q29,0.5 30.5,3.5 L31.5,5 Q34,5.5 34,8 L34,11 Q34,14 32,14 Z" fill="#1d1a16"></path>
             <path d="M14.5,2 L24,2 L24,5 L13,5 Z M25.5,2.4 L28.5,4.6 L25.5,4.6 Z" fill="#ece7d8"></path>
             <circle cx="8.5" cy="14" r="3.2" fill="#1d1a16"></circle>
