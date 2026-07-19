@@ -27,7 +27,9 @@ for name, indent in [("index.html", "            "), ("inspiration.html", "  ")]
     p = ROOT / name
     t = p.read_text()
     start = t.index('<div class="dress-photos">')
-    end = t.index("</div>", t.rindex("</figure>", start)) + len("</div>")
+    # the gallery contains only <figure><img></figure> lines, so the first
+    # closing div after its opening tag is its own close
+    end = t.index("</div>", start) + len("</div>")
     close_indent = "          " if name == "index.html" else "  "
     t = t[:start] + '<div class="dress-photos">\n' + figures(indent) + f"\n{close_indent}</div>" + t[end:]
     p.write_text(t)
