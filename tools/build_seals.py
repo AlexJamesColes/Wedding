@@ -104,9 +104,10 @@ def ampersand(S=320):
     return im.crop(im.getbbox())
 
 
-def emboss_seal(S=480):
+def emboss_seal(S=480, date_band=False):
     """Blind-emboss variant: paper-coloured seal with baked light/shadow."""
-    mask = Image.new("L", (S, S), 0)
+    H = int(S * 1.14) if date_band else S
+    mask = Image.new("L", (S, H), 0)
     d = ImageDraw.Draw(mask)
     m = S * 0.045
     d.ellipse([m, m * 0.75, S - m, S - m * 0.75], outline=255, width=max(1, S // 60))
@@ -122,14 +123,23 @@ def emboss_seal(S=480):
         b = d.textbbox((0, 0), text, font=font)
         asc = font.getmetrics()[0]
         d.text((cx - (b[2] - b[0]) / 2 - b[0], y - asc), text, font=font, fill=255)
-    out = Image.new("RGBA", (S, S), CLEAR)
+    if date_band:
+        df = ImageFont.truetype(DID, int(S * 0.052), 0)
+        text = "XIV · AUG · MMXXVI"
+        widths = [d.textlength(c, font=df) for c in text]
+        total = sum(widths) + S * 0.018 * (len(text) - 1)
+        x = S / 2 - total / 2
+        for c, w in zip(text, widths):
+            d.text((x, S * 1.035), c, font=df, fill=230)
+            x += w + S * 0.018
+    out = Image.new("RGBA", (S, H), CLEAR)
     sh = max(2, S // 110)
-    dark = Image.new("RGBA", (S, S), (29, 26, 22, 70))
-    light = Image.new("RGBA", (S, S), (255, 253, 246, 190))
-    body = Image.new("RGBA", (S, S), (233, 228, 213, 255))
-    shifted = Image.new("L", (S, S), 0); shifted.paste(mask, (sh, sh))
+    dark = Image.new("RGBA", (S, H), (29, 26, 22, 70))
+    light = Image.new("RGBA", (S, H), (255, 253, 246, 190))
+    body = Image.new("RGBA", (S, H), (233, 228, 213, 255))
+    shifted = Image.new("L", (S, H), 0); shifted.paste(mask, (sh, sh))
     out.paste(dark, (0, 0), shifted)
-    shifted = Image.new("L", (S, S), 0); shifted.paste(mask, (-sh, -sh))
+    shifted = Image.new("L", (S, H), 0); shifted.paste(mask, (-sh, -sh))
     out.paste(light, (0, 0), shifted)
     out.paste(body, (0, 0), mask)
     return out
@@ -137,6 +147,7 @@ def emboss_seal(S=480):
 
 hero_seal(800).resize((208, 237), Image.LANCZOS).save(ROOT / "assets/img/seal.png", optimize=True)
 emboss_seal(480).resize((120, 120), Image.LANCZOS).save(ROOT / "assets/img/seal-emboss.png", optimize=True)
+emboss_seal(880, date_band=True).resize((220, 251), Image.LANCZOS).save(ROOT / "assets/img/seal-emboss-lg.png", optimize=True)
 amp = ampersand()
 amp.resize((round(amp.width * 76 / amp.height), 76), Image.LANCZOS).save(
     ROOT / "assets/img/amp.png", optimize=True)
