@@ -191,23 +191,20 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 
 /* ─── Dress ─── */
 .dress-photos {
-  display: grid; grid-template-columns: repeat(5, 1fr);
-  gap: 10px; margin-top: clamp(26px, 4vw, 36px);
+  columns: 4 170px; column-gap: 10px;
+  margin-top: clamp(26px, 4vw, 36px);
 }
 .dress-photos figure {
-  margin: 0; border: 1px solid var(--hairline);
+  margin: 0 0 10px; border: 1px solid var(--hairline);
   padding: 5px; background: var(--paper);
+  break-inside: avoid;
 }
-.dress-photos img {
-  display: block; width: 100%; height: auto;
-  aspect-ratio: 3 / 4; object-fit: cover;
-}
+.dress-photos img { display: block; width: 100%; height: auto; }
 .dress-credit {
   margin: 16px 0 0; text-align: center;
   font-style: italic; font-size: 14px; color: var(--muted);
 }
-@media (max-width: 860px) { .dress-photos { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 560px) { .dress-photos { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+
 
 /* ─── Venues ─── */
 .map-fig {
@@ -281,7 +278,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 }
 .menu-sub { text-align: center; font-style: italic; font-size: 17px; color: var(--muted); margin-top: 10px; }
 .course { margin-top: clamp(36px, 6vw, 48px); }
-.course-head { text-align: center; margin-bottom: 16px; }
+.course-head { text-align: center; margin-bottom: 28px; }
 .course-head .eyebrow { display: block; } /* text-indent centering fix needs a block box */
 .course-head .orn { width: 110px; margin-top: 10px; }
 .dishes { display: flex; flex-direction: column; gap: 10px; }
@@ -347,12 +344,6 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   font-family: var(--sc); font-size: 17px; letter-spacing: .1em;
 }
 .sent-note { font-style: italic; font-size: 14.5px; color: var(--muted); line-height: 1.7; margin: 26px 0 0; }
-.sent-amend {
-  appearance: none; background: none; border: none; padding: 0 0 1px;
-  font: inherit; color: var(--ink); cursor: pointer;
-  border-bottom: 1px solid var(--hairline);
-}
-.sent-amend:hover { color: var(--muted); }
 .menu-deadline {
   margin-top: 20px; text-align: center;
   font-family: var(--sans); font-size: 9.5px; letter-spacing: .34em; text-indent: .34em;
