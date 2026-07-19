@@ -201,16 +201,21 @@ i1 = min(i for i, p in enumerate(route) if math.dist(p, MARK_B) < 11)
 route = route[i0:i1 + 1]
 
 total = length(route)
-acc, cab_pt = 0, route[0]
-for i in range(len(route) - 1):
-    seg = math.dist(route[i], route[i + 1])
-    if acc + seg >= total * 0.40:
-        t = (total * 0.40 - acc) / seg
-        cab_pt = (route[i][0] + t * (route[i + 1][0] - route[i][0]),
-                  route[i][1] + t * (route[i + 1][1] - route[i][1]))
-        break
-    acc += seg
-cab_x, cab_y = round(cab_pt[0]), round(cab_pt[1])
+def point_at(frac):
+    goal, acc = total * frac, 0
+    for i in range(len(route) - 1):
+        seg = math.dist(route[i], route[i + 1])
+        if acc + seg >= goal:
+            t = (goal - acc) / seg
+            return (route[i][0] + t * (route[i + 1][0] - route[i][0]),
+                    route[i][1] + t * (route[i + 1][1] - route[i][1]))
+        acc += seg
+    return route[-1]
+
+# a small convoy — the couple has booked five or six cabs
+CAB_FRACS = [0.40, 0.33, 0.26]
+cab_pts = [point_at(f) for f in CAB_FRACS]
+cab_x, cab_y = round(cab_pts[0][0]), round(cab_pts[0][1])
 
 # ── labels + clearings ─────────────────────────────────────────────
 # (text, x, y_baseline, kind) — kinds set font/size; clearing boxes derive
@@ -246,7 +251,7 @@ clearing(216, 122, "Old Marylebone Town Hall", SC_D, pad_w=14, pad_h=9)
 clearing(216, 176, "the ceremony", IT, pad_w=12, pad_h=8)
 clearing(714, 221, "The Ned", SC_D, pad_w=16, pad_h=10)
 clearing(714, 275, "the reception", IT, pad_w=12, pad_h=8)
-clearing(cab_x + 5, cab_y - 27, "black cabs, provided", IT, pad_w=14, pad_h=8)
+clearing(cab_x + 5, cab_y - 27, "carriages provided", IT, pad_w=14, pad_h=8)
 clearing(654, 262, "St Paul's", IT, pad_w=10, pad_h=6)
 clearing(359, 386, "Buckingham Palace", IT, pad_w=18, pad_h=7)
 clearing(321, 267, "Claridge's", IT, pad_w=12, pad_h=6)
@@ -312,6 +317,10 @@ street_texts = "".join(
     f'<text x="{x}" y="{y}" transform="rotate({rot} {x} {y})">{t}</text>'
     for t, x, y, kind, rot, _ in LABELS if kind == IT)
 
+cab_uses = "".join(
+    f'<use href="#cabglyph" id="cab{i+1}" transform="translate({p[0]-17:.0f},{p[1]-16:.0f})"></use>'
+    for i, p in enumerate(cab_pts))
+
 overlay = f'''
           <text font-family="'Cormorant Garamond', serif" font-style="italic" font-size="15.5" letter-spacing="1.5" fill="#1d1a16" opacity="0.55">
             <textPath href="#thamespath" startOffset="42%">The Thames</textPath>
@@ -364,15 +373,18 @@ overlay = f'''
             <path d="M654,234 L654,229 M652,231 L656,231"></path>
           </g>
           <text x="654" y="262" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55">St Paul&rsquo;s</text>
-          <g id="cab" transform="translate({cab_x - 17},{cab_y - 17})">
-            <path d="M2,14 Q0,14 0,11 L0,8 Q0,5 4,5 L9,5 L12,1.5 Q12.5,0.5 14,0.5 L25,0.5 Q29,0.5 30.5,3.5 L31.5,5 Q34,5.5 34,8 L34,11 Q34,14 32,14 Z" fill="#1d1a16"></path>
-            <path d="M14.5,2 L24,2 L24,5 L13,5 Z M25.5,2.4 L28.5,4.6 L25.5,4.6 Z" fill="#ece7d8"></path>
-            <circle cx="8.5" cy="14" r="3.2" fill="#1d1a16"></circle>
-            <circle cx="8.5" cy="14" r="1.2" fill="#ece7d8"></circle>
-            <circle cx="26.5" cy="14" r="3.2" fill="#1d1a16"></circle>
-            <circle cx="26.5" cy="14" r="1.2" fill="#ece7d8"></circle>
+          <g id="cabglyph-def" style="display:none">
+            <g id="cabglyph">
+              <path d="M2,14 Q0,14 0,11 L0,8 Q0,5 4,5 L9,5 L12,1.5 Q12.5,0.5 14,0.5 L25,0.5 Q29,0.5 30.5,3.5 L31.5,5 Q34,5.5 34,8 L34,11 Q34,14 32,14 Z" fill="#1d1a16"></path>
+              <path d="M14.5,2 L24,2 L24,5 L13,5 Z M25.5,2.4 L28.5,4.6 L25.5,4.6 Z" fill="#ece7d8"></path>
+              <circle cx="8.5" cy="14" r="3.2" fill="#1d1a16"></circle>
+              <circle cx="8.5" cy="14" r="1.2" fill="#ece7d8"></circle>
+              <circle cx="26.5" cy="14" r="3.2" fill="#1d1a16"></circle>
+              <circle cx="26.5" cy="14" r="1.2" fill="#ece7d8"></circle>
+            </g>
           </g>
-          <text x="{cab_x + 5}" y="{cab_y - 22}" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="14.5" fill="#1d1a16" opacity="0.7">black cabs, provided</text>
+          {cab_uses}
+          <text x="{cab_x + 5}" y="{cab_y - 22}" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="14.5" fill="#1d1a16" opacity="0.7">carriages provided</text>
           <g>
             <ellipse cx="216" cy="147" rx="8.5" ry="9.5" fill="#ece7d8" stroke="#1d1a16" stroke-width="0.9" stroke-opacity="0.65"></ellipse>
             <rect x="212.5" y="143.5" width="7" height="7" fill="#1d1a16" transform="rotate(45 216 147)"></rect>
@@ -399,7 +411,7 @@ frag = "\n          ".join(parts)
 figure = ('      <figure class="map-fig" role="img" aria-label="Street map of central London in the wedding\'s ink-on-paper style: the real road network, the Thames, and the black-cab route east from Old Marylebone Town Hall past Soho and St Paul\'s to The Ned">\n'
           '        <svg viewBox="0 0 900 457" aria-hidden="true" focusable="false">\n'
           '          ' + frag + overlay + '\n        </svg>\n'
-          '        <figcaption>Marylebone to the City &mdash; four miles east by black cab, on us</figcaption>\n'
+          '        <figcaption>Marylebone to the City &mdash; four miles east by black cab</figcaption>\n'
           '      </figure>')
 
 idx = ROOT / "index.html"

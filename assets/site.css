@@ -80,6 +80,7 @@ img { max-width: 100%; height: auto; }
   font-family: var(--sc); font-size: 15px; letter-spacing: .3em;
 }
 .nav-brand svg { display: block; }
+.nav-brand img { height: 19px; width: auto; display: block; margin: 0 -2px 2px; }
 .nav-links { display: flex; align-items: center; gap: clamp(14px, 3vw, 34px); }
 .nav-links a {
   font-family: var(--sans); font-size: 10.5px; letter-spacing: .28em; text-transform: uppercase;
@@ -95,12 +96,14 @@ img { max-width: 100%; height: auto; }
 .nav-links a.nav-cta:hover { background: var(--ink); color: var(--paper); border-bottom-color: var(--ink); }
 .nav-brand span, .nav-links a { white-space: nowrap; }
 @media (max-width: 560px) {
-  .nav-brand span { display: none; }
+  .nav-brand { font-size: 13px; }
+  .nav-brand img { height: 16px; }
   .nav-links { gap: 16px; }
   .nav-links a { font-size: 10px; letter-spacing: .2em; }
   .nav-links a.nav-cta { padding: 8px 12px; }
 }
 @media (max-width: 350px) {
+  .nav-brand { display: none; }
   .nav-links { gap: 11px; }
   .nav-links a { letter-spacing: .14em; }
 }
