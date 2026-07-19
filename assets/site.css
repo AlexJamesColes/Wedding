@@ -95,13 +95,17 @@ img { max-width: 100%; height: auto; }
   transition: background .15s, color .15s;
 }
 .nav-links a.nav-cta:hover { background: var(--ink); color: var(--paper); border-bottom-color: var(--ink); }
+.cta-short { display: none; }
 .nav-brand span, .nav-links a { white-space: nowrap; }
-@media (max-width: 560px) {
+@media (max-width: 620px) {
   .nav-brand { font-size: 13px; }
   .nav-brand img { height: 16px; }
-  .nav-links { gap: 16px; }
-  .nav-links a { font-size: 10px; letter-spacing: .2em; }
+  .nav-links { gap: 14px; }
+  .nav-links a { font-size: 10px; letter-spacing: .18em; }
   .nav-links a.nav-cta { padding: 8px 12px; }
+  .nav-venues { display: none; }
+  .cta-long { display: none; }
+  .cta-short { display: inline; }
 }
 @media (max-width: 350px) {
   .nav-brand { display: none; }

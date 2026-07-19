@@ -252,6 +252,8 @@ clearing(216, 176, "the ceremony", IT, pad_w=12, pad_h=8)
 clearing(714, 221, "The Ned", SC_D, pad_w=16, pad_h=10)
 clearing(714, 275, "the reception", IT, pad_w=12, pad_h=8)
 clearing(654, 262, "St Paul's", IT, pad_w=10, pad_h=6)
+clearing(88, 384, "to Weybridge, home", IT, pad_w=12, pad_h=6)
+clearing(762, 68, "complete shithole", IT, pad_w=12, pad_h=6)
 clearing(359, 386, "Buckingham Palace", IT, pad_w=18, pad_h=7)
 clearing(321, 267, "Claridge's", IT, pad_w=12, pad_h=6)
 # the venue name clearings above use SC_D char width but venue SC is 21px:
@@ -372,6 +374,13 @@ overlay = f'''
             <path d="M654,234 L654,229 M652,231 L656,231"></path>
           </g>
           <text x="654" y="262" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55">St Paul&rsquo;s</text>
+          <!-- marginalia -->
+          <g stroke="#1d1a16" stroke-opacity="0.5" stroke-width="1.1" fill="none" stroke-linecap="round">
+            <path d="M118,392 L45,407 M52,410 L45,407 L51,403"></path>
+            <path d="M742,54 L813,31 M806,29 L813,31 L809,37"></path>
+          </g>
+          <text x="88" y="384" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">to Weybridge, home</text>
+          <text x="762" y="68" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">complete shithole</text>
           <g id="cabglyph-def" style="display:none">
             <g id="cabglyph">
               <path d="M2,14 Q0,14 0,11 L0,8 Q0,5 4,5 L9,5 L12,1.5 Q12.5,0.5 14,0.5 L25,0.5 Q29,0.5 30.5,3.5 L31.5,5 Q34,5.5 34,8 L34,11 Q34,14 32,14 Z" fill="#1d1a16"></path>
@@ -409,7 +418,7 @@ frag = "\n          ".join(parts)
 figure = ('      <figure class="map-fig" role="img" aria-label="Street map of central London in the wedding\'s ink-on-paper style: the real road network, the Thames, and the black-cab route east from Old Marylebone Town Hall past Soho and St Paul\'s to The Ned">\n'
           '        <svg viewBox="0 0 900 457" aria-hidden="true" focusable="false">\n'
           '          ' + frag + overlay + '\n        </svg>\n'
-          '        <figcaption>Marylebone to the City &mdash; four miles east by black cab</figcaption>\n'
+          '        <figcaption>Marylebone to the City, carriages provided.</figcaption>\n'
           '      </figure>')
 
 idx = ROOT / "index.html"
