@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chelsey &amp; Alex · The Menu</title>
 <meta name="description" content="Choose your dishes for the wedding of Chelsey and Alex · kindly reply by the thirtieth of July">
-<link rel="canonical" href="https://coleswedding.com/menu.html">
+<link rel="canonical" href="https://coleswedding.com/menu">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Chelsey &amp; Alex">
 <meta property="og:title" content="Chelsey &amp; Alex · The Menu">
 <meta property="og:description" content="Kindly choose one dish from each course by the thirtieth of July.">
-<meta property="og:url" content="https://coleswedding.com/menu.html">
+<meta property="og:url" content="https://coleswedding.com/menu">
 <meta property="og:image" content="https://coleswedding.com/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -21,7 +21,7 @@
 <link rel="preload" href="/assets/fonts/italiana-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/cormorant-garamond-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/tenor-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=13">
+<link rel="stylesheet" href="/assets/site.css?v=14">
 </head>
 <body>
 
@@ -32,7 +32,7 @@
   <nav class="nav-links" aria-label="Site">
     <a href="/">The Invitation</a>
     <a href="/#day">The Day</a>
-    <a href="/inspiration.html">Inspiration</a>
+    <a href="/inspiration">Inspiration</a>
   </nav>
 </header>
 
@@ -44,12 +44,11 @@
   <form id="menu-form" action="https://formspree.io/f/mvzealwq" method="POST">
 
     <fieldset class="course" style="border:none;padding:0;margin-left:0;margin-right:0">
-      <legend style="width:100%;padding:0">
-        <div class="course-head">
-          <span class="eyebrow">To Begin</span>
-          <div class="orn"><span></span></div>
-        </div>
-      </legend>
+      <legend class="sr-only">To Begin</legend>
+      <div class="course-head" aria-hidden="true">
+        <span class="eyebrow">To Begin</span>
+        <div class="orn"><span></span></div>
+      </div>
       <div class="dishes">
         <label class="dish">
           <input type="radio" name="starter" value="Pugliese burrata" required>
@@ -76,12 +75,11 @@
     </fieldset>
 
     <fieldset class="course" style="border:none;padding:0;margin-left:0;margin-right:0">
-      <legend style="width:100%;padding:0">
-        <div class="course-head">
-          <span class="eyebrow">To Follow</span>
-          <div class="orn"><span></span></div>
-        </div>
-      </legend>
+      <legend class="sr-only">To Follow</legend>
+      <div class="course-head" aria-hidden="true">
+        <span class="eyebrow">To Follow</span>
+        <div class="orn"><span></span></div>
+      </div>
       <div class="dishes">
         <label class="dish">
           <input type="radio" name="main" value="Soft herb risotto" required>
@@ -108,12 +106,11 @@
     </fieldset>
 
     <fieldset class="course" style="border:none;padding:0;margin-left:0;margin-right:0">
-      <legend style="width:100%;padding:0">
-        <div class="course-head">
-          <span class="eyebrow">To Finish</span>
-          <div class="orn"><span></span></div>
-        </div>
-      </legend>
+      <legend class="sr-only">To Finish</legend>
+      <div class="course-head" aria-hidden="true">
+        <span class="eyebrow">To Finish</span>
+        <div class="orn"><span></span></div>
+      </div>
       <div class="dishes">
         <label class="dish">
           <input type="radio" name="dessert" value="Passion fruit délice" required>

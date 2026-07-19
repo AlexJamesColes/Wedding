@@ -52,6 +52,11 @@ a:hover { color: var(--muted); }
 img { max-width: 100%; height: auto; }
 
 /* ─── Type helpers ─── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  clip: rect(0 0 0 0); clip-path: inset(50%);
+  overflow: hidden; white-space: nowrap;
+}
 .eyebrow {
   font-family: var(--sans);
   font-size: 11px; letter-spacing: .44em; text-transform: uppercase;
