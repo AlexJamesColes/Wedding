@@ -225,7 +225,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 }
 .dress-photos img { display: block; width: 100%; height: auto; }
 .dress-foot {
-  margin: 18px 0 0; text-align: center;
+  margin: 14px 0 4px; text-align: center;
   font-style: italic; font-size: 14.5px; color: var(--muted);
 }
 
