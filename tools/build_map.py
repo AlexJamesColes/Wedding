@@ -248,6 +248,8 @@ clearing(714, 221, "The Ned", SC_D, pad_w=16, pad_h=10)
 clearing(714, 275, "the reception", IT, pad_w=12, pad_h=8)
 clearing(cab_x + 5, cab_y - 27, "black cabs, provided", IT, pad_w=14, pad_h=8)
 clearing(654, 262, "St Paul's", IT, pad_w=10, pad_h=6)
+clearing(359, 386, "Buckingham Palace", IT, pad_w=18, pad_h=7)
+clearing(321, 267, "Claridge's", IT, pad_w=12, pad_h=6)
 # the venue name clearings above use SC_D char width but venue SC is 21px:
 clearings[-6] = (216, 122 - 8, 24 * 14.2 + 16, 26, 0)
 clearings[-4] = (714, 221 - 8, 7 * 14.2 + 18, 26, 0)
@@ -330,6 +332,30 @@ overlay = f'''
             <path d="M239,255 L239,246 A 5 5 0 0 1 249,246 L249,255"></path>
             <path d="M236,255 L252,255"></path>
           </g>
+          <!-- Buckingham Palace -->
+          <g stroke="#1d1a16" stroke-opacity="0.6" stroke-width="0.9" fill="none">
+            <rect x="344" y="359" width="30" height="11"></rect>
+            <path d="M352,359 L359,352.5 L366,359"></path>
+            <path d="M348,361.5 L348,370 M353.5,361.5 L353.5,370 M364.5,361.5 L364.5,370 M370,361.5 L370,370"></path>
+            <path d="M359,352.5 L359,345.5"></path>
+          </g>
+          <path d="M359,345.5 L365,346.8 L359,348.4 Z" fill="#1d1a16" opacity="0.6"></path>
+          <text x="359" y="386" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">Buckingham Palace</text>
+          <!-- Westminster Abbey -->
+          <g stroke="#1d1a16" stroke-opacity="0.55" stroke-width="0.9" fill="none">
+            <rect x="450" y="390" width="5.5" height="14"></rect>
+            <rect x="460.5" y="390" width="5.5" height="14"></rect>
+            <path d="M455.5,397 L460.5,397 M455.5,404 L460.5,404"></path>
+            <path d="M451,390 L451,387 M454.5,390 L454.5,387 M461.5,390 L461.5,387 M465,390 L465,387"></path>
+          </g>
+          <!-- Claridge's -->
+          <g stroke="#1d1a16" stroke-opacity="0.55" stroke-width="0.9" fill="none">
+            <rect x="315" y="245" width="12" height="10"></rect>
+            <path d="M317.5,247.5 L324.5,247.5 M317.5,250 L324.5,250"></path>
+            <path d="M321,245 L321,240"></path>
+          </g>
+          <path d="M321,240 L326,241.1 L321,242.4 Z" fill="#1d1a16" opacity="0.55"></path>
+          <text x="321" y="267" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="12.5" fill="#1d1a16" opacity="0.55">Claridge&rsquo;s</text>
           <rect x="805" y="324" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
           <rect x="809" y="335" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
           <g stroke="#1d1a16" stroke-opacity="0.55" stroke-width="0.9" fill="none">
