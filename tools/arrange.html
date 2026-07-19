@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arrange the inspiration photos</title>
+<meta name="robots" content="noindex">
+<style>
+  body { background:#ece7d8; color:#1d1a16; font-family: Georgia, serif; margin:0; padding:32px 20px 80px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  h1 { font-weight: normal; font-size: 22px; letter-spacing: .06em; text-align: center; }
+  p.help { text-align:center; font-style: italic; color:#6e665a; font-size: 15px; }
+  .dress-photos { columns: 4 170px; column-gap: 10px; margin-top: 28px; }
+  .dress-photos figure {
+    margin: 0 0 10px; border: 1px solid rgba(29,26,22,.28);
+    padding: 5px; background: #ece7d8; break-inside: avoid;
+    cursor: grab; position: relative;
+  }
+  .dress-photos figure.dragging { opacity: .35; }
+  .dress-photos img { display: block; width: 100%; height: auto; pointer-events: none; }
+  .badge {
+    position: absolute; top: 10px; left: 10px;
+    background: #1d1a16; color: #ece7d8;
+    font: 12px/1 Georgia, serif; padding: 5px 8px; border-radius: 999px;
+  }
+  .bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(236,231,216,.95); border-top: 1px solid rgba(29,26,22,.28);
+    padding: 14px 20px; text-align: center;
+  }
+  button {
+    font: 13px Georgia, serif; letter-spacing: .18em; text-transform: uppercase;
+    background: #1d1a16; color: #ece7d8; border: 1px solid #1d1a16;
+    padding: 12px 26px; cursor: pointer;
+  }
+  #out { margin-top: 8px; font-size: 13px; color: #6e665a; word-break: break-all; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Arrange the inspiration photos</h1>
+  <p class="help">Drag any photo to a new position. The layout mirrors the live site exactly.<br>
+  When it looks right, press the button and send the copied order to Claude.</p>
+  <div class="dress-photos" id="grid"></div>
+</div>
+<div class="bar">
+  <button id="copy">Copy the order</button>
+  <div id="out"></div>
+</div>
+<script>
+(async function () {
+  const manifest = await (await fetch('/tools/photos.json')).json();
+  const grid = document.getElementById('grid');
+  manifest.forEach(function (m) {
+    const fig = document.createElement('figure');
+    fig.draggable = true;
+    fig.dataset.file = m.file;
+    fig.innerHTML = '<span class="badge"></span><img src="/assets/img/dress/' + m.file + '" alt="' + m.alt + '">';
+    grid.appendChild(fig);
+  });
+  function renumber() {
+    grid.querySelectorAll('figure').forEach(function (f, i) {
+      f.querySelector('.badge').textContent = i + 1;
+    });
+  }
+  renumber();
+  let dragged = null;
+  grid.addEventListener('dragstart', function (e) {
+    dragged = e.target.closest('figure');
+    dragged.classList.add('dragging');
+  });
+  grid.addEventListener('dragend', function () {
+    if (dragged) dragged.classList.remove('dragging');
+    dragged = null; renumber();
+  });
+  grid.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    const over = e.target.closest('figure');
+    if (!over || over === dragged) return;
+    const r = over.getBoundingClientRect();
+    const before = (e.clientY - r.top) < r.height / 2;
+    grid.insertBefore(dragged, before ? over : over.nextSibling);
+    renumber();
+  });
+  document.getElementById('copy').addEventListener('click', async function () {
+    const order = Array.from(grid.querySelectorAll('figure')).map(function (f) {
+      return f.dataset.file.replace('dress-', '').replace('.jpg', '');
+    }).join(',');
+    const msg = 'photo order: ' + order;
+    try { await navigator.clipboard.writeText(msg); } catch (e) {}
+    document.getElementById('out').textContent = msg + '  (copied)';
+  });
+})();
+</script>
+</body>
+</html>
