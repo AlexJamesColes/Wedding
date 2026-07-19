@@ -104,7 +104,39 @@ def ampersand(S=320):
     return im.crop(im.getbbox())
 
 
+def emboss_seal(S=480):
+    """Blind-emboss variant: paper-coloured seal with baked light/shadow."""
+    mask = Image.new("L", (S, S), 0)
+    d = ImageDraw.Draw(mask)
+    m = S * 0.045
+    d.ellipse([m, m * 0.75, S - m, S - m * 0.75], outline=255, width=max(1, S // 60))
+    m2 = S * 0.085
+    d.ellipse([m2, m2 * 0.78, S - m2, S - m2 * 0.78], outline=255, width=max(1, S // 110))
+    r = S * 0.045; cy = m * 0.75
+    mask.paste(0, (int(S / 2 - r * 1.6), int(cy - r * 1.4), int(S / 2 + r * 1.6), int(cy + r * 1.4)))
+    d.polygon([(S / 2, cy - r), (S / 2 + r, cy), (S / 2, cy + r), (S / 2 - r, cy)], fill=255)
+    lf = ImageFont.truetype(DID, int(S * 0.24), 0)
+    af = ImageFont.truetype(DID, int(S * 0.42), 1)
+    y = S * 0.645
+    for text, font, cx in [("&", af, S / 2), ("C", lf, S * C_X), ("A", lf, S * A_X)]:
+        b = d.textbbox((0, 0), text, font=font)
+        asc = font.getmetrics()[0]
+        d.text((cx - (b[2] - b[0]) / 2 - b[0], y - asc), text, font=font, fill=255)
+    out = Image.new("RGBA", (S, S), CLEAR)
+    sh = max(2, S // 110)
+    dark = Image.new("RGBA", (S, S), (29, 26, 22, 70))
+    light = Image.new("RGBA", (S, S), (255, 253, 246, 190))
+    body = Image.new("RGBA", (S, S), (233, 228, 213, 255))
+    shifted = Image.new("L", (S, S), 0); shifted.paste(mask, (sh, sh))
+    out.paste(dark, (0, 0), shifted)
+    shifted = Image.new("L", (S, S), 0); shifted.paste(mask, (-sh, -sh))
+    out.paste(light, (0, 0), shifted)
+    out.paste(body, (0, 0), mask)
+    return out
+
+
 hero_seal(800).resize((208, 237), Image.LANCZOS).save(ROOT / "assets/img/seal.png", optimize=True)
+emboss_seal(480).resize((120, 120), Image.LANCZOS).save(ROOT / "assets/img/seal-emboss.png", optimize=True)
 amp = ampersand()
 amp.resize((round(amp.width * 76 / amp.height), 76), Image.LANCZOS).save(
     ROOT / "assets/img/amp.png", optimize=True)

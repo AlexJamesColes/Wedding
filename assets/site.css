@@ -45,6 +45,13 @@ html, body {
   background: var(--paper); color: var(--ink);
   font-family: var(--serif);
   font-size: 18px; line-height: 1.55;
+  font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+}
+/* the engraver's plate mark */
+body::after {
+  content: ""; position: fixed; inset: 9px;
+  border: 1px solid rgba(29, 26, 22, 0.13);
+  pointer-events: none; z-index: 300;
 }
 a { color: var(--ink); }
 a:hover { color: var(--muted); }
@@ -161,6 +168,13 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   font-style: italic; font-size: 14.5px; color: var(--muted);
 }
 
+/* ─── Day sheet ─── */
+.day-sheet {
+  margin: 14px 0 0; font-size: 16px; color: var(--muted); text-align: center;
+}
+.stop-now::before { width: 10px; height: 10px; margin-left: -5px; opacity: 1; }
+.stop-now .stop-time { color: var(--ink); }
+
 /* ─── The Day: timeline ─── */
 .stops {
   display: grid; grid-template-columns: repeat(3, 1fr);
@@ -194,6 +208,16 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 }
 
 /* ─── Dress ─── */
+.dress-fold { margin-top: 22px; }
+.dress-fold summary {
+  display: inline-block; cursor: pointer; list-style: none;
+}
+.dress-fold summary::-webkit-details-marker { display: none; }
+.dress-fold[open] summary { color: var(--muted); }
+.dress-fold[open] .dress-photos { animation: dressfade .5s ease; }
+@keyframes dressfade { from { opacity: 0; } to { opacity: 1; } }
+.dress-fold .dress-photos { text-align: left; }
+
 .dress-photos {
   columns: 4 170px; column-gap: 10px;
   margin-top: clamp(26px, 4vw, 36px);
@@ -255,6 +279,8 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   cursor: pointer;
 }
 .btn:hover { background: transparent; color: var(--ink); }
+.btn:active, .nav-links a.nav-cta:active { transform: translateY(1px); }
+.dish input:active + .dish-card, .dish-card:active { transform: translateY(1px); }
 .btn[disabled] { background: transparent; color: rgba(29, 26, 22, .4); cursor: not-allowed; }
 /* visually quiet until the form is complete, but still clickable so native
    validation can announce what's missing */
@@ -267,6 +293,12 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   border-top: 1px solid var(--hairline);
 }
 .footer .orn { margin-bottom: 26px; }
+.seal-emboss { display: block; margin: 0 auto 22px; }
+.colophon {
+  margin: 34px 0 0;
+  font-family: var(--sc); font-size: 11px; letter-spacing: .22em; text-indent: .22em;
+  color: var(--muted); opacity: .8;
+}
 .footer-line { font-style: italic; font-size: 16.5px; color: var(--muted); }
 .footer-mark {
   margin-top: 16px;
@@ -346,6 +378,11 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 }
 .sent-summary p > span:last-child {
   font-family: var(--sc); font-size: 17px; letter-spacing: .1em;
+}
+.sent-counterfoil {
+  margin: 22px 0 0;
+  font-family: var(--sc); font-size: 12px; letter-spacing: .24em; text-indent: .24em;
+  color: var(--muted);
 }
 .sent-note { font-style: italic; font-size: 14.5px; color: var(--muted); line-height: 1.7; margin: 26px 0 0; }
 .menu-deadline {
