@@ -206,6 +206,15 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   .stop::before { left: 0; top: 7px; margin-left: 0; }
 }
 
+/* ─── Ceremony note ─── */
+.ceremony-note {
+  max-width: 56ch;
+  margin: clamp(30px, 5vw, 44px) auto 0;
+  text-align: center;
+  font-size: 16px; line-height: 1.7;
+  color: var(--muted);
+}
+
 /* ─── Dress ─── */
 .dress-fold { margin-top: 22px; }
 .dress-fold summary {
