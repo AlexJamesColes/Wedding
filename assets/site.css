@@ -81,7 +81,7 @@ img { max-width: 100%; height: auto; }
 }
 .nav-brand svg { display: block; }
 .nav-brand { gap: 0; }
-.nav-brand img { height: 19px; width: auto; display: block; margin: 0 5px 2px 6px; }
+.nav-brand img { height: 19px; width: auto; display: block; margin: 0 6px 2px 3px; }
 .nav-links { display: flex; align-items: center; gap: clamp(14px, 3vw, 34px); }
 .nav-links a {
   font-family: var(--sans); font-size: 10.5px; letter-spacing: .28em; text-transform: uppercase;
