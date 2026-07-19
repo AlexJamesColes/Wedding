@@ -97,7 +97,7 @@
         <div class="stop">
           <p class="stop-time" style="margin:0">Reception · half past six</p>
           <p class="stop-venue" style="margin:10px 0 0">The Ned, London</p>
-          <p class="stop-note" style="margin:6px 0 0">champagne on the terrace,<br>dinner thereafter</p>
+          <p class="stop-note" style="margin:6px 0 0">black cabs will carry you east &mdash;<br>champagne on the terrace, dinner thereafter</p>
         </div>
       </div>
       <div style="height:clamp(32px,6vw,48px)"></div>
@@ -112,13 +112,16 @@
         <h2 class="eyebrow" style="font-size:12px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">The Venues</h2>
         <div class="orn"><span></span></div>
       </div>
-      <figure class="map-fig" role="img" aria-label="Sketch map of central London: Old Marylebone Town Hall in Marylebone and The Ned in the City, about three miles apart, with the Thames, Regent's Park and Hyde Park">
+      <figure class="map-fig" role="img" aria-label="Sketch map of central London: Old Marylebone Town Hall in Marylebone and The Ned in the City, three miles apart, with black cabs carrying guests east past Soho and St Paul's, the Thames and its bridges below">
         <svg viewBox="0 0 900 457" aria-hidden="true" focusable="false">
+          <rect x="8" y="8" width="884" height="441" fill="none" stroke="#1d1a16" stroke-opacity="0.3" stroke-width="1"></rect>
+
           <!-- parks -->
-          <path d="M169,0 L183,131 Q257,151 332,139 L372,0 Z" fill="#1d1a16" fill-opacity="0.07" stroke="#1d1a16" stroke-opacity="0.18" stroke-width="0.8"></path>
-          <path d="M34,256 L291,252 L298,359 L0,364 L0,258 Z" fill="#1d1a16" fill-opacity="0.07" stroke="#1d1a16" stroke-opacity="0.18" stroke-width="0.8"></path>
+          <path d="M169,8 L183,131 Q257,151 332,139 L372,8 Z" fill="#1d1a16" fill-opacity="0.07" stroke="#1d1a16" stroke-opacity="0.18" stroke-width="0.8"></path>
+          <path d="M34,256 L291,252 L298,359 L8,364 L8,258 Z" fill="#1d1a16" fill-opacity="0.07" stroke="#1d1a16" stroke-opacity="0.18" stroke-width="0.8"></path>
+          <path d="M195,332 Q225,320 250,328 Q268,334 288,326" fill="none" stroke="#1d1a16" stroke-opacity="0.12" stroke-width="7" stroke-linecap="round"></path>
           <text x="270" y="70" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="14" letter-spacing="2.5" fill="#1d1a16" opacity="0.45">Regent&rsquo;s Park</text>
-          <text x="150" y="312" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="14" letter-spacing="2.5" fill="#1d1a16" opacity="0.45">Hyde Park</text>
+          <text x="150" y="305" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="14" letter-spacing="2.5" fill="#1d1a16" opacity="0.45">Hyde Park</text>
 
           <!-- streets -->
           <g stroke="#1d1a16" stroke-opacity="0.16" stroke-width="1" fill="none">
@@ -126,14 +129,60 @@
             <path d="M250,246 L440,212"></path>
             <path d="M453,305 L528,256 L616,239 L710,247"></path>
           </g>
+          <g font-family="'Cormorant Garamond', serif" font-style="italic" font-size="12" fill="#1d1a16" opacity="0.5" text-anchor="middle" style="paint-order:stroke;stroke:#ece7d8;stroke-width:4">
+            <text x="163" y="143" transform="rotate(-4 163 143)">Marylebone Road</text>
+            <text x="345" y="222" transform="rotate(-10 345 222)">Oxford Street</text>
+            <text x="572" y="236" transform="rotate(-11 572 236)">Fleet Street</text>
+          </g>
+
+          <!-- districts -->
+          <g font-family="'Cormorant SC', serif" font-size="13" letter-spacing="3" fill="#1d1a16" opacity="0.4" text-anchor="middle" style="paint-order:stroke;stroke:#ece7d8;stroke-width:4">
+            <text x="185" y="212">Marylebone</text>
+            <text x="330" y="318">Mayfair</text>
+            <text x="430" y="258">Soho</text>
+            <text x="452" y="288">Covent Garden</text>
+            <text x="792" y="196">The City</text>
+            <text x="592" y="352">South Bank</text>
+          </g>
 
           <!-- the Thames -->
-          <path id="thames" d="M494,384 C 505,362 520,340 548,305 C 578,268 598,286 653,288 C 690,289 700,295 726,306 C 756,319 785,330 809,332 C 842,334 872,312 900,294"
+          <path id="thames" d="M494,384 C 505,362 520,340 548,305 C 578,268 598,286 653,288 C 690,289 700,295 726,306 C 756,319 785,330 809,332 C 842,334 872,312 892,298"
                 fill="none" stroke="#1d1a16" stroke-opacity="0.055" stroke-width="34" stroke-linecap="round"></path>
           <use href="#thames" fill="none" stroke="#1d1a16" stroke-opacity="0.10" stroke-width="21" stroke-linecap="round"></use>
           <text font-family="'Cormorant Garamond', serif" font-style="italic" font-size="15.5" letter-spacing="1.5" fill="#1d1a16" opacity="0.55">
             <textPath href="#thames" startOffset="12%">The Thames</textPath>
           </text>
+
+          <!-- bridges -->
+          <g stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1.6" fill="none">
+            <path d="M492,358 L510,372"></path>
+            <path d="M544,292 L552,318"></path>
+            <path d="M620,271 L612,295"></path>
+            <path d="M730,293 L722,319"></path>
+            <path d="M804,320 L814,344"></path>
+          </g>
+          <rect x="804.5" y="323.5" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
+          <rect x="808.5" y="334.5" width="4.5" height="6" fill="#1d1a16" opacity="0.6"></rect>
+
+          <!-- Big Ben -->
+          <g fill="#1d1a16" opacity="0.6">
+            <rect x="478" y="332" width="5" height="22"></rect>
+            <path d="M476.5,332 L485,332 L480.5,323 Z"></path>
+            <rect x="476.5" y="336" width="8" height="5" fill="#ece7d8" stroke="#1d1a16" stroke-width="0.8"></rect>
+          </g>
+
+          <!-- London Eye -->
+          <g stroke="#1d1a16" stroke-opacity="0.5" fill="none">
+            <circle cx="516" cy="366" r="9" stroke-width="1.2"></circle>
+            <path d="M516,357 L516,375 M507,366 L525,366 M509.6,359.6 L522.4,372.4 M522.4,359.6 L509.6,372.4" stroke-width="0.7"></path>
+            <path d="M511,378 L516,371 L521,378" stroke-width="1.1"></path>
+          </g>
+
+          <!-- Marble Arch -->
+          <g stroke="#1d1a16" stroke-opacity="0.5" stroke-width="1.1" fill="none">
+            <path d="M245,252 L245,243 A 5 5 0 0 1 255,243 L255,252"></path>
+            <path d="M242,252 L258,252"></path>
+          </g>
 
           <!-- St Paul's -->
           <g stroke="#1d1a16" stroke-opacity="0.55" stroke-width="0.9" fill="none">
@@ -143,8 +192,17 @@
           </g>
           <text x="654" y="262" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55" style="paint-order:stroke;stroke:#ece7d8;stroke-width:5">St Paul&rsquo;s</text>
 
-          <!-- journey -->
-          <path d="M216,147 C 340,212 530,218 704,243" fill="none" stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1.4" stroke-dasharray="1 7" stroke-linecap="round"></path>
+          <!-- the cab route -->
+          <path d="M216,147 C 280,133 310,122 350,122 C 450,124 560,180 704,242" fill="none" stroke="#1d1a16" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="1 7" stroke-linecap="round"></path>
+          <g transform="translate(443,125)">
+            <path d="M2,14 Q0,14 0,11 L0,8 Q0,5 4,5 L9,5 L12,1.5 Q12.5,0.5 14,0.5 L25,0.5 Q29,0.5 30.5,3.5 L31.5,5 Q34,5.5 34,8 L34,11 Q34,14 32,14 Z" fill="#1d1a16"></path>
+            <path d="M14.5,2 L24,2 L24,5 L13,5 Z M25.5,2.4 L28.5,4.6 L25.5,4.6 Z" fill="#ece7d8"></path>
+            <circle cx="8.5" cy="14" r="3.2" fill="#1d1a16"></circle>
+            <circle cx="8.5" cy="14" r="1.2" fill="#ece7d8"></circle>
+            <circle cx="26.5" cy="14" r="3.2" fill="#1d1a16"></circle>
+            <circle cx="26.5" cy="14" r="1.2" fill="#ece7d8"></circle>
+          </g>
+          <text x="460" y="112" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="14.5" fill="#1d1a16" opacity="0.7" style="paint-order:stroke;stroke:#ece7d8;stroke-width:5">black cabs, provided</text>
 
           <!-- venue markers -->
           <g>
@@ -161,18 +219,19 @@
           </g>
 
           <!-- compass -->
-          <g transform="translate(858,42)">
+          <g transform="translate(858,52)">
             <path d="M0,-14 L4,0 L0,14 L-4,0 Z" fill="#1d1a16" opacity="0.55"></path>
-            <text x="0" y="-22" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="13" fill="#1d1a16" opacity="0.6">N</text>
+            <path d="M0,-18 L0,18 M-11,0 L11,0" stroke="#1d1a16" stroke-opacity="0.3" stroke-width="0.8"></path>
+            <text x="0" y="-24" text-anchor="middle" font-family="'Cormorant SC', serif" font-size="13" fill="#1d1a16" opacity="0.6">N</text>
           </g>
 
           <!-- scale -->
           <g stroke="#1d1a16" stroke-opacity="0.45" stroke-width="1">
-            <path d="M32,420 L190,420 M32,415 L32,425 M190,415 L190,425"></path>
+            <path d="M32,420 L190,420 M32,415 L32,425 M190,415 L190,425 M111,417 L111,423"></path>
           </g>
           <text x="111" y="440" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13.5" fill="#1d1a16" opacity="0.55">one mile</text>
         </svg>
-        <figcaption>Marylebone to the City &mdash; some three miles across town</figcaption>
+        <figcaption>Marylebone to the City &mdash; three miles east, by black cab, on us</figcaption>
       </figure>
       <div class="venues">
         <div class="venue">
