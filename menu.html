@@ -158,6 +158,20 @@
 
   </form>
 
+  <div id="sent-state" class="sent-state" hidden>
+    <div class="orn"><span></span></div>
+    <p class="eyebrow" style="margin:24px 0 0">Received</p>
+    <p class="sent-line" id="sent-line">Thank you &mdash; your choices are with the kitchen.</p>
+    <div class="sent-summary">
+      <p><span class="sent-course">To begin</span><span id="sent-starter"></span></p>
+      <p><span class="sent-course">To follow</span><span id="sent-main"></span></p>
+      <p><span class="sent-course">To finish</span><span id="sent-dessert"></span></p>
+      <p id="sent-dietary-row" hidden><span class="sent-course">Dietary</span><span id="sent-dietary"></span></p>
+    </div>
+    <p class="sent-note">There is nothing more to do &mdash; kindly do not send twice.<br>
+    Should anything change, you may <button type="button" class="sent-amend" id="amend-link">amend your choices</button>.</p>
+  </div>
+
 </main>
 
 <footer class="footer">
@@ -171,41 +185,106 @@
     var form = document.getElementById('menu-form');
     var btn = document.getElementById('send-btn');
     var msg = document.getElementById('form-msg');
-    var sent = false;
+    var sentBox = document.getElementById('sent-state');
+    var KEY = 'ca-menu-sent';
+    var sending = false;
 
+    function radios(name) {
+      return Array.prototype.slice.call(form.querySelectorAll('input[name="' + name + '"]'));
+    }
     function complete() {
       return ['starter', 'main', 'dessert'].every(function (c) {
-        return form.querySelector('input[name="' + c + '"]:checked');
+        return radios(c).some(function (r) { return r.checked; });
       }) && form.name.value.trim() !== '';
     }
     function refresh() {
-      if (sent) return;
       btn.classList.toggle('btn-waiting', !complete());
     }
     form.addEventListener('change', refresh);
     form.addEventListener('input', refresh);
     refresh();
 
+    function showReceipt(d, fresh) {
+      form.hidden = true;
+      sentBox.hidden = false;
+      document.getElementById('sent-line').textContent = d.name
+        ? 'Thank you, ' + d.name + ' \u2014 your choices are with the kitchen.'
+        : 'Thank you \u2014 your choices are with the kitchen.';
+      document.getElementById('sent-starter').textContent = d.starter || '';
+      document.getElementById('sent-main').textContent = d.main || '';
+      document.getElementById('sent-dessert').textContent = d.dessert || '';
+      var dr = document.getElementById('sent-dietary-row');
+      if (d.dietary && d.dietary !== 'None') {
+        dr.hidden = false;
+        document.getElementById('sent-dietary').textContent = d.dietary;
+      } else {
+        dr.hidden = true;
+      }
+      if (fresh && sentBox.scrollIntoView) {
+        sentBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function readForm() {
+      function picked(name) {
+        var r = radios(name).filter(function (x) { return x.checked; })[0];
+        return r ? r.value : '';
+      }
+      return {
+        name: form.name.value.trim(),
+        starter: picked('starter'),
+        main: picked('main'),
+        dessert: picked('dessert'),
+        dietary: form.dietary.value.trim()
+      };
+    }
+
+    try {
+      var prev = JSON.parse(localStorage.getItem(KEY));
+      if (prev && prev.starter) showReceipt(prev, false);
+    } catch (e) {}
+
+    document.getElementById('amend-link').addEventListener('click', function () {
+      var d = {};
+      try { d = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+      ['starter', 'main', 'dessert'].forEach(function (c) {
+        radios(c).forEach(function (r) { r.checked = (r.value === d[c]); });
+      });
+      if (d.name) form.name.value = d.name;
+      if (d.dietary) form.dietary.value = d.dietary;
+      sentBox.hidden = true;
+      form.hidden = false;
+      btn.disabled = false;
+      btn.textContent = 'Send my choices';
+      msg.textContent = '';
+      refresh();
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (sent) return;
+      if (sending) return;
+      sending = true;
       btn.disabled = true;
       btn.classList.remove('btn-waiting');
-      btn.textContent = 'Sending…';
+      btn.textContent = 'Sending\u2026';
       msg.textContent = '';
+      var data = readForm();
       fetch(form.action, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: new FormData(form)
       }).then(function (res) {
         if (!res.ok) throw new Error('submit failed');
-        sent = true;
-        btn.textContent = 'Choices received';
-        msg.textContent = 'Thank you — your choices have been received.';
+        sending = false;
+        try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+        showReceipt(data, true);
       }).catch(function () {
+        sending = false;
         btn.textContent = 'Send my choices';
         btn.disabled = false;
-        msg.textContent = 'Something went wrong — please try again, or send your choices to Chelsey or Alex directly.';
+        msg.textContent = 'Something went wrong \u2014 please try again, or send your choices to Chelsey or Alex directly.';
+        refresh();
       });
     });
   })();

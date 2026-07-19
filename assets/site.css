@@ -315,6 +315,33 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
 .menu-actions { margin-top: 34px; text-align: center; }
 .menu-actions .btn { width: 100%; max-width: 360px; }
 .form-msg { margin-top: 14px; font-style: italic; font-size: 15.5px; color: var(--muted); }
+.sent-state {
+  border: 1px solid var(--hairline-strong);
+  outline: 1px solid var(--hairline); outline-offset: 5px;
+  background: var(--paper);
+  text-align: center;
+  padding: clamp(30px, 6vw, 46px) clamp(20px, 5vw, 44px) clamp(28px, 5vw, 40px);
+  margin-top: clamp(28px, 5vw, 40px);
+}
+.sent-state .orn { width: 120px; }
+.sent-line { font-style: italic; font-size: 17.5px; margin: 18px 0 0; }
+.sent-summary { margin-top: 24px; display: flex; flex-direction: column; gap: 9px; }
+.sent-summary p { margin: 0; }
+.sent-course {
+  display: block;
+  font-family: var(--sans); font-size: 9.5px; letter-spacing: .34em; text-indent: .34em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+}
+.sent-summary p > span:last-child {
+  font-family: var(--sc); font-size: 17px; letter-spacing: .1em;
+}
+.sent-note { font-style: italic; font-size: 14.5px; color: var(--muted); line-height: 1.7; margin: 26px 0 0; }
+.sent-amend {
+  appearance: none; background: none; border: none; padding: 0 0 1px;
+  font: inherit; color: var(--ink); cursor: pointer;
+  border-bottom: 1px solid var(--hairline);
+}
+.sent-amend:hover { color: var(--muted); }
 .menu-deadline {
   margin-top: 20px; text-align: center;
   font-family: var(--sans); font-size: 9.5px; letter-spacing: .34em; text-indent: .34em;
