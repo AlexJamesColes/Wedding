@@ -213,6 +213,8 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   display: inline-block; cursor: pointer; list-style: none;
 }
 .dress-fold summary::-webkit-details-marker { display: none; }
+.fold-chev { margin-left: 8px; vertical-align: 1px; transition: transform .25s ease; }
+.dress-fold[open] .fold-chev { transform: rotate(180deg); }
 .dress-fold[open] summary { color: var(--muted); }
 .dress-fold[open] .dress-photos { animation: dressfade .5s ease; }
 @keyframes dressfade { from { opacity: 0; } to { opacity: 1; } }
