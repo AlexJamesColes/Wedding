@@ -150,7 +150,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   color: var(--muted); margin-top: 10px;
 }
 .hero-count {
-  margin-top: clamp(26px, 5vh, 44px);
+  margin-top: clamp(32px, 6vh, 54px);
   font-family: var(--sans); font-size: 10.5px; letter-spacing: .34em; text-indent: .34em;
   text-transform: uppercase; color: var(--muted);
   min-height: 1em;
