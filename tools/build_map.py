@@ -251,7 +251,6 @@ clearing(216, 122, "Old Marylebone Town Hall", SC_D, pad_w=14, pad_h=9)
 clearing(216, 176, "the ceremony", IT, pad_w=12, pad_h=8)
 clearing(714, 221, "The Ned", SC_D, pad_w=16, pad_h=10)
 clearing(714, 275, "the reception", IT, pad_w=12, pad_h=8)
-clearing(cab_x + 5, cab_y - 27, "carriages provided", IT, pad_w=14, pad_h=8)
 clearing(654, 262, "St Paul's", IT, pad_w=10, pad_h=6)
 clearing(359, 386, "Buckingham Palace", IT, pad_w=18, pad_h=7)
 clearing(321, 267, "Claridge's", IT, pad_w=12, pad_h=6)
@@ -384,7 +383,6 @@ overlay = f'''
             </g>
           </g>
           {cab_uses}
-          <text x="{cab_x + 5}" y="{cab_y - 22}" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="14.5" fill="#1d1a16" opacity="0.7">carriages provided</text>
           <g>
             <ellipse cx="216" cy="147" rx="8.5" ry="9.5" fill="#ece7d8" stroke="#1d1a16" stroke-width="0.9" stroke-opacity="0.65"></ellipse>
             <rect x="212.5" y="143.5" width="7" height="7" fill="#1d1a16" transform="rotate(45 216 147)"></rect>
