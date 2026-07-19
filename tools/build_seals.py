@@ -147,7 +147,7 @@ def emboss_seal(S=480, date_band=False):
 
 hero_seal(800).resize((208, 237), Image.LANCZOS).save(ROOT / "assets/img/seal.png", optimize=True)
 emboss_seal(480).resize((120, 120), Image.LANCZOS).save(ROOT / "assets/img/seal-emboss.png", optimize=True)
-emboss_seal(880, date_band=True).resize((220, 251), Image.LANCZOS).save(ROOT / "assets/img/seal-emboss-lg.png", optimize=True)
+emboss_seal(880).resize((220, 220), Image.LANCZOS).save(ROOT / "assets/img/seal-emboss-lg.png", optimize=True)
 amp = ampersand()
 amp.resize((round(amp.width * 76 / amp.height), 76), Image.LANCZOS).save(
     ROOT / "assets/img/amp.png", optimize=True)

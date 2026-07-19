@@ -41,7 +41,7 @@
 
   <!-- ─── Hero ─────────────────────────────────────────────── -->
   <section class="hero">
-    <img src="/assets/img/seal-emboss-lg.png" width="110" height="126" alt="C and A monogram seal, blind embossed" style="display:block">
+    <img src="/assets/img/seal-emboss-lg.png" width="110" height="110" alt="C and A monogram seal, blind embossed" style="display:block">
     <div style="height:26px"></div>
     <p class="eyebrow" style="margin:0">The wedding of</p>
     <div style="height:18px"></div>
@@ -55,6 +55,7 @@
     <p class="hero-place" style="margin:10px 0 0">2026 · London</p>
     <p class="hero-count" id="countdown"></p>
     <p class="day-sheet it" id="daysheet" hidden></p>
+    <p id="diary-line" style="margin:18px 0 0"><a class="venue-map" href="/assets/chelsey-and-alex.ics" download>Add to your diary</a></p>
 
     <figure class="hero-art" style="margin-bottom:0">
       <img src="/assets/img/town-hall.jpg" width="1229" height="555" alt="Old Marylebone Town Hall, pen and wash illustration" fetchpriority="high">
@@ -86,9 +87,7 @@
           <p class="stop-note" style="margin:6px 0 0">black cabs will carry you east,<br>champagne on the terrace, dinner thereafter</p>
         </div>
       </div>
-      <div style="height:clamp(28px,4vw,40px)"></div>
-      <p style="text-align:center;margin:0"><a class="venue-map" href="/assets/chelsey-and-alex.ics" download>Add to your diary</a></p>
-      <div style="height:clamp(28px,5vw,44px)"></div>
+      <div style="height:clamp(40px,7vw,60px)"></div>
       <div style="text-align:center">
         <h3 class="eyebrow" style="font-size:11px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">Dress</h3>
         <p class="it" style="font-size:19px;margin:14px 0 0">black tie</p>
@@ -511,6 +510,8 @@
     else if (days === 1) { el.textContent = 'tomorrow'; }
     else if (days === 0) {
       el.textContent = 'today';
+      var dl0 = document.getElementById('diary-line');
+      if (dl0) dl0.hidden = true;
       var mins = now.getHours() * 60 + now.getMinutes();
       var line, stop;
       if (mins < 17 * 60) { line = 'guests arrive by five o\u2019clock, seated by a quarter past'; stop = 0; }
@@ -522,6 +523,8 @@
       if (stops[stop]) stops[stop].classList.add('stop-now');
     } else {
       el.textContent = 'married, 14 August 2026';
+      var dl1 = document.getElementById('diary-line');
+      if (dl1) dl1.hidden = true;
       var note = document.getElementById('menu-note');
       var cta = document.getElementById('menu-cta');
       var fl = document.getElementById('footer-line');
