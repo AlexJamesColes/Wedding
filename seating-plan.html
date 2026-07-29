@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chelsey &amp; Alex &middot; Seating plan</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ece7d8">
+<link rel="icon" href="/favicon.ico?v=3" sizes="48x48">
+<link rel="stylesheet" href="/assets/site.css?v=16">
+<style>
+  .plan-wrap { max-width: 1060px; margin: 0 auto; padding: calc(var(--nav-h) + 30px) 18px 120px; }
+  .plan-title { font-family: var(--display); font-size: clamp(26px, 5vw, 38px); letter-spacing: .1em;
+    text-transform: uppercase; text-align: center; margin: 0; }
+  .plan-sub { text-align: center; font-style: italic; color: var(--muted); font-size: 15.5px; margin: 10px 0 0; }
+
+  .tray {
+    margin: 30px auto 0; padding: 14px;
+    border: 1px solid var(--hairline); min-height: 54px;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  }
+  .tray-label {
+    text-align: center; margin: 26px 0 0;
+    font-family: var(--sans); font-size: 10px; letter-spacing: .34em; text-indent: .34em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  .chip {
+    font-family: var(--sc); font-size: 12.5px; letter-spacing: .06em;
+    border: 1px solid var(--hairline-strong); background: var(--paper);
+    padding: 7px 11px; cursor: grab; user-select: -webkit-user-select; user-select: none;
+    white-space: nowrap; line-height: 1;
+  }
+  .chip .diet-mark { color: var(--muted); margin-left: 4px; }
+  .chip.selected { background: var(--ink); color: var(--paper); }
+  .chip.dragging { opacity: .4; }
+
+  .room {
+    margin: 36px auto 0; display: flex; gap: clamp(18px, 4vw, 60px); justify-content: center; flex-wrap: wrap;
+  }
+  .room-ends { display: flex; justify-content: space-between; max-width: 860px; margin: 26px auto 0; }
+  .end-label {
+    font-family: var(--sans); font-size: 9.5px; letter-spacing: .34em; text-indent: .34em;
+    text-transform: uppercase; color: var(--muted); text-align: center; width: 100%;
+  }
+
+  .table-block { text-align: center; }
+  .table-name {
+    font-family: var(--sans); font-size: 10.5px; letter-spacing: .4em; text-indent: .4em;
+    text-transform: uppercase; margin: 0 0 14px;
+  }
+  .table-grid {
+    display: grid; grid-template-columns: 150px 64px 150px; grid-auto-rows: 42px; gap: 5px 8px;
+    align-items: center; justify-content: center;
+  }
+  .table-bar {
+    grid-column: 2; grid-row: 2 / span 7; align-self: stretch;
+    border: 1px solid var(--hairline-strong); outline: 1px solid var(--hairline); outline-offset: 4px;
+    background: var(--paper-deep);
+  }
+  .seat {
+    height: 38px; display: flex; align-items: center; justify-content: center;
+    border: 1px dashed var(--hairline); font-family: var(--sc); font-size: 11px; color: var(--muted);
+    overflow: hidden;
+  }
+  .seat.head { grid-column: 2; }
+  .seat.occupied { border-style: solid; border-color: var(--hairline-strong); color: var(--ink); }
+  .seat .chip { border: none; padding: 6px 6px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+  .seat.drop-hint { border-color: var(--ink); border-style: solid; }
+
+  .tally {
+    margin: 18px auto 0; max-width: 380px;
+    font-style: italic; font-size: 13px; color: var(--muted); line-height: 1.7;
+  }
+
+  .panel {
+    position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%);
+    width: min(430px, calc(100vw - 32px));
+    background: var(--paper); border: 1px solid var(--hairline-strong);
+    outline: 1px solid var(--hairline); outline-offset: 4px;
+    padding: 18px 22px 16px; text-align: center; z-index: 50;
+  }
+  .panel[hidden] { display: none; }
+  .panel-name { font-family: var(--sc); font-size: 17px; letter-spacing: .12em; margin: 0; }
+  .panel-courses { margin: 10px 0 0; font-size: 14.5px; line-height: 1.65; }
+  .panel-courses .c-label {
+    font-family: var(--sans); font-size: 8.5px; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--muted); margin-right: 7px;
+  }
+  .panel-diet { font-style: italic; font-size: 13.5px; color: var(--muted); margin: 8px 0 0; }
+  .panel-hint { font-style: italic; font-size: 12.5px; color: var(--muted); margin: 12px 0 0; }
+  .panel-actions { margin: 10px 0 0; display: flex; gap: 10px; justify-content: center; }
+  .panel-actions button {
+    appearance: none; background: none; border: none; padding: 0 0 1px;
+    font-family: var(--sans); font-size: 9.5px; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--ink); cursor: pointer; border-bottom: 1px solid var(--hairline);
+  }
+
+  .plan-bar { margin: 40px auto 0; text-align: center; }
+  .plan-bar button {
+    appearance: none; border: 1px solid var(--ink); background: var(--ink); color: var(--paper);
+    padding: 12px 22px; font-family: var(--sans); font-size: 10.5px; letter-spacing: .3em; text-indent: .3em;
+    text-transform: uppercase; cursor: pointer; margin: 0 6px;
+  }
+  .plan-bar button.ghost { background: transparent; color: var(--ink); }
+  .plan-msg { margin: 12px 0 0; font-style: italic; font-size: 13.5px; color: var(--muted); min-height: 1.2em; }
+
+  @media print {
+    .tray, .tray-label, .panel, .plan-bar, .nav, body::after, .plan-sub { display: none !important; }
+    .plan-wrap { padding-top: 20px; }
+    .room { gap: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="nav-brand" href="/" aria-label="Chelsey and Alex, home">
+    <span>C</span><img src="/assets/img/amp.png" width="18" height="19" alt=""><span>A</span>
+  </a>
+  <nav class="nav-links" aria-label="Site">
+    <a href="/">The Invitation</a>
+  </nav>
+</header>
+
+<main class="plan-wrap">
+  <p class="eyebrow" style="text-align:center;margin:0">The Saloon at The Ned</p>
+  <h1 class="plan-title" style="margin-top:12px">Seating plan</h1>
+  <p class="plan-sub">Drag a guest to a seat, or tap a guest and then a seat.<br>
+  Tap anyone to see their choices. Dishes tally beneath each table.</p>
+
+  <p class="tray-label">Awaiting a seat</p>
+  <div class="tray" id="tray" aria-label="Unseated guests"></div>
+
+  <div class="room-ends"><p class="end-label">The fireplace</p></div>
+  <div class="room" id="room"></div>
+  <div class="room-ends"><p class="end-label">The door</p></div>
+
+  <div class="plan-bar">
+    <button id="share">Copy link to this plan</button>
+    <button id="clear" class="ghost">Clear all seats</button>
+    <p class="plan-msg" id="msg"></p>
+  </div>
+</main>
+
+<div class="panel" id="panel" hidden>
+  <p class="panel-name" id="p-name"></p>
+  <p class="panel-courses">
+    <span><span class="c-label">To begin</span><span id="p-starter"></span></span><br>
+    <span><span class="c-label">To follow</span><span id="p-main"></span></span><br>
+    <span><span class="c-label">To finish</span><span id="p-dessert"></span></span>
+  </p>
+  <p class="panel-diet" id="p-diet" hidden></p>
+  <p class="panel-hint" id="p-hint"></p>
+  <div class="panel-actions">
+    <button id="p-unseat" hidden>Return to list</button>
+    <button id="p-close">Close</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var GUESTS = [
+    { n: "Chelsey", s: "San Daniele ham", m: "Beef fillet & ox cheek", d: "Strawberries & cream", diet: "No" },
+    { n: "Alex", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Strawberries & cream", diet: "" },
+    { n: "Jane Albertyn", s: "Pugliese burrata", m: "Sutton Hoo chicken breast", d: "Chocolate & lemongrass mousse", diet: "" },
+    { n: "Emily Virgo", s: "Pugliese burrata", m: "Sutton Hoo chicken breast", d: "Chocolate & lemongrass mousse", diet: "No thanks" },
+    { n: "Pascal McPetrie", s: "Beef carpaccio", m: "Soft herb risotto", d: "Chocolate & lemongrass mousse", diet: "" },
+    { n: "Monique Albertyn", s: "Pugliese burrata", m: "Sutton Hoo chicken breast", d: "Chocolate & lemongrass mousse", diet: "Is it possible to leave off the raspberry on my dessert? Thank you xxx" },
+    { n: "Max Taylor", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" },
+    { n: "Jake Virgo", s: "Beef carpaccio", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
+    { n: "The Father", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "Skinless chicken & brussel sprouts" },
+    { n: "Alara Guven", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "Nut allergy" },
+    { n: "Thomas Bentley", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Passion fruit délice", diet: "N/A" },
+    { n: "Ellie Dickens", s: "Beef carpaccio", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
+    { n: "Ross Albertyn", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" },
+    { n: "Georgie Albertyn", s: "Pugliese burrata", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "Pregnant" },
+    { n: "Sarah Cawood", s: "Beef carpaccio", m: "Soft herb risotto", d: "Chocolate & lemongrass mousse", diet: "" },
+    { n: "Jeremy Coles", s: "San Daniele ham", m: "Beef fillet & ox cheek", d: "Strawberries & cream", diet: "None" },
+    { n: "Karen Coles", s: "San Daniele ham", m: "Beef fillet & ox cheek", d: "Passion fruit délice", diet: "" },
+    { n: "Scott Albertyn", s: "Pugliese burrata", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" },
+    { n: "Joel Connelly", s: "San Daniele ham", m: "Beef fillet & ox cheek", d: "Strawberries & cream", diet: "" },
+    { n: "Alicia Connelly-Lopez", s: "San Daniele ham", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "N/A" },
+    { n: "Ben Steffens", s: "Beef carpaccio", m: "Sutton Hoo chicken breast", d: "Chocolate & lemongrass mousse", diet: "Pollen Allergies" },
+    { n: "Chiara Iorizzo", s: "San Daniele ham", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
+    { n: "Sonam", s: "San Daniele ham", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
+    { n: "Janine Weixler", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Strawberries & cream", diet: "" },
+    { n: "James Steffens", s: "Pugliese burrata", m: "Beef fillet & ox cheek", d: "Passion fruit délice", diet: "Normal" },
+    { n: "Omkar Harmalkar", s: "Pugliese burrata", m: "Sutton Hoo chicken breast", d: "Passion fruit délice", diet: "" },
+    { n: "Sam Houghton", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Passion fruit délice", diet: "" },
+    { n: "Brittany Morel", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" },
+    { n: "Chris McPetrie", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" }
+  ];
+  var SEATS = 32;
+  var KEY = "ca-seating";
+  var TRIVIAL_DIET = { "": 1, "no": 1, "none": 1, "n/a": 1, "normal": 1, "no thanks": 1 };
+  var seats = new Array(SEATS).fill(null);
+  var selected = null; // guest index awaiting placement
+
+  // ── state ──
+  function encode() {
+    return seats.map(function (g) { return g === null ? "-" : g.toString(36); }).join("");
+  }
+  function decode(str) {
+    if (!str || str.length !== SEATS) return null;
+    var out = new Array(SEATS).fill(null), used = {};
+    for (var i = 0; i < SEATS; i++) {
+      var ch = str[i];
+      if (ch === "-") continue;
+      var g = parseInt(ch, 36);
+      if (isNaN(g) || g >= GUESTS.length || used[g]) return null;
+      used[g] = 1; out[i] = g;
+    }
+    return out;
+  }
+  function persist() {
+    var code = encode();
+    try { localStorage.setItem(KEY, code); } catch (e) {}
+    history.replaceState(null, "", "#s=" + code);
+  }
+  function restore() {
+    var m = location.hash.match(/^#s=([0-9a-z-]+)$/);
+    var fromHash = m && decode(m[1]);
+    if (fromHash) { seats = fromHash; return; }
+    try {
+      var stored = decode(localStorage.getItem(KEY) || "");
+      if (stored) seats = stored;
+    } catch (e) {}
+  }
+
+  // ── rendering ──
+  var tray = document.getElementById("tray");
+  var room = document.getElementById("room");
+
+  function hasRealDiet(g) {
+    return !TRIVIAL_DIET[(GUESTS[g].diet || "").trim().toLowerCase()];
+  }
+  function chipFor(g) {
+    var el = document.createElement("span");
+    el.className = "chip";
+    el.draggable = true;
+    el.dataset.guest = g;
+    el.textContent = GUESTS[g].n;
+    if (hasRealDiet(g)) {
+      var mark = document.createElement("span");
+      mark.className = "diet-mark";
+      mark.textContent = "°";
+      mark.title = "dietary note";
+      el.appendChild(mark);
+    }
+    if (selected === g) el.classList.add("selected");
+    return el;
+  }
+
+  function render() {
+    tray.innerHTML = "";
+    var seated = {};
+    seats.forEach(function (g) { if (g !== null) seated[g] = 1; });
+    var unseated = [];
+    for (var g = 0; g < GUESTS.length; g++) if (!seated[g]) unseated.push(g);
+    unseated.sort(function (a, b) { return GUESTS[a].n.localeCompare(GUESTS[b].n); });
+    unseated.forEach(function (g) { tray.appendChild(chipFor(g)); });
+    if (!unseated.length) {
+      var done = document.createElement("span");
+      done.style.cssText = "font-style:italic;color:var(--muted);font-size:13.5px";
+      done.textContent = "everyone is seated";
+      tray.appendChild(done);
+    }
+
+    room.innerHTML = "";
+    for (var t = 0; t < 2; t++) {
+      var block = document.createElement("div");
+      block.className = "table-block";
+      var name = document.createElement("p");
+      name.className = "table-name";
+      name.textContent = t === 0 ? "Table one" : "Table two";
+      block.appendChild(name);
+      var grid = document.createElement("div");
+      grid.className = "table-grid";
+      var bar = document.createElement("div");
+      bar.className = "table-bar";
+      grid.appendChild(bar);
+      // seat order within a table: 0 head, 1-7 left, 8-14 right, 15 foot
+      for (var s = 0; s < 16; s++) {
+        var idx = t * 16 + s;
+        var seat = document.createElement("div");
+        seat.className = "seat";
+        seat.dataset.seat = idx;
+        if (s === 0) { seat.classList.add("head"); seat.style.gridRow = 1; }
+        else if (s <= 7) { seat.style.gridColumn = 1; seat.style.gridRow = s + 1; }
+        else if (s <= 14) { seat.style.gridColumn = 3; seat.style.gridRow = s - 6; }
+        else { seat.classList.add("head"); seat.style.gridRow = 9; }
+        var g2 = seats[idx];
+        if (g2 !== null) {
+          seat.classList.add("occupied");
+          seat.appendChild(chipFor(g2));
+        } else {
+          seat.textContent = (s + 1);
+        }
+        grid.appendChild(seat);
+      }
+      block.appendChild(grid);
+      var tally = document.createElement("p");
+      tally.className = "tally";
+      tally.innerHTML = tallyFor(t);
+      block.appendChild(tally);
+      room.appendChild(block);
+    }
+    updatePanel();
+  }
+
+  var SHORT = {
+    "Pugliese burrata": "burrata", "San Daniele ham": "ham", "Beef carpaccio": "carpaccio",
+    "Soft herb risotto": "risotto", "Sutton Hoo chicken breast": "chicken", "Beef fillet & ox cheek": "beef",
+    "Passion fruit délice": "délice", "Strawberries & cream": "strawberries",
+    "Chocolate & lemongrass mousse": "chocolate"
+  };
+  function tallyFor(t) {
+    var counts = [{}, {}, {}], any = false;
+    for (var s = 0; s < 16; s++) {
+      var g = seats[t * 16 + s];
+      if (g === null) continue;
+      any = true;
+      [GUESTS[g].s, GUESTS[g].m, GUESTS[g].d].forEach(function (dish, ci) {
+        var k = SHORT[dish] || dish;
+        counts[ci][k] = (counts[ci][k] || 0) + 1;
+      });
+    }
+    if (!any) return "&nbsp;";
+    return counts.map(function (c) {
+      return Object.keys(c).map(function (k) { return c[k] + " " + k; }).join(" · ");
+    }).join("<br>");
+  }
+
+  // ── placement ──
+  function seatOf(g) {
+    for (var i = 0; i < SEATS; i++) if (seats[i] === g) return i;
+    return -1;
+  }
+  function place(g, seatIdx) {
+    var from = seatOf(g);
+    var occupant = seats[seatIdx];
+    if (from >= 0) seats[from] = (occupant !== null && occupant !== g) ? occupant : null;
+    seats[seatIdx] = g;
+    persist(); render();
+  }
+  function unseat(g) {
+    var from = seatOf(g);
+    if (from >= 0) { seats[from] = null; persist(); render(); }
+  }
+
+  // ── selection panel ──
+  var panel = document.getElementById("panel");
+  function updatePanel() {
+    if (selected === null) { panel.hidden = true; return; }
+    var g = GUESTS[selected];
+    panel.hidden = false;
+    document.getElementById("p-name").textContent = g.n;
+    document.getElementById("p-starter").textContent = g.s;
+    document.getElementById("p-main").textContent = g.m;
+    document.getElementById("p-dessert").textContent = g.d;
+    var diet = document.getElementById("p-diet");
+    if (hasRealDiet(selected)) { diet.hidden = false; diet.textContent = g.diet; }
+    else { diet.hidden = true; }
+    var isSeated = seatOf(selected) >= 0;
+    document.getElementById("p-hint").textContent = isSeated
+      ? "Tap another seat to move them, or a guest to swap."
+      : "Tap a seat to place them.";
+    document.getElementById("p-unseat").hidden = !isSeated;
+  }
+  document.getElementById("p-close").addEventListener("click", function () {
+    selected = null; render();
+  });
+  document.getElementById("p-unseat").addEventListener("click", function () {
+    if (selected !== null) { var g = selected; selected = null; unseat(g); }
+  });
+
+  // ── pointer interactions (tap and drag share handlers) ──
+  document.addEventListener("click", function (e) {
+    var chip = e.target.closest(".chip");
+    var seat = e.target.closest(".seat");
+    if (chip) {
+      var g = parseInt(chip.dataset.guest, 10);
+      if (selected !== null && selected !== g && seatOf(g) >= 0) {
+        place(selected, seatOf(g)); selected = null; render(); return;
+      }
+      selected = (selected === g) ? null : g;
+      render(); return;
+    }
+    if (seat && selected !== null) {
+      place(selected, parseInt(seat.dataset.seat, 10));
+      selected = null; render(); return;
+    }
+  });
+
+  var draggedGuest = null;
+  document.addEventListener("dragstart", function (e) {
+    var chip = e.target.closest(".chip");
+    if (!chip) return;
+    draggedGuest = parseInt(chip.dataset.guest, 10);
+    chip.classList.add("dragging");
+    e.dataTransfer.setData("text/plain", String(draggedGuest));
+    e.dataTransfer.effectAllowed = "move";
+  });
+  document.addEventListener("dragend", function () {
+    draggedGuest = null;
+    document.querySelectorAll(".dragging, .drop-hint").forEach(function (el) {
+      el.classList.remove("dragging", "drop-hint");
+    });
+  });
+  document.addEventListener("dragover", function (e) {
+    if (draggedGuest === null) return;
+    var seat = e.target.closest(".seat");
+    var overTray = e.target.closest(".tray");
+    if (seat || overTray) e.preventDefault();
+    document.querySelectorAll(".drop-hint").forEach(function (el) { el.classList.remove("drop-hint"); });
+    if (seat) seat.classList.add("drop-hint");
+  });
+  document.addEventListener("drop", function (e) {
+    if (draggedGuest === null) return;
+    var seat = e.target.closest(".seat");
+    var overTray = e.target.closest(".tray");
+    if (seat) { e.preventDefault(); selected = null; place(draggedGuest, parseInt(seat.dataset.seat, 10)); }
+    else if (overTray) { e.preventDefault(); selected = null; unseat(draggedGuest); }
+    draggedGuest = null;
+  });
+
+  // ── toolbar ──
+  var msg = document.getElementById("msg");
+  document.getElementById("share").addEventListener("click", function () {
+    persist();
+    var link = location.origin + "/seating-plan#s=" + encode();
+    var done = function () { msg.textContent = "Link copied. Send it to each other; it opens this exact plan."; };
+    if (navigator.clipboard) navigator.clipboard.writeText(link).then(done, function () { msg.textContent = link; });
+    else msg.textContent = link;
+  });
+  document.getElementById("clear").addEventListener("click", function () {
+    if (!confirm("Clear every seat?")) return;
+    seats = new Array(SEATS).fill(null);
+    selected = null; persist(); render();
+    msg.textContent = "";
+  });
+
+  restore();
+  render();
+})();
+</script>
+
+</body>
+</html>
