@@ -14,6 +14,18 @@
     text-transform: uppercase; text-align: center; margin: 0; }
   .plan-sub { text-align: center; font-style: italic; color: var(--muted); font-size: 15.5px; margin: 10px 0 0; }
 
+  .count-tabs { margin: 28px 0 0; display: flex; gap: 7px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .count-label {
+    font-family: var(--sans); font-size: 9.5px; letter-spacing: .3em; text-indent: .3em;
+    text-transform: uppercase; color: var(--muted); margin: 0 6px;
+  }
+  .count-tab {
+    appearance: none; background: none; border: 1px solid var(--hairline);
+    font-family: var(--sc); font-size: 12.5px; letter-spacing: .06em;
+    padding: 6px 11px; color: var(--muted); cursor: pointer;
+  }
+  .count-tab.active { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+
   .tray {
     margin: 30px auto 0; padding: 14px;
     border: 1px solid var(--hairline); min-height: 54px;
@@ -34,6 +46,8 @@
   .chip .diet-mark { color: var(--muted); margin-left: 4px; }
   .chip.selected { background: var(--ink); color: var(--paper); }
   .chip.dragging { opacity: .4; }
+  .chip.ghost { border-style: dashed; color: var(--muted); }
+  .chip.ghost.selected { background: var(--ink); color: var(--paper); border-style: solid; }
 
   .room {
     margin: 36px auto 0; display: flex; gap: clamp(18px, 4vw, 60px); justify-content: center; flex-wrap: wrap;
@@ -105,7 +119,7 @@
   .plan-msg { margin: 12px 0 0; font-style: italic; font-size: 13.5px; color: var(--muted); min-height: 1.2em; }
 
   @media print {
-    .tray, .tray-label, .panel, .plan-bar, .nav, body::after, .plan-sub { display: none !important; }
+    .tray, .tray-label, .panel, .plan-bar, .nav, body::after, .plan-sub, .count-tabs { display: none !important; }
     .plan-wrap { padding-top: 20px; }
     .room { gap: 40px; }
   }
@@ -128,6 +142,17 @@
   <p class="plan-sub">Drag a guest to a seat, or tap a guest and then a seat.<br>
   Tap anyone to see their choices. Dishes tally beneath each table.</p>
 
+  <div class="count-tabs" aria-label="Number of guests being planned for">
+    <span class="count-label">Planning for</span>
+    <button class="count-tab" data-n="29">29</button>
+    <button class="count-tab" data-n="30">30</button>
+    <button class="count-tab" data-n="31">31</button>
+    <button class="count-tab" data-n="32">32</button>
+    <button class="count-tab" data-n="33">33</button>
+    <button class="count-tab" data-n="34">34</button>
+    <span class="count-label">guests</span>
+  </div>
+
   <p class="tray-label">Awaiting a seat</p>
   <div class="tray" id="tray" aria-label="Unseated guests"></div>
 
@@ -144,7 +169,7 @@
 
 <div class="panel" id="panel" hidden>
   <p class="panel-name" id="p-name"></p>
-  <p class="panel-courses">
+  <p class="panel-courses" id="p-courses">
     <span><span class="c-label">To begin</span><span id="p-starter"></span></span><br>
     <span><span class="c-label">To follow</span><span id="p-main"></span></span><br>
     <span><span class="c-label">To finish</span><span id="p-dessert"></span></span>
@@ -168,7 +193,7 @@
     { n: "Monique Albertyn", s: "Pugliese burrata", m: "Sutton Hoo chicken breast", d: "Chocolate & lemongrass mousse", diet: "Is it possible to leave off the raspberry on my dessert? Thank you xxx" },
     { n: "Max Taylor", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" },
     { n: "Jake Virgo", s: "Beef carpaccio", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
-    { n: "The Father", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "Skinless chicken & brussel sprouts" },
+    { n: "Pierre Albertyn", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "Skinless chicken & brussel sprouts" },
     { n: "Alara Guven", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "Nut allergy" },
     { n: "Thomas Bentley", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Passion fruit délice", diet: "N/A" },
     { n: "Ellie Dickens", s: "Beef carpaccio", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
@@ -182,7 +207,7 @@
     { n: "Alicia Connelly-Lopez", s: "San Daniele ham", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "N/A" },
     { n: "Ben Steffens", s: "Beef carpaccio", m: "Sutton Hoo chicken breast", d: "Chocolate & lemongrass mousse", diet: "Pollen Allergies" },
     { n: "Chiara Lorizzo", s: "San Daniele ham", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
-    { n: "Sonam", s: "San Daniele ham", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
+    { n: "Sonam Mod", s: "San Daniele ham", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "" },
     { n: "Janine Weixler", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Strawberries & cream", diet: "" },
     { n: "James Steffens", s: "Pugliese burrata", m: "Beef fillet & ox cheek", d: "Passion fruit délice", diet: "Normal" },
     { n: "Omkar Harmalkar", s: "Pugliese burrata", m: "Sutton Hoo chicken breast", d: "Passion fruit délice", diet: "" },
@@ -190,41 +215,74 @@
     { n: "Brittany Morel", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" },
     { n: "Chris McPetrie", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" }
   ];
-  var SEATS = 32;
-  var KEY = "ca-seating";
+  var COUNTS = [29, 30, 31, 32, 33, 34];
+  var KEY = "ca-seating2";
   var TRIVIAL_DIET = { "": 1, "no": 1, "none": 1, "n/a": 1, "normal": 1, "no thanks": 1 };
-  var seats = new Array(SEATS).fill(null);
+  var guestCount = COUNTS[0];
+  var plans = {}; // guest count -> encoded seat string, one plan per tab
   var selected = null; // guest index awaiting placement
+
+  // 8 a side up to 32 guests; a ninth chair each side squeezes in 33 or 34
+  function perSide() { return guestCount <= 32 ? 8 : 9; }
+  function perTable() { return perSide() * 2; }
+  function seatTotal() { return perTable() * 2; }
+  function blank() { return new Array(seatTotal()).fill(null); }
+  var seats = blank();
+
+  // guests beyond the received submissions are placeholders awaiting a reply
+  function isPlaceholder(g) { return g >= GUESTS.length; }
+  function guestName(g) { return isPlaceholder(g) ? "Guest " + (g + 1) : GUESTS[g].n; }
 
   // ── state ──
   function encode() {
     return seats.map(function (g) { return g === null ? "-" : g.toString(36); }).join("");
   }
   function decode(str) {
-    if (!str || str.length !== SEATS) return null;
-    var out = new Array(SEATS).fill(null), used = {};
-    for (var i = 0; i < SEATS; i++) {
+    if (!str || str.length !== seatTotal()) return null;
+    var out = blank(), used = {};
+    for (var i = 0; i < str.length; i++) {
       var ch = str[i];
       if (ch === "-") continue;
       var g = parseInt(ch, 36);
-      if (isNaN(g) || g >= GUESTS.length || used[g]) return null;
+      if (isNaN(g) || g >= guestCount || used[g]) return null;
       used[g] = 1; out[i] = g;
     }
     return out;
   }
   function persist() {
-    var code = encode();
-    try { localStorage.setItem(KEY, code); } catch (e) {}
-    history.replaceState(null, "", "#s=" + code);
+    plans[guestCount] = encode();
+    try { localStorage.setItem(KEY, JSON.stringify({ tab: guestCount, plans: plans })); } catch (e) {}
+    history.replaceState(null, "", "#s=" + guestCount + "." + plans[guestCount]);
   }
   function restore() {
-    var m = location.hash.match(/^#s=([0-9a-z-]+)$/);
-    var fromHash = m && decode(m[1]);
-    if (fromHash) { seats = fromHash; return; }
     try {
-      var stored = decode(localStorage.getItem(KEY) || "");
-      if (stored) seats = stored;
+      localStorage.removeItem("ca-seating");
+      var stored = JSON.parse(localStorage.getItem(KEY));
+      if (stored && stored.plans) {
+        plans = stored.plans;
+        if (COUNTS.indexOf(stored.tab) >= 0) guestCount = stored.tab;
+      }
     } catch (e) {}
+    var m = location.hash.match(/^#s=(?:(\d+)\.)?([0-9a-z-]+)$/);
+    if (m) {
+      var n = m[1] ? parseInt(m[1], 10) : COUNTS[0];
+      if (COUNTS.indexOf(n) >= 0) {
+        var keep = guestCount;
+        guestCount = n;
+        var fromHash = decode(m[2]);
+        if (fromHash) { seats = fromHash; plans[n] = m[2]; return; }
+        guestCount = keep;
+      }
+    }
+    seats = decode(plans[guestCount] || "") || blank();
+  }
+  function setCount(n) {
+    if (n === guestCount) return;
+    plans[guestCount] = encode();
+    guestCount = n;
+    seats = decode(plans[n] || "") || blank();
+    selected = null;
+    persist(); render();
   }
 
   // ── rendering ──
@@ -232,6 +290,7 @@
   var room = document.getElementById("room");
 
   function hasRealDiet(g) {
+    if (isPlaceholder(g)) return false;
     return !TRIVIAL_DIET[(GUESTS[g].diet || "").trim().toLowerCase()];
   }
   function chipFor(g) {
@@ -239,7 +298,8 @@
     el.className = "chip";
     el.draggable = true;
     el.dataset.guest = g;
-    el.textContent = GUESTS[g].n;
+    el.textContent = guestName(g);
+    if (isPlaceholder(g)) el.classList.add("ghost");
     if (hasRealDiet(g)) {
       var mark = document.createElement("span");
       mark.className = "diet-mark";
@@ -256,8 +316,8 @@
     var seated = {};
     seats.forEach(function (g) { if (g !== null) seated[g] = 1; });
     var unseated = [];
-    for (var g = 0; g < GUESTS.length; g++) if (!seated[g]) unseated.push(g);
-    unseated.sort(function (a, b) { return GUESTS[a].n.localeCompare(GUESTS[b].n); });
+    for (var g = 0; g < guestCount; g++) if (!seated[g]) unseated.push(g);
+    unseated.sort(function (a, b) { return guestName(a).localeCompare(guestName(b)); });
     unseated.forEach(function (g) { tray.appendChild(chipFor(g)); });
     if (!unseated.length) {
       var done = document.createElement("span");
@@ -278,15 +338,16 @@
       grid.className = "table-grid";
       var bar = document.createElement("div");
       bar.className = "table-bar";
+      bar.style.gridRow = "1 / span " + perSide();
       grid.appendChild(bar);
-      // seat order within a table: 0-7 down the left, 8-15 down the right; nobody at the ends
-      for (var s = 0; s < 16; s++) {
-        var idx = t * 16 + s;
+      // seat order within a table: down the left side then down the right; nobody at the ends
+      for (var s = 0; s < perTable(); s++) {
+        var idx = t * perTable() + s;
         var seat = document.createElement("div");
         seat.className = "seat";
         seat.dataset.seat = idx;
-        if (s <= 7) { seat.style.gridColumn = 1; seat.style.gridRow = s + 1; }
-        else { seat.style.gridColumn = 3; seat.style.gridRow = s - 7; }
+        if (s < perSide()) { seat.style.gridColumn = 1; seat.style.gridRow = s + 1; }
+        else { seat.style.gridColumn = 3; seat.style.gridRow = s - perSide() + 1; }
         var g2 = seats[idx];
         if (g2 !== null) {
           seat.classList.add("occupied");
@@ -304,6 +365,7 @@
       room.appendChild(block);
     }
     updatePanel();
+    renderTabs();
   }
 
   var SHORT = {
@@ -313,25 +375,28 @@
     "Chocolate & lemongrass mousse": "chocolate"
   };
   function tallyFor(t) {
-    var counts = [{}, {}, {}], any = false;
-    for (var s = 0; s < 16; s++) {
-      var g = seats[t * 16 + s];
+    var counts = [{}, {}, {}], any = false, awaiting = 0;
+    for (var s = 0; s < perTable(); s++) {
+      var g = seats[t * perTable() + s];
       if (g === null) continue;
       any = true;
+      if (isPlaceholder(g)) { awaiting++; continue; }
       [GUESTS[g].s, GUESTS[g].m, GUESTS[g].d].forEach(function (dish, ci) {
         var k = SHORT[dish] || dish;
         counts[ci][k] = (counts[ci][k] || 0) + 1;
       });
     }
     if (!any) return "&nbsp;";
-    return counts.map(function (c) {
+    var lines = counts.map(function (c) {
       return Object.keys(c).map(function (k) { return c[k] + " " + k; }).join(" · ");
-    }).join("<br>");
+    }).filter(function (l) { return l; });
+    if (awaiting) lines.push(awaiting + " awaiting their choices");
+    return lines.join("<br>");
   }
 
   // ── placement ──
   function seatOf(g) {
-    for (var i = 0; i < SEATS; i++) if (seats[i] === g) return i;
+    for (var i = 0; i < seatTotal(); i++) if (seats[i] === g) return i;
     return -1;
   }
   function place(g, seatIdx) {
@@ -350,15 +415,23 @@
   var panel = document.getElementById("panel");
   function updatePanel() {
     if (selected === null) { panel.hidden = true; return; }
-    var g = GUESTS[selected];
     panel.hidden = false;
-    document.getElementById("p-name").textContent = g.n;
-    document.getElementById("p-starter").textContent = g.s;
-    document.getElementById("p-main").textContent = g.m;
-    document.getElementById("p-dessert").textContent = g.d;
+    document.getElementById("p-name").textContent = guestName(selected);
+    var courses = document.getElementById("p-courses");
     var diet = document.getElementById("p-diet");
-    if (hasRealDiet(selected)) { diet.hidden = false; diet.textContent = g.diet; }
-    else { diet.hidden = true; }
+    if (isPlaceholder(selected)) {
+      courses.hidden = true;
+      diet.hidden = false;
+      diet.textContent = "Awaiting their menu choices.";
+    } else {
+      var g = GUESTS[selected];
+      courses.hidden = false;
+      document.getElementById("p-starter").textContent = g.s;
+      document.getElementById("p-main").textContent = g.m;
+      document.getElementById("p-dessert").textContent = g.d;
+      if (hasRealDiet(selected)) { diet.hidden = false; diet.textContent = g.diet; }
+      else { diet.hidden = true; }
+    }
     var isSeated = seatOf(selected) >= 0;
     document.getElementById("p-hint").textContent = isSeated
       ? "Tap another seat to move them, or a guest to swap."
@@ -426,16 +499,27 @@
   var msg = document.getElementById("msg");
   document.getElementById("share").addEventListener("click", function () {
     persist();
-    var link = location.origin + "/seating-plan#s=" + encode();
+    var link = location.origin + "/seating-plan#s=" + guestCount + "." + encode();
     var done = function () { msg.textContent = "Link copied. Send it to each other; it opens this exact plan."; };
     if (navigator.clipboard) navigator.clipboard.writeText(link).then(done, function () { msg.textContent = link; });
     else msg.textContent = link;
   });
   document.getElementById("clear").addEventListener("click", function () {
     if (!confirm("Clear every seat?")) return;
-    seats = new Array(SEATS).fill(null);
+    seats = blank();
     selected = null; persist(); render();
     msg.textContent = "";
+  });
+
+  // ── guest-count tabs ──
+  var tabs = document.querySelectorAll(".count-tab");
+  function renderTabs() {
+    tabs.forEach(function (b) {
+      b.classList.toggle("active", parseInt(b.dataset.n, 10) === guestCount);
+    });
+  }
+  tabs.forEach(function (b) {
+    b.addEventListener("click", function () { setCount(parseInt(b.dataset.n, 10)); });
   });
 
   restore();
