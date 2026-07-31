@@ -76,7 +76,7 @@
         <div class="stop">
           <p class="stop-time" style="margin:0">Ceremony · half past five</p>
           <p class="stop-venue" style="margin:10px 0 0">Old Marylebone Town Hall</p>
-          <p class="stop-note" style="margin:6px 0 0">guests arrive by five o&rsquo;clock,<br>seated by a quarter past</p>
+          <p class="stop-note" style="margin:6px 0 0">the Mayfair Room<br>guests arrive by five o&rsquo;clock,<br>seated by a quarter past</p>
         </div>
         <div class="stop">
           <p class="stop-time" style="margin:0">Petals on the steps · quarter to six</p>
@@ -467,7 +467,7 @@
         <div class="venue">
           <p class="venue-role" style="margin:0">Ceremony</p>
           <p class="venue-name" style="margin:12px 0 0">Old Marylebone Town Hall</p>
-          <p class="venue-addr" style="margin:8px 0 0">97&nbsp;Marylebone Road<br>London NW1&nbsp;5PT</p>
+          <p class="venue-addr" style="margin:8px 0 0">The Mayfair Room<br>97&nbsp;Marylebone Road<br>London NW1&nbsp;5PT</p>
           <a class="venue-map" href="https://maps.google.com/?q=Old+Marylebone+Town+Hall" target="_blank" rel="noopener" aria-label="Map to Old Marylebone Town Hall">Map</a>
         </div>
         <div class="venue">
@@ -522,9 +522,9 @@
       if (dl0) dl0.hidden = true;
       var mins = now.getHours() * 60 + now.getMinutes();
       var line, stop;
-      if (mins < 17 * 60) { line = 'guests arrive by five o\u2019clock, seated by a quarter past'; stop = 0; }
+      if (mins < 17 * 60) { line = 'guests arrive by five o\u2019clock for the Mayfair Room, seated by a quarter past'; stop = 0; }
       else if (mins < 17 * 60 + 30) { line = 'guests are seated; the ceremony at half past five'; stop = 0; }
-      else if (mins < 17 * 60 + 45) { line = 'now: the ceremony, Old Marylebone Town Hall'; stop = 0; }
+      else if (mins < 17 * 60 + 45) { line = 'now: the ceremony, the Mayfair Room'; stop = 0; }
       else if (mins < 18 * 60 + 30) { line = 'now: petals on the steps'; stop = 1; }
       else if (mins < 19 * 60) { line = 'now: carriages east to The Ned'; stop = 2; }
       else { line = 'now: The Ned, drinks on the terrace'; stop = 3; }
@@ -546,8 +546,8 @@
     }
   })();
 
-  // The forecast for the day, in barometer prose, once it comes within
-  // Open-Meteo's sixteen-day sight. Shows only while the countdown does;
+  // The forecast for the day, once it comes within Open-Meteo's
+  // sixteen-day sight. Shows only while the countdown does;
   // fails silently and retires after the wedding.
   (function () {
     var w = document.getElementById('weather-line');
@@ -562,33 +562,28 @@
     var days = Math.round((new Date(2026, 7, 14) - today) / 86400000);
     if (days < 1 || days > 15) return;
     var url = 'https://api.open-meteo.com/v1/forecast?latitude=51.5225&longitude=-0.1539' +
-      '&hourly=temperature_2m,weather_code,pressure_msl' +
-      '&start_date=2026-08-13&end_date=2026-08-14&timezone=Europe%2FLondon';
+      '&hourly=temperature_2m,weather_code' +
+      '&start_date=2026-08-14&end_date=2026-08-14&timezone=Europe%2FLondon';
     fetch(url).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
       if (!d || !d.hourly || !d.hourly.time) return;
       var i = d.hourly.time.indexOf('2026-08-14T17:00');
-      var j = d.hourly.time.indexOf('2026-08-13T17:00');
       if (i < 0) return;
       var code = d.hourly.weather_code[i];
       var temp = Math.round(d.hourly.temperature_2m[i]);
       if (typeof code !== 'number' || isNaN(temp)) return;
       var sky =
         code === 0 ? 'clear skies' :
-        code === 1 ? 'fair' :
-        code === 2 ? 'fair, some cloud' :
+        code === 1 ? 'mostly sunny' :
+        code === 2 ? 'partly cloudy' :
         code === 3 ? 'overcast' :
-        (code === 45 || code === 48) ? 'mist' :
-        code <= 57 ? 'a little drizzle' :
+        (code === 45 || code === 48) ? 'misty' :
+        code <= 57 ? 'light drizzle' :
         code <= 67 ? 'rain expected' :
         code <= 82 ? 'passing showers' :
         code >= 95 ? 'a chance of thunder' : null;
       if (!sky) return;
-      var glass = '';
-      if (j >= 0 && d.hourly.pressure_msl) {
-        var diff = d.hourly.pressure_msl[i] - d.hourly.pressure_msl[j];
-        glass = diff > 1 ? '; the glass is rising' : diff < -1 ? '; the glass is falling' : '; the glass is steady';
-      }
-      w.textContent = sky + ' over Marylebone, ' + temp + ' degrees expected' + glass;
+      w.textContent = 'the forecast for the day: ' + sky + ', ' +
+        temp + ' degrees at five o’clock';
       w.hidden = false;
     }).catch(function () {});
   })();
