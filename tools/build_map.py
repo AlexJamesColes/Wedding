@@ -391,7 +391,7 @@ overlay = f'''
           <text x="88" y="384" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">to Weybridge, home</text>
           <text x="762" y="68" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-style="italic" font-size="13" fill="#1d1a16" opacity="0.55">complete shithole</text>
           <g id="cabglyph-def" style="display:none">
-            <g id="cabglyph">
+            <g id="cabglyph" transform="translate(34,0) scale(-1,1)">
               <path d="M2,14 Q0,14 0,11 L0,8 Q0,5 4,5 L9,5 L12,1.5 Q12.5,0.5 14,0.5 L25,0.5 Q29,0.5 30.5,3.5 L31.5,5 Q34,5.5 34,8 L34,11 Q34,14 32,14 Z" fill="#1d1a16"></path>
               <path d="M14.5,2 L24,2 L24,5 L13,5 Z M25.5,2.4 L28.5,4.6 L25.5,4.6 Z" fill="#ece7d8"></path>
               <circle cx="8.5" cy="14" r="3.2" fill="#1d1a16"></circle>
