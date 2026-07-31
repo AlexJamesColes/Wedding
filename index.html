@@ -21,7 +21,7 @@
 <link rel="preload" href="/assets/fonts/italiana-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/cormorant-garamond-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/tenor-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=16">
+<link rel="stylesheet" href="/assets/site.css?v=17">
 </head>
 <body>
 
@@ -54,6 +54,7 @@
     <p class="hero-date it" style="margin:0">Friday the fourteenth of August</p>
     <p class="hero-place" style="margin:12px 0 0">2026 · London</p>
     <p class="hero-count" id="countdown"></p>
+    <p class="hero-weather it" id="weather-line" hidden></p>
     <p class="day-sheet it" id="daysheet" hidden></p>
     <p id="diary-line" style="margin:24px 0 0"><a class="venue-map" href="/assets/chelsey-and-alex.ics" download>Add to your diary</a></p>
 
@@ -91,7 +92,6 @@
           <p class="stop-note" style="margin:6px 0 0">drinks on the terrace,<br>dinner thereafter</p>
         </div>
       </div>
-      <p class="ceremony-note it">The town hall seats only a small number, so not everyone can be inside for the fifteen-minute ceremony. Those not seated are more than welcome to join us on the steps as we walk out, or directly at The Ned.</p>
       <div style="height:clamp(40px,7vw,60px)"></div>
       <div style="text-align:center">
         <h3 class="eyebrow" style="font-size:11px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">Dress</h3>
@@ -544,6 +544,53 @@
       var deadline = document.querySelector('.menu-deadline');
       if (deadline) deadline.hidden = true;
     }
+  })();
+
+  // The forecast for the day, in barometer prose, once it comes within
+  // Open-Meteo's sixteen-day sight. Shows only while the countdown does;
+  // fails silently and retires after the wedding.
+  (function () {
+    var w = document.getElementById('weather-line');
+    if (!w) return;
+    function londonNow() {
+      var q = new URLSearchParams(location.search).get('when');
+      if (q) return new Date(q);
+      return new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
+    }
+    var now = londonNow();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var days = Math.round((new Date(2026, 7, 14) - today) / 86400000);
+    if (days < 1 || days > 15) return;
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=51.5225&longitude=-0.1539' +
+      '&hourly=temperature_2m,weather_code,pressure_msl' +
+      '&start_date=2026-08-13&end_date=2026-08-14&timezone=Europe%2FLondon';
+    fetch(url).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (!d || !d.hourly || !d.hourly.time) return;
+      var i = d.hourly.time.indexOf('2026-08-14T17:00');
+      var j = d.hourly.time.indexOf('2026-08-13T17:00');
+      if (i < 0) return;
+      var code = d.hourly.weather_code[i];
+      var temp = Math.round(d.hourly.temperature_2m[i]);
+      if (typeof code !== 'number' || isNaN(temp)) return;
+      var sky =
+        code === 0 ? 'clear skies' :
+        code === 1 ? 'fair' :
+        code === 2 ? 'fair, some cloud' :
+        code === 3 ? 'overcast' :
+        (code === 45 || code === 48) ? 'mist' :
+        code <= 57 ? 'a little drizzle' :
+        code <= 67 ? 'rain expected' :
+        code <= 82 ? 'passing showers' :
+        code >= 95 ? 'a chance of thunder' : null;
+      if (!sky) return;
+      var glass = '';
+      if (j >= 0 && d.hourly.pressure_msl) {
+        var diff = d.hourly.pressure_msl[i] - d.hourly.pressure_msl[j];
+        glass = diff > 1 ? '; the glass is rising' : diff < -1 ? '; the glass is falling' : '; the glass is steady';
+      }
+      w.textContent = sky + ' over Marylebone, ' + temp + ' degrees expected' + glass;
+      w.hidden = false;
+    }).catch(function () {});
   })();
 
   // The cab drives the route as the map scrolls through the viewport.
