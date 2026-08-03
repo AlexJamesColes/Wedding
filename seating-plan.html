@@ -153,7 +153,6 @@
 
   <div class="count-tabs" aria-label="Number of guests being planned for">
     <span class="count-label lead">Planning for</span>
-    <button class="count-tab" data-n="29">29</button>
     <button class="count-tab" data-n="30">30</button>
     <button class="count-tab" data-n="31">31</button>
     <button class="count-tab" data-n="32">32</button>
@@ -228,9 +227,10 @@
     { n: "Omkar Harmalkar", s: "Pugliese burrata", m: "Sutton Hoo chicken breast", d: "Passion fruit délice", diet: "" },
     { n: "Sam Houghton", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Passion fruit délice", diet: "" },
     { n: "Brittany Morel", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" },
-    { n: "Chris McPetrie", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" }
+    { n: "Chris McPetrie", s: "Beef carpaccio", m: "Beef fillet & ox cheek", d: "Chocolate & lemongrass mousse", diet: "" },
+    { n: "James Hardesty", s: "Beef carpaccio", m: "Sutton Hoo chicken breast", d: "Strawberries & cream", diet: "None" }
   ];
-  var COUNTS = [29, 30, 31, 32, 33, 34];
+  var COUNTS = [30, 31, 32, 33, 34];
   var KEY = "ca-seating2";
   var TRIVIAL_DIET = { "": 1, "no": 1, "none": 1, "n/a": 1, "normal": 1, "no thanks": 1 };
   var guestCount = COUNTS[0];
@@ -282,6 +282,10 @@
       if (stored && stored.plans) {
         // earlier plans were keyed by count alone and were always two tables
         for (var k in stored.plans) plans[/^\d+$/.test(k) ? k + "-2" : k] = stored.plans[k];
+        // 29 became 30 when James Hardesty confirmed; the seat strings are compatible
+        if (plans["29-2"] && !plans["30-2"]) plans["30-2"] = plans["29-2"];
+        if (plans["29-1"] && !plans["30-1"]) plans["30-1"] = plans["29-1"];
+        if (stored.tab === 29) stored.tab = 30;
         if (COUNTS.indexOf(stored.tab) >= 0) guestCount = stored.tab;
         if (stored.layout === 1 || stored.layout === 2) layoutTables = stored.layout;
       }
@@ -289,6 +293,7 @@
     var m = location.hash.match(/^#s=(\d+)\.(?:([12])\.)?([0-9a-z-]+)$/);
     if (m) {
       var n = parseInt(m[1], 10);
+      if (n === 29) n = 30; // links from before James Hardesty confirmed
       var l = m[2] ? parseInt(m[2], 10) : 2; // links from before the long table are two tables
       if (COUNTS.indexOf(n) >= 0) {
         var keepN = guestCount, keepL = layoutTables;
