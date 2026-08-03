@@ -37,11 +37,13 @@
     '.gate { position: fixed; inset: 0; z-index: 999; background: #ece7d8; visibility: visible;' +
     '  display: flex; align-items: center; justify-content: center; text-align: center;' +
     '  opacity: 1; transition: opacity .7s ease; padding: 24px; }' +
+    '.gate::before { content: ""; position: absolute; inset: 9px;' +
+    '  border: 1px solid rgba(29,26,22,.13); pointer-events: none; }' +
     '.gate.gate-open { opacity: 0; pointer-events: none; }' +
     '.gate-inner { max-width: 420px; width: 100%; }' +
     '.gate-eyebrow { font-family: "Tenor Sans", sans-serif; font-size: 10px; letter-spacing: .34em;' +
     '  text-indent: .34em; text-transform: uppercase; color: #6e665a; margin: 30px 0 0; }' +
-    '.gate-names { font-family: Italiana, serif; font-size: 30px; letter-spacing: .12em;' +
+    '.gate-names { font-family: Italiana, serif; font-size: 30px; letter-spacing: .12em; text-indent: .12em;' +
     '  text-transform: uppercase; color: #1d1a16; margin: 12px 0 0; }' +
     '.gate-ask { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 17px;' +
     '  color: #6e665a; margin: 34px 0 0; }' +
@@ -54,9 +56,12 @@
     '.gate-btn { appearance: none; margin: 26px auto 0; display: inline-block; cursor: pointer;' +
     '  border: 1px solid #1d1a16; background: #1d1a16; color: #ece7d8; padding: 12px 30px;' +
     '  font-family: "Tenor Sans", sans-serif; font-size: 10.5px; letter-spacing: .3em; text-indent: .3em;' +
-    '  text-transform: uppercase; }' +
+    '  text-transform: uppercase; transition: background .15s, color .15s; }' +
+    '.gate-btn:hover { background: transparent; color: #1d1a16; }' +
+    '.gate-btn:active { transform: translateY(1px); }' +
+    '.gate-btn:focus-visible { outline: 1px solid #1d1a16; outline-offset: 3px; }' +
     '.gate-msg { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 14.5px;' +
-    '  color: #6e665a; margin: 18px 0 0; min-height: 1.4em; }';
+    '  color: #6e665a; margin: 18px 0 0; min-height: 1.4em; text-wrap: balance; }';
   document.head.appendChild(style);
 
   function norm(s) {
@@ -93,8 +98,8 @@
       '<p class="gate-names">Chelsey &amp; Alex</p>' +
       '<p class="gate-ask">May we take your name?</p>' +
       '<form class="gate-form">' +
-      '<input class="gate-input" type="text" autocomplete="name" autocapitalize="words"' +
-      ' aria-label="Your name" placeholder="first name and surname">' +
+      '<input class="gate-input" type="text" name="name" autocomplete="name" autocapitalize="words"' +
+      ' enterkeyhint="go" aria-label="Your name" placeholder="first name and surname">' +
       '<button class="gate-btn" type="submit">Enter</button>' +
       '</form>' +
       '<p class="gate-msg" role="status" aria-live="polite"></p>' +
@@ -108,10 +113,23 @@
       if (!raw.trim()) return;
       admitted(raw).then(function (ok) {
         if (ok) {
-          try { localStorage.setItem(KEY, '1'); } catch (err) {}
-          document.documentElement.classList.remove('gate-locked');
-          gate.classList.add('gate-open');
-          setTimeout(function () { gate.remove(); }, 800);
+          try {
+            localStorage.setItem(KEY, '1');
+            localStorage.setItem('ca-guest', raw.trim());
+          } catch (err) {}
+          msg.textContent = 'Do come in.';
+          gate.querySelector('.gate-btn').disabled = true;
+          setTimeout(function () {
+            document.documentElement.classList.remove('gate-locked');
+            gate.classList.add('gate-open');
+            if (location.hash) {
+              var t = document.getElementById(location.hash.slice(1));
+              if (t) t.scrollIntoView();
+            }
+            var m = document.querySelector('main');
+            if (m) { m.setAttribute('tabindex', '-1'); m.focus({ preventScroll: true }); }
+            setTimeout(function () { gate.remove(); }, 800);
+          }, 700);
         } else {
           msg.textContent = 'We cannot find that name. Do try your full name, or ask Chelsey or Alex.';
           input.select();

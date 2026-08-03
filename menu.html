@@ -4,25 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chelsey &amp; Alex · The Menu</title>
-<meta name="description" content="Choose your dishes for the wedding of Chelsey and Alex · kindly reply by the thirtieth of July">
+<meta name="description" content="Choose your dishes for the wedding of Chelsey and Alex · Friday the fourteenth of August 2026">
 <link rel="canonical" href="https://coleswedding.com/menu">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Chelsey &amp; Alex">
 <meta property="og:title" content="Chelsey &amp; Alex · The Menu">
-<meta property="og:description" content="Kindly choose one dish from each course by the thirtieth of July.">
+<meta property="og:description" content="Kindly choose one dish from each course.">
 <meta property="og:url" content="https://coleswedding.com/menu">
 <meta property="og:image" content="https://coleswedding.com/assets/img/og-seal.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The C and A monogram seal, blind embossed">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#ece7d8">
+<meta name="color-scheme" content="only light">
 <link rel="icon" href="/favicon.ico?v=3" sizes="48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <link rel="preload" href="/assets/fonts/italiana-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/cormorant-garamond-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/cormorant-garamond-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/cormorant-sc-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/tenor-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=17">
-<script src="/assets/gate.js?v=2"></script>
+<link rel="stylesheet" href="/assets/site.css?v=18">
+<script src="/assets/gate.js?v=3"></script>
 </head>
 <body>
 
@@ -32,7 +36,7 @@
   </a>
   <nav class="nav-links" aria-label="Site">
     <a href="/">The Invitation</a>
-    <a href="/#day">The Day</a>
+    <a class="nav-venues" href="/#day">The Day</a>
     <a href="/inspiration">Inspiration</a>
   </nav>
 </header>
@@ -54,7 +58,7 @@
         <label class="dish">
           <input type="radio" name="starter" value="Pugliese burrata" required>
           <span class="dish-card">
-            <span class="dish-name">Pugliese burrata<span class="dish-tag">v</span></span>
+            <span class="dish-name">Pugliese burrata<span class="dish-tag" aria-hidden="true">v</span><span class="sr-only">, vegetarian</span></span>
             <span class="dish-detail" style="display:block">broad beans, olive crumble, mint &amp; lemon dressing</span>
           </span>
         </label>
@@ -85,7 +89,7 @@
         <label class="dish">
           <input type="radio" name="main" value="Soft herb risotto" required>
           <span class="dish-card">
-            <span class="dish-name">Soft herb risotto<span class="dish-tag">v · pb</span></span>
+            <span class="dish-name">Soft herb risotto<span class="dish-tag" aria-hidden="true">v · pb</span><span class="sr-only">, vegetarian, plant based</span></span>
             <span class="dish-detail" style="display:block">parmesan, barrel-aged feta, roasted beetroot</span>
           </span>
         </label>
@@ -116,7 +120,7 @@
         <label class="dish">
           <input type="radio" name="dessert" value="Passion fruit délice" required>
           <span class="dish-card">
-            <span class="dish-name">Passion fruit d&eacute;lice<span class="dish-tag">pb</span></span>
+            <span class="dish-name">Passion fruit d&eacute;lice<span class="dish-tag" aria-hidden="true">pb</span><span class="sr-only">, plant based</span></span>
             <span class="dish-detail" style="display:block">mango salsa, sorbet</span>
           </span>
         </label>
@@ -151,10 +155,12 @@
     <div class="menu-actions">
       <button class="btn" type="submit" id="send-btn">Send my choices</button>
       <p class="form-msg" id="form-msg" role="status" aria-live="polite" style="margin:14px 0 0"></p>
-      <p class="menu-deadline" style="margin-bottom:0">kindly reply by the thirtieth of July</p>
+      <p class="menu-deadline" style="margin-bottom:0">kindly reply without delay</p>
     </div>
 
   </form>
+
+  <p class="menu-sub" id="menu-retired" hidden>dinner has been served, thank you for celebrating with us</p>
 
   <div id="sent-state" class="sent-state" hidden>
     <div class="orn"><span></span></div>
@@ -202,6 +208,12 @@
     form.addEventListener('change', refresh);
     form.addEventListener('input', refresh);
     refresh();
+
+    // the door already took their name; spare them typing it twice
+    try {
+      var who = localStorage.getItem('ca-guest');
+      if (who && !form.name.value) { form.name.value = who; refresh(); }
+    } catch (e) {}
 
     function showReceipt(d, fresh) {
       form.hidden = true;
@@ -251,6 +263,25 @@
       if (prev && prev.starter) showReceipt(prev, false);
     } catch (e) {}
 
+    // after the wedding the kitchen closes; receipts remain as keepsakes
+    (function () {
+      var q = new URLSearchParams(location.search).get('when');
+      var now = q ? new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q)
+        : new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
+      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      if (today <= new Date(2026, 7, 14)) return;
+      var dl = document.querySelector('.menu-deadline');
+      if (dl) dl.hidden = true;
+      var fl = document.querySelector('.footer-line');
+      if (fl) fl.textContent = 'With all our love, Chelsey & Alex.';
+      if (form.hidden) return; // a receipt is showing; leave it be
+      form.hidden = true;
+      var sub = document.querySelector('.menu-sub');
+      if (sub) sub.hidden = true;
+      var retired = document.getElementById('menu-retired');
+      if (retired) retired.hidden = false;
+    })();
+
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -274,7 +305,7 @@
         sending = false;
         btn.textContent = 'Send my choices';
         btn.disabled = false;
-        msg.textContent = 'Something went wrong. Please try again, or send your choices to Chelsey or Alex directly.';
+        msg.textContent = 'That did not go through. Do try again, or send your choices to Chelsey or Alex directly.';
         refresh();
       });
     });
