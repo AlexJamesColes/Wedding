@@ -266,18 +266,18 @@
     // after the wedding the kitchen closes; receipts remain as keepsakes
     (function () {
       var q = new URLSearchParams(location.search).get('when');
-      var now = q ? new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q)
-        : new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
+      var now = q ? new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q) : null;
+      if (!now || isNaN(now)) now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
       var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       if (today <= new Date(2026, 7, 14)) return;
       var dl = document.querySelector('.menu-deadline');
       if (dl) dl.hidden = true;
       var fl = document.querySelector('.footer-line');
       if (fl) fl.textContent = 'With all our love, Chelsey & Alex.';
-      if (form.hidden) return; // a receipt is showing; leave it be
-      form.hidden = true;
       var sub = document.querySelector('.menu-sub');
       if (sub) sub.hidden = true;
+      if (form.hidden) return; // a receipt is showing; leave it be
+      form.hidden = true;
       var retired = document.getElementById('menu-retired');
       if (retired) retired.hidden = false;
     })();

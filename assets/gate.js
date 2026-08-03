@@ -117,6 +117,11 @@
             localStorage.setItem(KEY, '1');
             localStorage.setItem('ca-guest', raw.trim());
           } catch (err) {}
+          var gn = document.getElementById('guest-name');
+          if (gn && !gn.value) {
+            gn.value = raw.trim();
+            gn.dispatchEvent(new Event('input', { bubbles: true }));
+          }
           msg.textContent = 'Do come in.';
           gate.querySelector('.gate-btn').disabled = true;
           setTimeout(function () {

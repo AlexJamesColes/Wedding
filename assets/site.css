@@ -45,7 +45,7 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 ::selection { background: var(--ink); color: var(--paper); }
-a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible {
+a:focus-visible, button:focus-visible, summary:focus-visible {
   outline: 1px solid var(--ink); outline-offset: 3px;
 }
 /* the engraver's plate mark */

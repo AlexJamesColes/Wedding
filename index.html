@@ -513,7 +513,10 @@
     if (!el) return;
     function londonNow() {
       var q = new URLSearchParams(location.search).get('when');
-      if (q) return new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q);
+      if (q) {
+        var d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q);
+        if (!isNaN(d)) return d;
+      }
       return new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
     }
     var now = londonNow();
@@ -529,6 +532,10 @@
       el.textContent = 'today';
       var dl0 = document.getElementById('diary-line');
       if (dl0) dl0.hidden = true;
+      var note0 = document.getElementById('menu-note');
+      var cta0 = document.getElementById('menu-cta');
+      if (note0) note0.textContent = 'the kitchen has your choices, thank you';
+      if (cta0) cta0.style.display = 'none';
       var mins = now.getHours() * 60 + now.getMinutes();
       var line, stop;
       if (mins < 17 * 60) { line = 'guests arrive by five o\u2019clock for the Mayfair Room, seated by a quarter past'; stop = 0; }
@@ -573,7 +580,10 @@
     if (!w) return;
     function londonNow() {
       var q = new URLSearchParams(location.search).get('when');
-      if (q) return new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q);
+      if (q) {
+        var d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q);
+        if (!isNaN(d)) return d;
+      }
       return new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
     }
     var now = londonNow();
@@ -618,8 +628,8 @@
     var L = path.getTotalLength();
     // after the day the convoy rests outside The Ned, nose to tail
     var q0 = new URLSearchParams(location.search).get('when');
-    var now0 = q0 ? new Date(/^\d{4}-\d{2}-\d{2}$/.test(q0) ? q0 + 'T12:00' : q0)
-      : new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
+    var now0 = q0 ? new Date(/^\d{4}-\d{2}-\d{2}$/.test(q0) ? q0 + 'T12:00' : q0) : null;
+    if (!now0 || isNaN(now0)) now0 = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
     if (new Date(now0.getFullYear(), now0.getMonth(), now0.getDate()) > new Date(2026, 7, 14)) {
       cabs.forEach(function (cab, i) {
         var pt = path.getPointAtLength(L - 44 * i);
