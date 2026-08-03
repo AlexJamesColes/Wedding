@@ -220,7 +220,7 @@ def point_at(frac):
     return route[-1]
 
 # a small convoy; the couple has booked five or six cabs
-CAB_FRACS = [0.40, 0.33, 0.26]
+CAB_FRACS = [0.085, 0.05, 0.015]  # parked outside the town hall, matching the script's rest state
 cab_pts = [point_at(f) for f in CAB_FRACS]
 cab_x, cab_y = round(cab_pts[0][0]), round(cab_pts[0][1])
 

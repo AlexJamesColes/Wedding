@@ -14,15 +14,20 @@
 <meta property="og:image" content="https://coleswedding.com/assets/img/og-seal.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The C and A monogram seal, blind embossed">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#ece7d8">
+<meta name="color-scheme" content="only light">
 <link rel="icon" href="/favicon.ico?v=3" sizes="48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
 <link rel="preload" href="/assets/fonts/italiana-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/cormorant-garamond-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/cormorant-garamond-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/cormorant-garamond-300-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/cormorant-sc-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/tenor-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=17">
-<script src="/assets/gate.js?v=2"></script>
+<link rel="stylesheet" href="/assets/site.css?v=18">
+<script src="/assets/gate.js?v=3"></script>
 </head>
 <body>
 
@@ -84,12 +89,12 @@
           <p class="stop-note" style="margin:16px 0 0">as we step out, newly married</p>
         </div>
         <div class="stop">
-          <p class="stop-time" style="margin:0">Carriages · half past six</p>
-          <p class="stop-note" style="margin:16px 0 0">to The Ned,<br>leaving Old Marylebone</p>
+          <p class="stop-time" style="margin:0">Carriages · quarter past six</p>
+          <p class="stop-note" style="margin:16px 0 0">to The Ned,<br>leaving the Town Hall</p>
         </div>
         <div class="stop">
           <p class="stop-time" style="margin:0">Reception · seven o&rsquo;clock</p>
-          <p class="stop-venue" style="margin:10px 0 0">The Ned, London</p>
+          <p class="stop-venue" style="margin:10px 0 0">The Ned</p>
           <p class="stop-note" style="margin:6px 0 0">drinks on the terrace,<br>dinner thereafter</p>
         </div>
       </div>
@@ -442,7 +447,7 @@
               <circle cx="26.5" cy="14" r="1.2" fill="#ece7d8"></circle>
             </g>
           </g>
-          <use href="#cabglyph" id="cab1" transform="translate(425,89)"></use><use href="#cabglyph" id="cab2" transform="translate(391,92)"></use><use href="#cabglyph" id="cab3" transform="translate(352,109)"></use>
+          <use href="#cabglyph" id="cab1" transform="translate(248,130)"></use><use href="#cabglyph" id="cab2" transform="translate(227,136)"></use><use href="#cabglyph" id="cab3" transform="translate(207,142)"></use>
           <g>
             <ellipse cx="216" cy="147" rx="8.5" ry="9.5" fill="#ece7d8" stroke="#1d1a16" stroke-width="0.9" stroke-opacity="0.65"></ellipse>
             <rect x="212.5" y="143.5" width="7" height="7" fill="#1d1a16" transform="rotate(45 216 147)"></rect>
@@ -486,7 +491,7 @@
     <div class="section-inner" style="text-align:center">
       <h2 class="eyebrow" style="font-size:12px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">The Menu</h2>
       <div class="orn" style="margin-top:18px"><span></span></div>
-      <p class="it" id="menu-note" style="font-size:17px;color:var(--muted);margin:26px 0 0">kindly choose your dishes by the thirtieth of July</p>
+      <p class="it" id="menu-note" style="font-size:17px;color:var(--muted);margin:26px 0 0">kindly choose your dishes without delay</p>
       <div style="height:26px"></div>
       <a class="btn" id="menu-cta" href="/menu">Choose your dishes</a>
     </div>
@@ -508,32 +513,53 @@
     if (!el) return;
     function londonNow() {
       var q = new URLSearchParams(location.search).get('when');
-      if (q) return new Date(q);
+      if (q) {
+        var d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q);
+        if (!isNaN(d)) return d;
+      }
       return new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
     }
     var now = londonNow();
     var day = new Date(2026, 7, 14);
     var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     var days = Math.round((day - today) / 86400000);
-    if (days > 1) { el.textContent = days + ' days to go'; }
+    var WORDS = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+      'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen',
+      'nineteen', 'twenty'];
+    if (days > 1) { el.textContent = (days <= 20 ? WORDS[days - 1] : days) + ' days to go'; }
     else if (days === 1) { el.textContent = 'tomorrow'; }
     else if (days === 0) {
       el.textContent = 'today';
       var dl0 = document.getElementById('diary-line');
       if (dl0) dl0.hidden = true;
+      var note0 = document.getElementById('menu-note');
+      var cta0 = document.getElementById('menu-cta');
+      if (note0) note0.textContent = 'the kitchen has your choices, thank you';
+      if (cta0) cta0.style.display = 'none';
       var mins = now.getHours() * 60 + now.getMinutes();
       var line, stop;
       if (mins < 17 * 60) { line = 'guests arrive by five o\u2019clock for the Mayfair Room, seated by a quarter past'; stop = 0; }
       else if (mins < 17 * 60 + 30) { line = 'guests are seated; the ceremony at half past five'; stop = 0; }
       else if (mins < 17 * 60 + 45) { line = 'now: the ceremony, the Mayfair Room'; stop = 0; }
-      else if (mins < 18 * 60 + 30) { line = 'now: petals on the steps'; stop = 1; }
+      else if (mins < 18 * 60 + 15) { line = 'now: petals on the steps'; stop = 1; }
       else if (mins < 19 * 60) { line = 'now: carriages east to The Ned'; stop = 2; }
-      else { line = 'now: The Ned, drinks on the terrace'; stop = 3; }
+      else if (mins < 20 * 60) { line = 'now: The Ned, drinks on the terrace'; stop = 3; }
+      else { line = 'now: dinner in the Saloon'; stop = 3; }
       if (sheet) { sheet.textContent = line; sheet.hidden = false; }
       var stops = document.querySelectorAll('.stop');
       if (stops[stop]) stops[stop].classList.add('stop-now');
     } else {
-      el.textContent = 'married, 14 August 2026';
+      var anniv = now.getDate() === 14 && now.getMonth() === 7 && now.getFullYear() > 2026;
+      if (anniv) {
+        var y = now.getFullYear() - 2026;
+        el.textContent = 'married ' + (WORDS[y - 1] || y) + ' year' + (y > 1 ? 's' : '') + ' today';
+      } else {
+        el.textContent = 'married, 14 August 2026';
+      }
+      if (days === -1 && sheet) {
+        sheet.textContent = 'yesterday: the Mayfair Room, the petals, the carriages, The Ned';
+        sheet.hidden = false;
+      }
       var dl1 = document.getElementById('diary-line');
       if (dl1) dl1.hidden = true;
       var note = document.getElementById('menu-note');
@@ -542,26 +568,30 @@
       if (note) note.textContent = 'thank you for celebrating with us';
       if (cta) cta.style.display = 'none';
       if (fl) fl.textContent = 'With all our love, Chelsey & Alex.';
-      var deadline = document.querySelector('.menu-deadline');
-      if (deadline) deadline.hidden = true;
     }
   })();
 
   // The forecast for the day, once it comes within Open-Meteo's
-  // sixteen-day sight. Shows only while the countdown does;
-  // fails silently and retires after the wedding.
+  // sixteen-day sight. Shows through the morning of the day itself,
+  // retiring at five o'clock when the forecast becomes the weather;
+  // fails silently.
   (function () {
     var w = document.getElementById('weather-line');
     if (!w) return;
     function londonNow() {
       var q = new URLSearchParams(location.search).get('when');
-      if (q) return new Date(q);
+      if (q) {
+        var d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(q) ? q + 'T12:00' : q);
+        if (!isNaN(d)) return d;
+      }
       return new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
     }
     var now = londonNow();
     var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     var days = Math.round((new Date(2026, 7, 14) - today) / 86400000);
-    if (days < 1 || days > 15) return;
+    if (days < 0 || days > 15) return;
+    if (days === 0 && now.getHours() >= 17) return;
+    w.hidden = false; // reserve the line now so the hero never shifts
     var url = 'https://api.open-meteo.com/v1/forecast?latitude=51.5225&longitude=-0.1539' +
       '&hourly=temperature_2m,weather_code' +
       '&start_date=2026-08-14&end_date=2026-08-14&timezone=Europe%2FLondon';
@@ -574,7 +604,7 @@
       if (typeof code !== 'number' || isNaN(temp)) return;
       var sky =
         code === 0 ? 'clear skies' :
-        code === 1 ? 'mostly sunny' :
+        code === 1 ? 'mainly clear' :
         code === 2 ? 'partly cloudy' :
         code === 3 ? 'overcast' :
         (code === 45 || code === 48) ? 'misty' :
@@ -583,9 +613,9 @@
         code <= 82 ? 'passing showers' :
         code >= 95 ? 'a chance of thunder' : null;
       if (!sky) return;
-      w.textContent = 'the forecast for the day: ' + sky + ', ' +
+      var when = days === 0 ? 'for this afternoon' : days === 1 ? 'for tomorrow' : 'for the day';
+      w.textContent = 'the forecast ' + when + ': ' + sky + ', ' +
         temp + ' degrees at five o’clock';
-      w.hidden = false;
     }).catch(function () {});
   })();
 
@@ -595,8 +625,19 @@
     var path = document.getElementById('cabroute');
     var fig = document.querySelector('.map-fig');
     if (!cabs.length || !path || !fig) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var L = path.getTotalLength();
+    // after the day the convoy rests outside The Ned, nose to tail
+    var q0 = new URLSearchParams(location.search).get('when');
+    var now0 = q0 ? new Date(/^\d{4}-\d{2}-\d{2}$/.test(q0) ? q0 + 'T12:00' : q0) : null;
+    if (!now0 || isNaN(now0)) now0 = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
+    if (new Date(now0.getFullYear(), now0.getMonth(), now0.getDate()) > new Date(2026, 7, 14)) {
+      cabs.forEach(function (cab, i) {
+        var pt = path.getPointAtLength(L - 44 * i);
+        cab.setAttribute('transform', 'translate(' + (pt.x - 17).toFixed(1) + ',' + (pt.y - 16).toFixed(1) + ')');
+      });
+      return;
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var offs = [0, 0.07, 0.14];
     var ticking = false;
     function place() {
