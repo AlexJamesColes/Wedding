@@ -94,7 +94,7 @@
       '<p class="gate-ask">May we take your name?</p>' +
       '<form class="gate-form">' +
       '<input class="gate-input" type="text" autocomplete="name" autocapitalize="words"' +
-      ' aria-label="Your name" placeholder="as it appears on your invitation">' +
+      ' aria-label="Your name" placeholder="first name and surname">' +
       '<button class="gate-btn" type="submit">Enter</button>' +
       '</form>' +
       '<p class="gate-msg" role="status" aria-live="polite"></p>' +
@@ -113,7 +113,7 @@
           gate.classList.add('gate-open');
           setTimeout(function () { gate.remove(); }, 800);
         } else {
-          msg.textContent = 'We cannot find that name. Do check it against your invitation, or ask Chelsey or Alex.';
+          msg.textContent = 'We cannot find that name. Do try your full name, or ask Chelsey or Alex.';
           input.select();
         }
       });
