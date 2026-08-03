@@ -238,14 +238,17 @@
   var plans = {}; // "count-layout" -> encoded seat string, one plan per scenario
   var selected = null; // guest index awaiting placement
 
-  // two tables: 8 a side up to 32 guests, a ninth chair each side for 33 or 34.
-  // one long table: everyone down the two sides. Nobody sits at the ends either way.
-  function perSide() {
-    if (layoutTables === 1) return Math.ceil(guestCount / 2);
-    return guestCount <= 32 ? 8 : 9;
+  // two tables sized to the count: the left takes the larger half (16 and 14
+  // at thirty), so every seat on the plan is a real seat. One long table:
+  // everyone down the two sides. Nobody sits at the ends either way.
+  function seatsAt(t) {
+    if (layoutTables === 1) return 2 * Math.ceil(guestCount / 2);
+    var left = guestCount <= 32 ? 16 : 17;
+    return t === 0 ? left : guestCount - left;
   }
-  function perTable() { return perSide() * 2; }
-  function seatTotal() { return perTable() * layoutTables; }
+  function sideAt(t) { return Math.ceil(seatsAt(t) / 2); }
+  function tableStart(t) { return t === 0 ? 0 : seatsAt(0); }
+  function seatTotal() { return layoutTables === 1 ? seatsAt(0) : seatsAt(0) + seatsAt(1); }
   function planKey() { return guestCount + "-" + layoutTables; }
   function blank() { return new Array(seatTotal()).fill(null); }
   var seats = blank();
@@ -286,6 +289,20 @@
         if (plans["29-2"] && !plans["30-2"]) plans["30-2"] = plans["29-2"];
         if (plans["29-1"] && !plans["30-1"]) plans["30-1"] = plans["29-1"];
         if (stored.tab === 29) stored.tab = 30;
+        // the right table lost two seats when it became ours (16 and 14 at
+        // thirty); remap drafts saved under the old uniform 32-seat layout
+        if (plans["30-2"] && plans["30-2"].length === 32) {
+          var old = plans["30-2"], remap = new Array(30).fill("-");
+          for (var i = 0; i < 32; i++) {
+            var ch = old[i];
+            if (ch === "-") continue;
+            if (i < 16) { remap[i] = ch; continue; }
+            var s2 = i - 16;
+            if (s2 === 7 || s2 === 15) continue; // row eight no longer exists
+            remap[16 + (s2 < 7 ? s2 : s2 - 1)] = ch;
+          }
+          plans["30-2"] = remap.join("");
+        }
         if (COUNTS.indexOf(stored.tab) >= 0) guestCount = stored.tab;
         if (stored.layout === 1 || stored.layout === 2) layoutTables = stored.layout;
       }
@@ -371,16 +388,16 @@
       grid.className = "table-grid";
       var bar = document.createElement("div");
       bar.className = "table-bar";
-      bar.style.gridRow = "1 / span " + perSide();
+      bar.style.gridRow = "1 / span " + sideAt(t);
       grid.appendChild(bar);
       // seat order within a table: down the left side then down the right; nobody at the ends
-      for (var s = 0; s < perTable(); s++) {
-        var idx = t * perTable() + s;
+      for (var s = 0; s < seatsAt(t); s++) {
+        var idx = tableStart(t) + s;
         var seat = document.createElement("div");
         seat.className = "seat";
         seat.dataset.seat = idx;
-        if (s < perSide()) { seat.style.gridColumn = 1; seat.style.gridRow = s + 1; }
-        else { seat.style.gridColumn = 3; seat.style.gridRow = s - perSide() + 1; }
+        if (s < sideAt(t)) { seat.style.gridColumn = 1; seat.style.gridRow = s + 1; }
+        else { seat.style.gridColumn = 3; seat.style.gridRow = s - sideAt(t) + 1; }
         var g2 = seats[idx];
         if (g2 !== null) {
           seat.classList.add("occupied");
@@ -409,8 +426,8 @@
   };
   function tallyFor(t) {
     var counts = [{}, {}, {}], any = false, awaiting = 0;
-    for (var s = 0; s < perTable(); s++) {
-      var g = seats[t * perTable() + s];
+    for (var s = 0; s < seatsAt(t); s++) {
+      var g = seats[tableStart(t) + s];
       if (g === null) continue;
       any = true;
       if (isPlaceholder(g)) { awaiting++; continue; }
