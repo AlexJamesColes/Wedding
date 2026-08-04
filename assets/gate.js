@@ -97,6 +97,10 @@
       post(VISIT_LOG, { name: who, note: note, page: location.pathname });
     }).catch(function () {});
   }
+  function pageLabel() {
+    var p = location.pathname.replace(/\/+$/, '').replace(/^\//, '').replace(/\.html$/, '');
+    return p || 'invitation';
+  }
   function logVisit() {
     visitLog('visit');
     guestId().then(function (id) {
@@ -104,7 +108,7 @@
       var tries = 0;
       (function send() {
         if (window.goatcounter && window.goatcounter.count) {
-          window.goatcounter.count({ path: 'guest/' + id, event: true });
+          window.goatcounter.count({ path: 'guest/' + id + '/' + pageLabel(), event: true });
         } else if (++tries < 20) { setTimeout(send, 500); }
       })();
     }).catch(function () {});
