@@ -3,6 +3,24 @@
 // Once admitted, a device stays admitted.
 (function () {
   var KEY = 'ca-gate';
+
+  // a quiet visitors' book: each admitted guest's visit is noted by name
+  // in GoatCounter as guest/Name. Fails silently if the counter is away.
+  function logVisit() {
+    try {
+      var who = localStorage.getItem('ca-guest');
+      if (!who) return;
+      var tries = 0;
+      (function send() {
+        if (window.goatcounter && window.goatcounter.count) {
+          window.goatcounter.count({ path: 'guest/' + who, title: 'Guest visit: ' + who, event: true });
+        } else if (++tries < 20) { setTimeout(send, 500); }
+      })();
+    } catch (e) {}
+  }
+  if (document.readyState === 'complete') { logVisit(); }
+  else { window.addEventListener('load', logVisit); }
+
   try { if (localStorage.getItem(KEY) === '1') return; } catch (e) {}
   if (!(window.crypto && crypto.subtle && window.TextEncoder && window.Promise)) return;
 
@@ -122,6 +140,11 @@
             gn.value = raw.trim();
             gn.dispatchEvent(new Event('input', { bubbles: true }));
           }
+          try {
+            if (window.goatcounter && window.goatcounter.count) {
+              window.goatcounter.count({ path: 'door/' + raw.trim(), title: 'Admitted: ' + raw.trim(), event: true });
+            }
+          } catch (e2) {}
           msg.textContent = 'Do come in.';
           gate.querySelector('.gate-btn').disabled = true;
           setTimeout(function () {
