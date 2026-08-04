@@ -221,6 +221,11 @@
           }, 700);
         } else {
           refusedLog(raw.trim());
+          try {
+            if (window.goatcounter && window.goatcounter.count) {
+              window.goatcounter.count({ path: 'door-refused', event: true });
+            }
+          } catch (e3) {}
           msg.textContent = 'We cannot find that name. Do try your full name, or ask Chelsey or Alex.';
           input.select();
         }

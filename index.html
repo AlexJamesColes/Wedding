@@ -27,7 +27,7 @@
 <link rel="preload" href="/assets/fonts/cormorant-sc-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/tenor-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css?v=18">
-<script src="/assets/gate.js?v=7"></script>
+<script src="/assets/gate.js?v=8"></script>
 <script data-goatcounter="https://coleswedding.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -618,6 +618,19 @@
       w.textContent = 'the forecast ' + when + ': ' + sky + ', ' +
         temp + ' degrees at five o’clock';
     }).catch(function () {});
+  })();
+
+  // The diary card, counted anonymously when taken.
+  (function () {
+    var dl = document.querySelector('#diary-line a');
+    if (!dl) return;
+    dl.addEventListener('click', function () {
+      try {
+        if (window.goatcounter && window.goatcounter.count) {
+          window.goatcounter.count({ path: 'diary-download', event: true });
+        }
+      } catch (e) {}
+    });
   })();
 
   // The cab drives the route as the map scrolls through the viewport.
