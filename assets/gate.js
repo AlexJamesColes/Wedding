@@ -3,28 +3,13 @@
 // Once admitted, a device stays admitted.
 (function () {
   var KEY = 'ca-gate';
-
-  // a quiet visitors' book: each admitted guest's visit is noted by name
-  // in GoatCounter as guest/Name. Fails silently if the counter is away.
-  function logVisit() {
-    try {
-      var who = localStorage.getItem('ca-guest');
-      if (!who) return;
-      var tries = 0;
-      (function send() {
-        if (window.goatcounter && window.goatcounter.count) {
-          window.goatcounter.count({ path: 'guest/' + who, title: 'Guest visit: ' + who, event: true });
-        } else if (++tries < 20) { setTimeout(send, 500); }
-      })();
-    } catch (e) {}
-  }
-  if (document.readyState === 'complete') { logVisit(); }
-  else { window.addEventListener('load', logVisit); }
-
-  try { if (localStorage.getItem(KEY) === '1') return; } catch (e) {}
   if (!(window.crypto && crypto.subtle && window.TextEncoder && window.Promise)) return;
 
   var SALT = 'C&A·MMXXVI·';
+  // The door book: every attempt at the door, admitted or refused, is sent
+  // with the typed name in the request BODY (never in a URL) to a private
+  // Formspree inbox. Empty until the form is registered; then it wakes.
+  var DOOR_LOG = '';
   var HASHES = {
   "00177737a4f16728168e8316807d4b377165a30716e3618eedbf1f4acc389098": 1, "0a5bfe991032d7f701a6cdf8f56fceae14faba558c480954d0152cc8b76beb4e": 1,
   "0f5197298e5af0d3b5dbe06db167b9a751f87837a03be860bafdcb28c37a7264": 1, "198432b013121c86ea52578c62fb0025a50c0a9c057246a6c45b16b5a5bad600": 1,
@@ -46,6 +31,78 @@
   "e9413a663ff32d72777b954517d8ae45d6e27085bc13dfd9c24d7cc2a4037968": 1, "e96a958a3a981c7c3f598d6187dcfa6701774eea84d566831a3915f6a4eaec5b": 1,
   "efe89bb98e77d23eee48713db23725c16f41d0305b9fc67695ec62b6ed949841": 1, "f9d1769c6fb807cc06a5401591ee533a902d2f2a9a5b71b8cd82153c6688cb38": 1
   };
+
+  function norm(s) {
+    s = s.toLowerCase();
+    try { s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) {}
+    return s.replace(/[^a-z]/g, '');
+  }
+  function sha(s) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(SALT + s)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+        return ('0' + b.toString(16)).slice(-2);
+      }).join('');
+    });
+  }
+  // resolves to the guest's matched fingerprint, or null if the name is unknown
+  function admitted(raw) {
+    var tokens = raw.trim().split(/\s+/).map(norm).filter(Boolean);
+    var candidates = [norm(raw)];
+    if (tokens.length >= 2) candidates.push(tokens[0] + tokens[tokens.length - 1]);
+    return Promise.all(candidates.map(sha)).then(function (hashes) {
+      for (var i = 0; i < hashes.length; i++) if (HASHES[hashes[i]] === 1) return hashes[i];
+      return null;
+    });
+  }
+
+  // the visitors' book. Each admitted guest is known to the counter only by
+  // a four-character mark cut from their fingerprint; no name rides in any
+  // URL. The couple hold the key. Fails silently if the counter is away.
+  function guestId() {
+    try {
+      var cached = localStorage.getItem('ca-guest-id');
+      if (cached) return Promise.resolve(cached);
+      var who = localStorage.getItem('ca-guest');
+      if (!who) return Promise.resolve(null);
+      return admitted(who).then(function (h) {
+        if (!h) return null;
+        var id = h.slice(0, 4);
+        try { localStorage.setItem('ca-guest-id', id); } catch (e) {}
+        return id;
+      });
+    } catch (e) { return Promise.resolve(null); }
+  }
+  function logVisit() {
+    guestId().then(function (id) {
+      if (!id) return;
+      var tries = 0;
+      (function send() {
+        if (window.goatcounter && window.goatcounter.count) {
+          window.goatcounter.count({ path: 'guest/' + id, event: true });
+        } else if (++tries < 20) { setTimeout(send, 500); }
+      })();
+    }).catch(function () {});
+  }
+  if (document.readyState === 'complete') { logVisit(); }
+  else { window.addEventListener('load', logVisit); }
+
+  // the door book: names travel only in the request body, and repeated
+  // knocking is noted at most five times a sitting
+  function doorLog(outcome, name) {
+    if (!DOOR_LOG) return;
+    try {
+      var n = parseInt(sessionStorage.getItem('ca-doorlog-n') || '0', 10);
+      if (n >= 5) return;
+      sessionStorage.setItem('ca-doorlog-n', String(n + 1));
+      var body = new FormData();
+      body.append('name', name);
+      body.append('outcome', outcome);
+      body.append('page', location.pathname);
+      fetch(DOOR_LOG, { method: 'POST', headers: { 'Accept': 'application/json' }, body: body }).catch(function () {});
+    } catch (e) {}
+  }
+
+  try { if (localStorage.getItem(KEY) === '1') return; } catch (e) {}
 
   document.documentElement.classList.add('gate-locked');
   var style = document.createElement('style');
@@ -82,27 +139,6 @@
     '  color: #6e665a; margin: 18px 0 0; min-height: 1.4em; text-wrap: balance; }';
   document.head.appendChild(style);
 
-  function norm(s) {
-    s = s.toLowerCase();
-    try { s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); } catch (e) {}
-    return s.replace(/[^a-z]/g, '');
-  }
-  function sha(s) {
-    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(SALT + s)).then(function (buf) {
-      return Array.prototype.map.call(new Uint8Array(buf), function (b) {
-        return ('0' + b.toString(16)).slice(-2);
-      }).join('');
-    });
-  }
-  function admitted(raw) {
-    var tokens = raw.trim().split(/\s+/).map(norm).filter(Boolean);
-    var candidates = [norm(raw)];
-    if (tokens.length >= 2) candidates.push(tokens[0] + tokens[tokens.length - 1]);
-    return Promise.all(candidates.map(sha)).then(function (hashes) {
-      return hashes.some(function (h) { return HASHES[h] === 1; });
-    });
-  }
-
   function build() {
     var gate = document.createElement('div');
     gate.className = 'gate';
@@ -129,11 +165,13 @@
       e.preventDefault();
       var raw = input.value;
       if (!raw.trim()) return;
-      admitted(raw).then(function (ok) {
-        if (ok) {
+      admitted(raw).then(function (match) {
+        if (match) {
+          var id = match.slice(0, 4);
           try {
             localStorage.setItem(KEY, '1');
             localStorage.setItem('ca-guest', raw.trim());
+            localStorage.setItem('ca-guest-id', id);
           } catch (err) {}
           var gn = document.getElementById('guest-name');
           if (gn && !gn.value) {
@@ -142,9 +180,10 @@
           }
           try {
             if (window.goatcounter && window.goatcounter.count) {
-              window.goatcounter.count({ path: 'door/' + raw.trim(), title: 'Admitted: ' + raw.trim(), event: true });
+              window.goatcounter.count({ path: 'door/' + id, event: true });
             }
           } catch (e2) {}
+          doorLog('admitted', raw.trim());
           msg.textContent = 'Do come in.';
           gate.querySelector('.gate-btn').disabled = true;
           setTimeout(function () {
@@ -159,6 +198,7 @@
             setTimeout(function () { gate.remove(); }, 800);
           }, 700);
         } else {
+          doorLog('refused', raw.trim());
           msg.textContent = 'We cannot find that name. Do try your full name, or ask Chelsey or Alex.';
           input.select();
         }
