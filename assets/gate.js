@@ -6,10 +6,12 @@
   if (!(window.crypto && crypto.subtle && window.TextEncoder && window.Promise)) return;
 
   var SALT = 'C&A·MMXXVI·';
-  // The door book: every attempt at the door, admitted or refused, is sent
-  // with the typed name in the request BODY (never in a URL) to a private
-  // Formspree inbox. Empty until the form is registered; then it wakes.
-  var DOOR_LOG = '';
+  // The visitors' book and the refusals book, both private Formspree
+  // inboxes. Names travel only in request BODIES, never in a URL.
+  // Guest visits are noted once per device per day to spare the inbox;
+  // the refusals book sleeps until its form is registered.
+  var VISIT_LOG = 'https://formspree.io/f/mljrrweg';
+  var REFUSED_LOG = '';
   var HASHES = {
   "00177737a4f16728168e8316807d4b377165a30716e3618eedbf1f4acc389098": 1, "0a5bfe991032d7f701a6cdf8f56fceae14faba558c480954d0152cc8b76beb4e": 1,
   "0f5197298e5af0d3b5dbe06db167b9a751f87837a03be860bafdcb28c37a7264": 1, "198432b013121c86ea52578c62fb0025a50c0a9c057246a6c45b16b5a5bad600": 1,
@@ -72,7 +74,27 @@
       });
     } catch (e) { return Promise.resolve(null); }
   }
+  function post(endpoint, fields) {
+    try {
+      var body = new FormData();
+      for (var k in fields) body.append(k, fields[k]);
+      fetch(endpoint, { method: 'POST', headers: { 'Accept': 'application/json' }, body: body }).catch(function () {});
+    } catch (e) {}
+  }
+  // the visitors' book: a guest's first call of the day, by name, in the body
+  function visitLog(note) {
+    if (!VISIT_LOG) return;
+    try {
+      var who = localStorage.getItem('ca-guest');
+      if (!who) return;
+      var today = new Date().toISOString().slice(0, 10);
+      if (localStorage.getItem('ca-visitlog') === today) return;
+      localStorage.setItem('ca-visitlog', today);
+      post(VISIT_LOG, { name: who, note: note, page: location.pathname });
+    } catch (e) {}
+  }
   function logVisit() {
+    visitLog('visit');
     guestId().then(function (id) {
       if (!id) return;
       var tries = 0;
@@ -86,19 +108,15 @@
   if (document.readyState === 'complete') { logVisit(); }
   else { window.addEventListener('load', logVisit); }
 
-  // the door book: names travel only in the request body, and repeated
+  // the refusals book: names travel only in the request body, and repeated
   // knocking is noted at most five times a sitting
-  function doorLog(outcome, name) {
-    if (!DOOR_LOG) return;
+  function refusedLog(name) {
+    if (!REFUSED_LOG) return;
     try {
       var n = parseInt(sessionStorage.getItem('ca-doorlog-n') || '0', 10);
       if (n >= 5) return;
       sessionStorage.setItem('ca-doorlog-n', String(n + 1));
-      var body = new FormData();
-      body.append('name', name);
-      body.append('outcome', outcome);
-      body.append('page', location.pathname);
-      fetch(DOOR_LOG, { method: 'POST', headers: { 'Accept': 'application/json' }, body: body }).catch(function () {});
+      post(REFUSED_LOG, { name: name, outcome: 'refused', page: location.pathname });
     } catch (e) {}
   }
 
@@ -183,7 +201,7 @@
               window.goatcounter.count({ path: 'door/' + id, event: true });
             }
           } catch (e2) {}
-          doorLog('admitted', raw.trim());
+          visitLog('admitted at the door');
           msg.textContent = 'Do come in.';
           gate.querySelector('.gate-btn').disabled = true;
           setTimeout(function () {
@@ -198,7 +216,7 @@
             setTimeout(function () { gate.remove(); }, 800);
           }, 700);
         } else {
-          doorLog('refused', raw.trim());
+          refusedLog(raw.trim());
           msg.textContent = 'We cannot find that name. Do try your full name, or ask Chelsey or Alex.';
           input.select();
         }
