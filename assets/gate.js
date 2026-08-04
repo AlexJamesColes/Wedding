@@ -11,7 +11,7 @@
   // Guest visits are noted once per device per day to spare the inbox;
   // the refusals book sleeps until its form is registered.
   var VISIT_LOG = 'https://formspree.io/f/mljrrweg';
-  var REFUSED_LOG = '';
+  var REFUSED_LOG = 'https://formspree.io/f/xjybbevn';
   var HASHES = {
   "00177737a4f16728168e8316807d4b377165a30716e3618eedbf1f4acc389098": 1, "0a5bfe991032d7f701a6cdf8f56fceae14faba558c480954d0152cc8b76beb4e": 1,
   "0f5197298e5af0d3b5dbe06db167b9a751f87837a03be860bafdcb28c37a7264": 1, "198432b013121c86ea52578c62fb0025a50c0a9c057246a6c45b16b5a5bad600": 1,
@@ -81,17 +81,21 @@
       fetch(endpoint, { method: 'POST', headers: { 'Accept': 'application/json' }, body: body }).catch(function () {});
     } catch (e) {}
   }
-  // the visitors' book: a guest's first call of the day, by name, in the body
+  // the visitors' book: a guest's first call of the day, by name, in the
+  // body. The couple, known here only by their marks, do not sign their
+  // own book; the inbox is spared for the guests.
+  var COUPLE = { "d3fa": 1, "35df": 1, "7cb3": 1, "0f51": 1 };
   function visitLog(note) {
     if (!VISIT_LOG) return;
-    try {
+    guestId().then(function (id) {
+      if (!id || COUPLE[id]) return;
       var who = localStorage.getItem('ca-guest');
       if (!who) return;
       var today = new Date().toISOString().slice(0, 10);
       if (localStorage.getItem('ca-visitlog') === today) return;
       localStorage.setItem('ca-visitlog', today);
       post(VISIT_LOG, { name: who, note: note, page: location.pathname });
-    } catch (e) {}
+    }).catch(function () {});
   }
   function logVisit() {
     visitLog('visit');
