@@ -128,7 +128,9 @@
     } catch (e) {}
   }
 
-  try { if (localStorage.getItem(KEY) === '1') return; } catch (e) {}
+  // devices admitted before the door kept names are asked once more,
+  // so the visitors' book knows everyone thereafter
+  try { if (localStorage.getItem(KEY) === '1' && localStorage.getItem('ca-guest')) return; } catch (e) {}
 
   document.documentElement.classList.add('gate-locked');
   var style = document.createElement('style');
