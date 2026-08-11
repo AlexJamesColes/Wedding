@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Bar — Chelsey &amp; Alex</title>
+<style>
+  :root{
+    --paper:#FBFAF6;
+    --ink:#1C1A17;
+    --keyline:#B0A488;
+    --card-w:5in;
+    --card-h:7in;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    background:#2A2723;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding:32px 16px;
+    font-family:'Didot','Bodoni 72','Bodoni MT',Georgia,serif;
+  }
+
+  .stage{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+  }
+
+  .card{
+    width:var(--card-w);
+    height:var(--card-h);
+    background:var(--paper);
+    border-radius:50%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:0.62in 0.78in;
+    position:relative;
+    box-shadow:0 18px 50px rgba(0,0,0,.45);
+  }
+
+  /* engraved keyline, inset and following the oval */
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:0.24in;
+    border:0.6pt solid var(--keyline);
+    border-radius:50%;
+    pointer-events:none;
+  }
+
+  .script{
+    font-family:'Snell Roundhand','Edwardian Script ITC','Apple Chancery',cursive;
+    font-size:40pt;
+    line-height:1;
+    color:var(--ink);
+    font-weight:400;
+    margin-bottom:20pt;
+  }
+
+  .section{ margin-bottom:15pt; text-align:center; }
+  .section:last-of-type{ margin-bottom:0; }
+
+  h2{
+    font-size:8pt;
+    font-weight:400;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:7pt;
+    text-indent:.26em; /* optical centring against the tracking */
+  }
+
+  li{
+    list-style:none;
+    font-size:10.5pt;
+    line-height:1.42;
+    color:var(--ink);
+    letter-spacing:.012em;
+  }
+
+  .rule{
+    width:34pt;
+    height:0;
+    border-top:0.6pt solid var(--keyline);
+    margin:17pt 0 12pt;
+  }
+
+  .colophon{
+    font-size:7pt;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--ink);
+    text-indent:.24em;
+  }
+
+  .caption{
+    color:#B7AE9E;
+    font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-align:center;
+    max-width:5in;
+    line-height:1.5;
+  }
+
+  @media print{
+    @page{ size:5in 7in; margin:0; }
+    body{ background:none; padding:0; display:block; }
+    .stage{ gap:0; }
+    .caption{ display:none; }
+    .card{
+      box-shadow:none;
+      width:5in; height:7in;
+      border-radius:50%;
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="card">
+      <div class="script">The&nbsp;Bar</div>
+
+      <div class="section">
+        <h2>Cocktails</h2>
+        <ul>
+          <li>Picante de la Casa</li>
+          <li>Hugo Spritz</li>
+          <li>Old Fashioned</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Wine</h2>
+        <ul>
+          <li>Prosecco, Luna Argenta</li>
+          <li>La Croix Belle, Côtes de Thongue</li>
+          <li>Lady A, Provence</li>
+          <li>Itinera Montepulciano d&rsquo;Abruzzo</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Beer</h2>
+        <ul>
+          <li>Peroni Nastro Azzurro</li>
+          <li>Camden Hells</li>
+          <li>Lucky Saint 0.5%</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Without Alcohol</h2>
+        <ul>
+          <li>Elderflower Fizz</li>
+          <li>Noughty Sparkling Chardonnay</li>
+        </ul>
+      </div>
+
+      <div class="rule"></div>
+      <div class="colophon">C &amp; A &middot; 14 &middot; VIII &middot; MMXXVI</div>
+    </div>
+
+    <p class="caption">Print at 100% (no scaling) on 5×7in uncoated card, then trim to the oval.</p>
+  </div>
+</body>
+</html>
