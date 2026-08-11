@@ -34,7 +34,7 @@
     background: #f7f4ec;                 /* screen only, cleared for print */
     color: var(--ink);
     border-radius: 50%;
-    padding: 1.9cm 2.1cm;
+    padding: 1.6cm 1.9cm;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; position: relative;
     box-shadow: 0 16px 44px rgba(0,0,0,.28);
@@ -46,26 +46,30 @@
   }
 
   .title {
-    font-family: var(--script); font-size: 46pt; line-height: 1.05;
-    margin-bottom: 24pt;
+    font-family: var(--script); font-size: 40pt; line-height: 1.05;
+    margin-bottom: 18pt;
   }
 
-  .section { margin-bottom: 22pt; }
+  .section { margin-bottom: 14pt; }
   .section:last-of-type { margin-bottom: 0; }
 
   h2 {
     font-family: var(--sc); font-weight: 400;
-    font-size: 14pt; letter-spacing: .1em; text-indent: .1em;
-    margin-bottom: 8pt;
+    font-size: 12.5pt; letter-spacing: .1em; text-indent: .1em;
+    margin-bottom: 6pt;
   }
 
   li {
     list-style: none; font-style: italic;
-    font-size: 11.5pt; line-height: 1.42;
+    font-size: 11pt; line-height: 1.34;
+  }
+  ul.two {
+    display: grid; grid-template-rows: repeat(4, auto); grid-auto-flow: column;
+    column-gap: 0.9cm; justify-content: center;
   }
 
   .mark {
-    margin-top: 22pt;
+    margin-top: 16pt;
     font-family: var(--sc); font-size: 9pt;
     letter-spacing: .3em; text-indent: .3em;
   }
@@ -94,6 +98,20 @@
         <li>Picante de la Casa</li>
         <li>Hugo Spritz</li>
         <li>Old Fashioned</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Spirits</h2>
+      <ul class="two">
+        <li>Bombay Sapphire</li>
+        <li>42 Below</li>
+        <li>Bacardi 8</li>
+        <li>Cazadores Blanco</li>
+        <li>Johnnie Walker Black Label</li>
+        <li>Nikka From The Barrel</li>
+        <li>Woodford Reserve</li>
+        <li>R&eacute;my Martin VSOP</li>
       </ul>
     </div>
 
