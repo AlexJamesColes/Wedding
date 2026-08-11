@@ -63,10 +63,9 @@
     list-style: none; font-style: italic;
     font-size: 11pt; line-height: 1.34;
   }
-  ul.two {
-    display: grid; grid-template-rows: repeat(4, auto); grid-auto-flow: column;
-    column-gap: 0.9cm; justify-content: center;
-  }
+  table.two { margin: 0 auto; border-collapse: collapse; }
+  table.two td { padding: 0 0.45cm; vertical-align: top; text-align: center; }
+  table.two div { font-style: italic; font-size: 11pt; line-height: 1.34; }
 
   .note {
     font-style: italic; font-size: 9.5pt; color: #6e665a;
@@ -107,16 +106,22 @@
 
     <div class="section">
       <h2>Spirits</h2>
-      <ul class="two">
-        <li>Bombay Sapphire</li>
-        <li>42 Below</li>
-        <li>Bacardi 8</li>
-        <li>Cazadores Blanco</li>
-        <li>Johnnie Walker Black Label</li>
-        <li>Nikka From The Barrel</li>
-        <li>Woodford Reserve</li>
-        <li>R&eacute;my Martin VSOP</li>
-      </ul>
+      <table class="two">
+        <tr>
+          <td>
+            <div>Bombay Sapphire</div>
+            <div>42 Below</div>
+            <div>Bacardi 8</div>
+            <div>Cazadores Blanco</div>
+          </td>
+          <td>
+            <div>Johnnie Walker Black Label</div>
+            <div>Nikka From The Barrel</div>
+            <div>Woodford Reserve</div>
+            <div>R&eacute;my Martin VSOP</div>
+          </td>
+        </tr>
+      </table>
       <p class="note">with mixers, as you like them</p>
     </div>
 
