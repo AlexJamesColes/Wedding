@@ -71,6 +71,12 @@
     font-style: italic; font-size: 9pt; color: #6e665a;
     margin-top: 6pt;
   }
+  /* the trim line: the card's true 13 by 21 edge. Cut just inside it. */
+  .card::after {
+    content: ""; position: absolute; inset: 0;
+    border: 0.4pt dashed rgba(29, 26, 22, .38); border-radius: 50%;
+    pointer-events: none;
+  }
   .mark {
     margin-top: 16pt;
     font-family: var(--sc); font-size: 9pt;
@@ -83,10 +89,10 @@
   }
 
   @media print {
-    @page { size: 13cm 21cm; margin: 0; }
+    @page { size: A4; margin: 0; }
     body { background: none; padding: 0; display: block; gap: 0; }
     .caption { display: none; }
-    .card { background: none; box-shadow: none; }   /* the paper does the rest */
+    .card { background: none; box-shadow: none; margin: 4.35cm auto 0; }   /* the paper does the rest */
   }
 </style>
 </head>
@@ -155,8 +161,9 @@
     <p class="mark">C &amp; A</p>
   </div>
 
-  <p class="caption">Print at 100%, no scaling, on 13 by 21 centimetre stock. Leave background
-  graphics switched off so the card prints as ink alone and your paper shows through.</p>
+  <p class="caption">Print at 100%, no scaling, on A4 card, background graphics switched off. Cut along the dashed
+  oval, blade just inside it, and the card measures 13 by 21 centimetres. The fine solid line within is
+  engraving and stays on the card.</p>
 
 </body>
 </html>
