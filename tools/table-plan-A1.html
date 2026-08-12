@@ -40,7 +40,10 @@
     letter-spacing: .12em; text-indent: .12em; margin: 0 0 33.98pt;
   }
   .sides { display: flex; align-items: stretch; min-height: 481.38pt; }
-  .side { width: 14.158cm; padding: 0 0.991cm; }
+  .side {
+    width: 14.158cm; padding: 0 0.991cm; height: 481.38pt;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
   .side p { margin: 0; font-style: italic; font-size: 35.40pt; line-height: 1.7; white-space: nowrap; }
   .rule {                                  /* the table itself, seen from above */
     width: 0.963cm; align-self: stretch; margin: 5.66pt 0;

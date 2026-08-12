@@ -103,7 +103,10 @@ def build(label="A4", W=29.7, H=21.0):
     letter-spacing: .12em; text-indent: .12em; margin: 0 0 %(headGap)s;
   }
   .sides { display: flex; align-items: stretch; min-height: %(sidesH)s; }
-  .side { width: %(colW)s; padding: 0 %(colPad)s; }
+  .side {
+    width: %(colW)s; padding: 0 %(colPad)s; height: %(sidesH)s;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
   .side p { margin: 0; font-style: italic; font-size: %(name)s; line-height: 1.7; white-space: nowrap; }
   .rule {                                  /* the table itself, seen from above */
     width: %(ruleW)s; align-self: stretch; margin: %(ruleM)s 0;
