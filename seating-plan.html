@@ -130,8 +130,9 @@
   body.show-plate .plan-wrap { display: none; }
   body.show-plate .plate { display: block; }
   .plate-sheet {
-    width: 29.7cm; min-height: 21cm; margin: 30px auto; padding: 2cm 2.4cm 1.8cm;
+    width: 29.7cm; height: 21cm; margin: 30px auto; padding: 2cm 2.4cm 1.8cm;
     background: var(--paper); color: var(--ink); position: relative; text-align: center;
+    display: flex; flex-direction: column; justify-content: center;
     box-shadow: 0 16px 44px rgba(0,0,0,.22);
   }
   .plate-sheet::before {
@@ -170,7 +171,6 @@
     body.show-plate .plate-note { display: none; }
     body.show-plate .plate-sheet {
       margin: 0; box-shadow: none; background: none;   /* the paper supplies the ground */
-      width: auto; min-height: 0;
     }
     @page { size: A4 landscape; margin: 0; }
     .plan-wrap { padding-top: 20px; }
