@@ -124,8 +124,55 @@
   .plan-bar button.ghost { background: transparent; color: var(--ink); }
   .plan-msg { margin: 12px 0 0; font-style: italic; font-size: 13.5px; color: var(--muted); min-height: 1.2em; }
 
+
+  /* The plate for the Saloon door: the plan as engraved stationery */
+  .plate { display: none; }
+  body.show-plate .plan-wrap { display: none; }
+  body.show-plate .plate { display: block; }
+  .plate-sheet {
+    width: 29.7cm; min-height: 21cm; margin: 30px auto; padding: 2cm 2.4cm 1.8cm;
+    background: var(--paper); color: var(--ink); position: relative; text-align: center;
+    box-shadow: 0 16px 44px rgba(0,0,0,.22);
+  }
+  .plate-sheet::before {
+    content: ""; position: absolute; inset: 1.1cm;
+    border: 0.6pt solid rgba(29,26,22,.4); pointer-events: none;
+  }
+  .plate-title {
+    font-family: "Snell Roundhand", "Edwardian Script ITC", "Apple Chancery", cursive;
+    font-size: 42pt; line-height: 1.05; margin: 0;
+  }
+  .plate-orn { margin: 16pt auto 0; width: 96pt; display: flex; align-items: center; gap: 8pt; }
+  .plate-orn::before, .plate-orn::after { content: ""; flex: 1; height: 0.6pt; background: var(--ink); opacity: .3; }
+  .plate-orn span { width: 4pt; height: 4pt; background: var(--ink); opacity: .65; transform: rotate(45deg); }
+  .plate-tables { display: flex; justify-content: center; gap: 2.4cm; margin-top: 22pt; }
+  .plate-table h3 {
+    font-family: var(--sc); font-weight: 400; font-size: 13.5pt;
+    letter-spacing: .12em; text-indent: .12em; margin: 0 0 12pt;
+  }
+  .plate-sides { display: flex; align-items: stretch; }
+  .plate-side { width: 5cm; padding: 0 0.35cm; }
+  .plate-rule {                       /* the table itself, seen from above */
+    width: 0.34cm; align-self: stretch; margin: 2pt 0;
+    border-left: 0.6pt solid rgba(29,26,22,.5);
+    border-right: 0.6pt solid rgba(29,26,22,.5);
+    background: rgba(29,26,22,.03);
+  }
+  .plate-side p { margin: 0; font-style: italic; font-size: 12.5pt; line-height: 1.7; white-space: nowrap; }
+  .plate-mark {
+    font-family: var(--sc); font-size: 9.5pt; letter-spacing: .3em; text-indent: .3em;
+    color: var(--muted); margin: 30pt 0 0;
+  }
+  .plate-note { font-style: italic; font-size: 13px; color: var(--muted); text-align: center; margin: 0 0 26px; }
+
   @media print {
     .tray, .tray-label, .panel, .plan-bar, .nav, body::after, .plan-sub, .count-tabs { display: none !important; }
+    body.show-plate .plate-note { display: none; }
+    body.show-plate .plate-sheet {
+      margin: 0; box-shadow: none; background: none;   /* the paper supplies the ground */
+      width: auto; min-height: 0;
+    }
+    @page { size: A4 landscape; margin: 0; }
     .plan-wrap { padding-top: 20px; }
     .room { gap: 40px; }
     .print-context { display: block; }
@@ -270,11 +317,23 @@
   <div class="room-ends"><p class="end-label">The door</p></div>
 
   <div class="plan-bar">
-    <button id="share">Copy link to this plan</button>
+    <button id="plate-btn">The printed plate</button>
+    <button id="share" class="ghost">Copy link to this plan</button>
     <button id="clear" class="ghost">Clear all seats</button>
     <p class="plan-msg" id="msg"></p>
   </div>
 </main>
+
+<div class="plate" id="plate">
+  <p class="plate-note">This is the plate for the Saloon door. Print at 100% on A4,
+  background graphics off, and the paper carries the ground.</p>
+  <div class="plate-sheet">
+    <p class="plate-title">The Tables</p>
+    <div class="plate-orn"><span></span></div>
+    <div class="plate-tables" id="plate-tables"></div>
+    <p class="plate-mark">C &amp; A</p>
+  </div>
+</div>
 
 <div class="panel" id="panel" hidden>
   <p class="panel-name" id="p-name"></p>
@@ -677,6 +736,50 @@
   });
   layoutTabs.forEach(function (b) {
     b.addEventListener("click", function () { setScenario(guestCount, parseInt(b.dataset.l, 10)); });
+  });
+
+  // ── the printed plate ──
+  function renderPlate() {
+    var host = document.getElementById("plate-tables");
+    host.innerHTML = "";
+    for (var tt = 0; tt < layoutTables; tt++) {
+      var block = document.createElement("div");
+      block.className = "plate-table";
+      var h = document.createElement("h3");
+      h.textContent = layoutTables === 1 ? "The Long Table" : (tt === 0 ? "Table One" : "Table Two");
+      block.appendChild(h);
+
+      var sides = document.createElement("div");
+      sides.className = "plate-sides";
+      var per = sideAt(tt), start = tableStart(tt), total = seatsAt(tt);
+      var left = document.createElement("div"); left.className = "plate-side";
+      var bar = document.createElement("div"); bar.className = "plate-rule";
+      var right = document.createElement("div"); right.className = "plate-side";
+      var any = false;
+      for (var s = 0; s < total; s++) {
+        var g = seats[start + s];
+        if (g === null) continue;
+        any = true;
+        var line = document.createElement("p");
+        line.textContent = guestName(g);
+        (s < per ? left : right).appendChild(line);
+      }
+      if (!any) {
+        var none = document.createElement("p");
+        none.textContent = "no one seated yet";
+        left.appendChild(none);
+      }
+      sides.appendChild(left); sides.appendChild(bar); sides.appendChild(right);
+      block.appendChild(sides);
+      host.appendChild(block);
+    }
+  }
+
+  var plateBtn = document.getElementById("plate-btn");
+  plateBtn.addEventListener("click", function () {
+    var showing = document.body.classList.toggle("show-plate");
+    if (showing) { renderPlate(); window.scrollTo(0, 0); }
+    plateBtn.textContent = showing ? "Back to the plan" : "The printed plate";
   });
 
   restore();

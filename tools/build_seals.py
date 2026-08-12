@@ -104,41 +104,47 @@ def ampersand(S=320):
 
 
 def emboss_seal(S=480, date_band=False):
-    """Blind-emboss variant: paper-coloured seal with baked light/shadow."""
+    """Blind-emboss variant: paper-coloured seal with baked light/shadow.
+
+    The design is inset by P so the apex diamond, which straddles the top of
+    the ring, and the offset highlight both stay inside the canvas.
+    """
+    P = int(S * 0.03)
     H = int(S * 1.14) if date_band else S
-    mask = Image.new("L", (S, H), 0)
+    W, HH = S + 2 * P, H + 2 * P
+    mask = Image.new("L", (W, HH), 0)
     d = ImageDraw.Draw(mask)
     m = S * 0.045
-    d.ellipse([m, m * 0.75, S - m, S - m * 0.75], outline=255, width=max(1, S // 60))
+    d.ellipse([P + m, P + m * 0.75, P + S - m, P + S - m * 0.75], outline=255, width=max(1, S // 60))
     m2 = S * 0.085
-    d.ellipse([m2, m2 * 0.78, S - m2, S - m2 * 0.78], outline=255, width=max(1, S // 110))
-    r = S * 0.045; cy = m * 0.75
-    mask.paste(0, (int(S / 2 - r * 1.6), int(cy - r * 1.4), int(S / 2 + r * 1.6), int(cy + r * 1.4)))
-    d.polygon([(S / 2, cy - r), (S / 2 + r, cy), (S / 2, cy + r), (S / 2 - r, cy)], fill=255)
+    d.ellipse([P + m2, P + m2 * 0.78, P + S - m2, P + S - m2 * 0.78], outline=255, width=max(1, S // 110))
+    r = S * 0.045; cy = P + m * 0.75
+    mask.paste(0, (int(P + S / 2 - r * 1.6), int(cy - r * 1.4), int(P + S / 2 + r * 1.6), int(cy + r * 1.4)))
+    d.polygon([(P + S / 2, cy - r), (P + S / 2 + r, cy), (P + S / 2, cy + r), (P + S / 2 - r, cy)], fill=255)
     lf = ImageFont.truetype(DID, int(S * 0.24), 0)
     af = ImageFont.truetype(DID, int(S * 0.42), 1)
-    y = S * 0.645
-    for text, font, cx in [("&", af, S / 2), ("C", lf, S * C_X), ("A", lf, S * A_X)]:
+    y = P + S * 0.645
+    for text, font, cx in [("&", af, P + S / 2), ("C", lf, P + S * C_X), ("A", lf, P + S * A_X)]:
         b = d.textbbox((0, 0), text, font=font)
         asc = font.getmetrics()[0]
         d.text((cx - (b[2] - b[0]) / 2 - b[0], y - asc), text, font=font, fill=255)
     if date_band:
         df = ImageFont.truetype(DID, int(S * 0.052), 0)
-        text = "XIV · AUG · MMXXVI"
+        text = "XIV \u00b7 AUG \u00b7 MMXXVI"
         widths = [d.textlength(c, font=df) for c in text]
         total = sum(widths) + S * 0.018 * (len(text) - 1)
-        x = S / 2 - total / 2
+        x = P + S / 2 - total / 2
         for c, w in zip(text, widths):
-            d.text((x, S * 1.035), c, font=df, fill=230)
+            d.text((x, P + S * 1.035), c, font=df, fill=230)
             x += w + S * 0.018
-    out = Image.new("RGBA", (S, H), CLEAR)
+    out = Image.new("RGBA", (W, HH), CLEAR)
     sh = max(2, S // 110)
-    dark = Image.new("RGBA", (S, H), (29, 26, 22, 70))
-    light = Image.new("RGBA", (S, H), (255, 253, 246, 190))
-    body = Image.new("RGBA", (S, H), (233, 228, 213, 255))
-    shifted = Image.new("L", (S, H), 0); shifted.paste(mask, (sh, sh))
+    dark = Image.new("RGBA", (W, HH), (29, 26, 22, 70))
+    light = Image.new("RGBA", (W, HH), (255, 253, 246, 190))
+    body = Image.new("RGBA", (W, HH), (233, 228, 213, 255))
+    shifted = Image.new("L", (W, HH), 0); shifted.paste(mask, (sh, sh))
     out.paste(dark, (0, 0), shifted)
-    shifted = Image.new("L", (S, H), 0); shifted.paste(mask, (-sh, -sh))
+    shifted = Image.new("L", (W, HH), 0); shifted.paste(mask, (-sh, -sh))
     out.paste(light, (0, 0), shifted)
     out.paste(body, (0, 0), mask)
     return out
