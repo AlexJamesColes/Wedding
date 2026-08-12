@@ -12,13 +12,13 @@ CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 # each table, each side, in seat order from the fireplace end
 TABLES = [
-    ("Table One", [
+    ("Oria", [
         ["Pierre Albertyn", "Karen Coles", "Jake Virgo", "Alicia Connelly-Lopez",
          "Ross Albertyn", "Alara Guven", "Sam Houghton"],
         ["Jane Albertyn", "Jeremy Coles", "Emily Virgo", "Joel Connelly",
          "Georgie Albertyn", "Max Taylor", "Brittany Morel"],
     ]),
-    ("Table Two", [
+    ("Marylebone", [
         ["Chiara Iorizzo", "James Steffens", "Ellie Dickens", "Thomas Bentley",
          "Monique Albertyn", "Scott Albertyn", "Sonam Mod", "Chris McPetrie"],
         ["Omkar Harmalkar", "Janine Weixler", "Ben Steffens", "Alex Coles",
@@ -143,10 +143,10 @@ def build(label="A4", W=29.7, H=21.0):
        "head": pt(13.5), "headGap": pt(12), "colW": cm(5), "colPad": cm(0.35),
        "name": pt(12.5), "ruleW": cm(0.34), "ruleM": pt(2), "sidesH": pt(8 * 12.5 * 1.7), "mark": pt(9.5), "markTop": pt(26)}
 
-    (HERE / ("table-plan-%s.html" % label)).write_text(html)
-    pdf = HERE / ("The Tables, %s landscape, spaced v2.pdf" % label)
+    (HERE / ("table-plan-named-%s.html" % label)).write_text(html)
+    pdf = HERE / ("The Tables, %s, named.pdf" % label)
     subprocess.run([CHROME, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-                    f"--print-to-pdf={pdf}", f"file://{HERE / ('table-plan-%s.html' % label)}"],
+                    f"--print-to-pdf={pdf}", f"file://{HERE / ('table-plan-named-%s.html' % label)}"],
                    capture_output=True, check=True)
     print("wrote", pdf.name)
 
