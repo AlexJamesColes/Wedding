@@ -18,41 +18,41 @@
     font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
   }
   .sheet {
-    width: 29.7cm; height: 21cm; margin: 0 auto; padding: 2cm 2.4cm 1.8cm;
+    width: 29.700cm; height: 21.000cm; margin: 0 auto; padding: 2.000cm 2.400cm 1.800cm;
     background: #f7f4ec; position: relative; text-align: center;
     display: flex; flex-direction: column; justify-content: center;
     box-shadow: 0 16px 44px rgba(0,0,0,.22);
   }
   .sheet::before {
-    content: ""; position: absolute; inset: 1.1cm;
-    border: 0.6pt solid rgba(29,26,22,.4); pointer-events: none;
+    content: ""; position: absolute; inset: 1.100cm;
+    border: 0.60pt solid rgba(29,26,22,.4); pointer-events: none;
   }
   .title {
     font-family: "Snell Roundhand", "Edwardian Script ITC", "Apple Chancery", cursive;
-    font-size: 42pt; line-height: 1.05;
+    font-size: 42.00pt; line-height: 1.05;
   }
-  .orn { margin: 16pt auto 0; width: 96pt; display: flex; align-items: center; gap: 8pt; }
-  .orn::before, .orn::after { content: ""; flex: 1; height: 0.6pt; background: var(--ink); opacity: .3; }
-  .orn span { width: 4pt; height: 4pt; background: var(--ink); opacity: .65; transform: rotate(45deg); }
-  .tables { display: flex; justify-content: center; gap: 2.4cm; margin-top: 24pt; }
+  .orn { margin: 16.00pt auto 0; width: 96.00pt; display: flex; align-items: center; gap: 8.00pt; }
+  .orn::before, .orn::after { content: ""; flex: 1; height: 0.60pt; background: var(--ink); opacity: .3; }
+  .orn span { width: 4.00pt; height: 4.00pt; background: var(--ink); opacity: .65; transform: rotate(45deg); }
+  .tables { display: flex; justify-content: center; gap: 2.400cm; margin-top: 24.00pt; }
   h2 {
-    font-family: "Cormorant SC", serif; font-weight: 400; font-size: 13.5pt;
-    letter-spacing: .12em; text-indent: .12em; margin: 0 0 12pt;
+    font-family: "Cormorant SC", serif; font-weight: 400; font-size: 13.50pt;
+    letter-spacing: .12em; text-indent: .12em; margin: 0 0 12.00pt;
   }
-  .sides { display: flex; align-items: stretch; }
-  .side { width: 5cm; padding: 0 0.35cm; }
-  .side p { margin: 0; font-style: italic; font-size: 12.5pt; line-height: 1.7; white-space: nowrap; }
+  .sides { display: flex; align-items: stretch; min-height: 170.00pt; }
+  .side { width: 5.000cm; padding: 0 0.350cm; }
+  .side p { margin: 0; font-style: italic; font-size: 12.50pt; line-height: 1.7; white-space: nowrap; }
   .rule {                                  /* the table itself, seen from above */
-    width: 0.34cm; align-self: stretch; margin: 2pt 0;
-    border-left: 0.6pt solid rgba(29,26,22,.5);
-    border-right: 0.6pt solid rgba(29,26,22,.5);
+    width: 0.340cm; align-self: stretch; margin: 2.00pt 0;
+    border-left: 0.60pt solid rgba(29,26,22,.5);
+    border-right: 0.60pt solid rgba(29,26,22,.5);
   }
   .mark {
-    font-family: "Cormorant SC", serif; font-size: 9.5pt;
-    letter-spacing: .3em; text-indent: .3em; color: #6e665a; margin: 26pt 0 0;
+    font-family: "Cormorant SC", serif; font-size: 9.50pt;
+    letter-spacing: .3em; text-indent: .3em; color: #6e665a; margin: 26.00pt 0 0;
   }
   @media print {
-    @page { size: A4 landscape; margin: 0; }
+    @page { size: 29.700cm 21.000cm; margin: 0; }
     body { background: none; padding: 0; }
     .sheet { margin: 0; box-shadow: none; background: none; }
   }

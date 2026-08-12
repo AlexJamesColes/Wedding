@@ -39,7 +39,16 @@ def faces():
     return out
 
 
-def build():
+SHEETS = [                 # landscape, in centimetres
+    ("A4", 29.7, 21.0),
+    ("A3", 42.0, 29.7),
+    ("A1", 84.1, 59.4),
+    ("A0", 118.9, 84.1),
+]
+
+
+def build(label="A4", W=29.7, H=21.0):
+    k = W / 29.7           # A4 landscape is the drawing; the rest is the same, larger
     f = faces()
     blocks = []
     for name, sides in TABLES:
@@ -50,6 +59,8 @@ def build():
                       '</div></div>' % (name, cols[:len(cols)//2] and
                                         cols.replace('</div><div class="side">',
                                                      '</div><div class="rule"></div><div class="side">')))
+    def cm(v): return "%.3fcm" % (v * k)
+    def pt(v): return "%.2fpt" % (v * k)
     html = """<!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -70,41 +81,41 @@ def build():
     font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
   }
   .sheet {
-    width: 29.7cm; height: 21cm; margin: 0 auto; padding: 2cm 2.4cm 1.8cm;
+    width: %(W)s; height: %(H)s; margin: 0 auto; padding: %(padT)s %(padX)s %(padB)s;
     background: #f7f4ec; position: relative; text-align: center;
     display: flex; flex-direction: column; justify-content: center;
     box-shadow: 0 16px 44px rgba(0,0,0,.22);
   }
   .sheet::before {
-    content: ""; position: absolute; inset: 1.1cm;
-    border: 0.6pt solid rgba(29,26,22,.4); pointer-events: none;
+    content: ""; position: absolute; inset: %(inset)s;
+    border: %(hair)s solid rgba(29,26,22,.4); pointer-events: none;
   }
   .title {
     font-family: "Snell Roundhand", "Edwardian Script ITC", "Apple Chancery", cursive;
-    font-size: 42pt; line-height: 1.05;
+    font-size: %(title)s; line-height: 1.05;
   }
-  .orn { margin: 16pt auto 0; width: 96pt; display: flex; align-items: center; gap: 8pt; }
-  .orn::before, .orn::after { content: ""; flex: 1; height: 0.6pt; background: var(--ink); opacity: .3; }
-  .orn span { width: 4pt; height: 4pt; background: var(--ink); opacity: .65; transform: rotate(45deg); }
-  .tables { display: flex; justify-content: center; gap: 2.4cm; margin-top: 24pt; }
+  .orn { margin: %(ornTop)s auto 0; width: %(ornW)s; display: flex; align-items: center; gap: %(ornGap)s; }
+  .orn::before, .orn::after { content: ""; flex: 1; height: %(hair)s; background: var(--ink); opacity: .3; }
+  .orn span { width: %(diamond)s; height: %(diamond)s; background: var(--ink); opacity: .65; transform: rotate(45deg); }
+  .tables { display: flex; justify-content: center; gap: %(tableGap)s; margin-top: %(tablesTop)s; }
   h2 {
-    font-family: "Cormorant SC", serif; font-weight: 400; font-size: 13.5pt;
-    letter-spacing: .12em; text-indent: .12em; margin: 0 0 12pt;
+    font-family: "Cormorant SC", serif; font-weight: 400; font-size: %(head)s;
+    letter-spacing: .12em; text-indent: .12em; margin: 0 0 %(headGap)s;
   }
-  .sides { display: flex; align-items: stretch; }
-  .side { width: 5cm; padding: 0 0.35cm; }
-  .side p { margin: 0; font-style: italic; font-size: 12.5pt; line-height: 1.7; white-space: nowrap; }
+  .sides { display: flex; align-items: stretch; min-height: %(sidesH)s; }
+  .side { width: %(colW)s; padding: 0 %(colPad)s; }
+  .side p { margin: 0; font-style: italic; font-size: %(name)s; line-height: 1.7; white-space: nowrap; }
   .rule {                                  /* the table itself, seen from above */
-    width: 0.34cm; align-self: stretch; margin: 2pt 0;
-    border-left: 0.6pt solid rgba(29,26,22,.5);
-    border-right: 0.6pt solid rgba(29,26,22,.5);
+    width: %(ruleW)s; align-self: stretch; margin: %(ruleM)s 0;
+    border-left: %(hair)s solid rgba(29,26,22,.5);
+    border-right: %(hair)s solid rgba(29,26,22,.5);
   }
   .mark {
-    font-family: "Cormorant SC", serif; font-size: 9.5pt;
-    letter-spacing: .3em; text-indent: .3em; color: #6e665a; margin: 26pt 0 0;
+    font-family: "Cormorant SC", serif; font-size: %(mark)s;
+    letter-spacing: .3em; text-indent: .3em; color: #6e665a; margin: %(markTop)s 0 0;
   }
   @media print {
-    @page { size: A4 landscape; margin: 0; }
+    @page { size: %(W)s %(H)s; margin: 0; }
     body { background: none; padding: 0; }
     .sheet { margin: 0; box-shadow: none; background: none; }
   }
@@ -122,16 +133,23 @@ def build():
 """ % {"cg": f[("Cormorant Garamond", "normal")],
        "cgi": f[("Cormorant Garamond", "italic")],
        "sc": f[("Cormorant SC", "normal")],
-       "blocks": "".join(blocks)}
+       "blocks": "".join(blocks),
+       "W": cm(29.7), "H": cm(21.0), "padT": cm(2), "padX": cm(2.4), "padB": cm(1.8),
+       "inset": cm(1.1), "hair": pt(0.6), "title": pt(42), "ornTop": pt(16), "ornW": pt(96),
+       "ornGap": pt(8), "diamond": pt(4), "tableGap": cm(2.4), "tablesTop": pt(24),
+       "head": pt(13.5), "headGap": pt(12), "colW": cm(5), "colPad": cm(0.35),
+       "name": pt(12.5), "ruleW": cm(0.34), "ruleM": pt(2), "sidesH": pt(8 * 12.5 * 1.7), "mark": pt(9.5), "markTop": pt(26)}
 
-    (HERE / "table-plan.html").write_text(html)
-    pdf = HERE / "The Tables, A4 landscape.pdf"
+    (HERE / ("table-plan-%s.html" % label)).write_text(html)
+    pdf = HERE / ("The Tables, %s landscape.pdf" % label)
     subprocess.run([CHROME, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-                    f"--print-to-pdf={pdf}", f"file://{HERE / 'table-plan.html'}"],
+                    f"--print-to-pdf={pdf}", f"file://{HERE / ('table-plan-%s.html' % label)}"],
                    capture_output=True, check=True)
-    seated = sum(len(s) for _, sides in TABLES for s in sides)
-    print("wrote table-plan.html and the PDF |", seated, "guests seated")
+    print("wrote", pdf.name)
 
 
 if __name__ == "__main__":
-    build()
+    for label, W, H in SHEETS:
+        build(label, W, H)
+    seated = sum(len(s) for _, sides in TABLES for s in sides)
+    print(seated, "guests seated on every sheet")
