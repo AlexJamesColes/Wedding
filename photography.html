@@ -101,15 +101,7 @@
 <main class="ph-wrap">
   <p class="eyebrow" style="text-align:center;margin:0">Friday the fourteenth of August</p>
   <h1 class="ph-title" style="margin-top:12px">For Daria</h1>
-  <p class="ph-sub">the photographs we keep coming back to</p>
-
-  <div class="ph-body" style="margin-top:26px">
-    <p style="text-align:center">A mix of natural moments with a few editorial looks. We love
-    detailed, fun photographs.</p>
-  </div>
-  <div class="orn" style="width:110px;margin:6px auto 0"><span></span></div>
-
-  <div class="ph-section" style="margin-top:30px">
+  <div class="ph-section" style="margin-top:34px">
     <div class="ph-photos">
       <figure><img src="/assets/img/ned/ned-01.jpg" alt="" loading="lazy" width="884" height="1100"></figure>
       <figure><img src="/assets/img/ned/ned-02.jpg" alt="" loading="lazy" width="880" height="1100"></figure>
@@ -147,11 +139,18 @@
       <figure><img src="/assets/img/ned/ned-34.jpg" alt="" loading="lazy" width="887" height="1100"></figure>
       <figure><img src="/assets/img/ned/ned-35.jpg" alt="" loading="lazy" width="744" height="1100"></figure>
     </div>
-    <p class="ph-sub" style="margin:34px 0 14px">and the living board, straight from Pinterest</p>
-    <div style="display:flex;justify-content:center">
-      <a data-pin-do="embedBoard" data-pin-board-width="860" data-pin-scale-height="320" data-pin-scale-width="140"
+    <div class="orn" style="width:110px;margin:46px auto 0"><span></span></div>
+    <div style="margin:28px calc(50% - 50vw) 0;display:flex;justify-content:center">
+      <a id="pinboard" data-pin-do="embedBoard" data-pin-board-width="1140" data-pin-scale-height="800" data-pin-scale-width="170"
          href="https://www.pinterest.com/chelsalbs/wedding-photo-inspo/" style="color:inherit">the board on Pinterest</a>
     </div>
+    <script>
+      // size the board to the room it has before pinit.js reads the attribute
+      (function () {
+        var a = document.getElementById('pinboard');
+        a.setAttribute('data-pin-board-width', Math.min(1140, document.documentElement.clientWidth - 24));
+      })();
+    </script>
   </div>
 </main>
 <script async defer src="https://assets.pinterest.com/js/pinit.js"></script>
