@@ -52,5 +52,7 @@ Disallow: /
 # Everyone else: the private pages are closed regardless.
 User-agent: *
 Disallow: /seating-plan
+Disallow: /photography
+Disallow: /photography.html
 Disallow: /seating-plan.html
 Disallow: /tools/
