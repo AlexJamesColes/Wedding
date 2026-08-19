@@ -41,6 +41,11 @@
   .plate img { display: block; width: 100%; height: auto; }
   .plate figcaption { margin-top: 10px; text-align: center; font-style: italic; font-size: 14.5px; color: var(--muted); }
   .album-orn { width: 110px; margin: 0 auto; }
+  .album-note { max-width: 520px; margin: clamp(30px, 5vw, 44px) auto 0; }
+  .album-note p { margin: 0 0 16px; font-size: 17px; line-height: 1.65; text-wrap: balance; }
+  .album-note p.it { color: var(--muted); font-size: 16px; }
+  .album-note .btn { margin-top: 6px; }
+  .plates { margin-top: clamp(44px, 7vw, 64px); }
   .album-close { margin: clamp(40px, 7vw, 60px) auto 0; font-style: italic; font-size: 15px; color: var(--muted); max-width: 520px; text-wrap: balance; }
 </style>
 </head>
@@ -61,6 +66,14 @@
   <p class="eyebrow" style="margin:0">Friday the fourteenth of August</p>
   <h1 class="menu-title" style="margin:14px 0 0">The Album</h1>
   <p class="menu-sub" style="margin-top:10px">the first photographs; the rest follow when the album is ready</p>
+
+  <div class="album-note">
+    <p>Thank you to every one of you who was there, for making it such a special evening.
+    We could not have wished for better company, and we shall not forget it.</p>
+    <p class="it">If you took photographs or films on the day, we should love to have them,
+    at full size, however many there are. They come only to the two of us.</p>
+    <a class="btn" href="/your-photographs">Send us yours</a>
+  </div>
 
   <div class="plates">
     <div class="orn album-orn" style="margin-bottom:clamp(36px,6vw,56px)"><span></span></div>
@@ -127,9 +140,8 @@
     <div class="orn album-orn" style="margin-top:clamp(36px,6vw,56px)"><span></span></div>
   </div>
 
-  <p class="album-close">photographs by Daria</p>
-  <p class="album-close" style="margin-top:18px">If you took photographs or films on the day, we should love to have them.<br>
-    <a class="quiet-link" href="/your-photographs" style="font-style:italic;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--hairline-strong)">Send us yours</a></p>
+  <p class="album-close">If you took photographs or films on the day, we should love to have them.<br>
+    <a href="/your-photographs" style="font-style:italic;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--hairline-strong)">Send us yours</a></p>
 </main>
 
 <footer class="footer">
