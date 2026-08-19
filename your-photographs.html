@@ -26,6 +26,7 @@
 <link rel="preload" href="/assets/fonts/cormorant-garamond-400-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/cormorant-sc-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/tenor-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://ca-photographs.coleswedding.workers.dev" crossorigin>
 <link rel="stylesheet" href="/assets/site.css?v=19">
 <script src="/assets/gate.js?v=13"></script>
 <script data-goatcounter="https://coleswedding.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
@@ -59,6 +60,11 @@
   .receipt .big { font-family: var(--sc); font-size: 18px; letter-spacing: .1em; }
   .receipt p { margin: 8px 0 0; font-size: 15.5px; }
   .receipt .it { color: var(--muted); }
+  .drop-choose .btn, #send-btn { -webkit-tap-highlight-color: transparent; }
+  @media (max-width: 480px) {
+    .drop-choose .btn, #send-btn { display: block; width: 100%; box-sizing: border-box; padding: 15px 18px; }
+    .row-top { flex-wrap: wrap; }
+  }
   .quiet-link { font-style: italic; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--hairline-strong); }
 </style>
 </head>
@@ -155,7 +161,7 @@
   var queue = [];        // [{file, row, rule, state}]
   var busy = false;
 
-  input.addEventListener('change', function () {
+  function onChoose() {
     var files = Array.prototype.slice.call(input.files || []);
     if (!files.length) return;
     ledger.hidden = false; actions.hidden = false; receipt.hidden = true; msg.textContent = '';
@@ -167,25 +173,42 @@
       ledger.appendChild(row);
       queue.push({ file: f, row: row, rule: row.querySelector('.row-rule i'), state: row.querySelector('.row-state'), done: false });
     });
-    input.value = '';
+    // keep this input (and its files) alive; hand the label a fresh one for next time
+    var next = document.createElement('input');
+    next.type = 'file'; next.multiple = true; next.accept = input.accept; next.id = 'files';
+    input.removeAttribute('id'); input.tabIndex = -1;
+    input.parentNode.insertBefore(next, input.nextSibling);
+    input = next; input.addEventListener('change', onChoose);
     var n = queue.filter(function (q) { return !q.done; }).length;
     sendBtn.textContent = 'Send ' + (n === 1 ? 'it' : 'them') + ' to Chelsey & Alex';
-  });
+  }
+  input.addEventListener('change', onChoose);
 
   function fetchJSON(path, body) {
     return fetch(ENDPOINT + path, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
     }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || r.status); return j; }); });
   }
-  function putPart(key, uploadId, n, blob, attempt) {
-    return fetch(ENDPOINT + '/part', {
-      method: 'PUT', body: blob,
-      headers: { 'X-CA-Key': key, 'X-CA-Upload': uploadId, 'X-CA-Part': String(n) }
-    }).then(function (r) {
-      if (!r.ok) throw new Error('part ' + r.status);
-      return r.json();
+  function putPart(key, uploadId, n, blob, attempt, onProgress) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      var stall = null;
+      function arm() { clearTimeout(stall); stall = setTimeout(function () { xhr.abort(); }, 90000); }
+      xhr.open('PUT', ENDPOINT + '/part', true);
+      xhr.setRequestHeader('X-CA-Key', key);
+      xhr.setRequestHeader('X-CA-Upload', uploadId);
+      xhr.setRequestHeader('X-CA-Part', String(n));
+      xhr.upload.onprogress = function (e) { arm(); if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total); };
+      xhr.onload = function () {
+        clearTimeout(stall);
+        if (xhr.status < 200 || xhr.status >= 300) return reject(new Error('part ' + xhr.status));
+        try { resolve(JSON.parse(xhr.responseText)); } catch (e) { reject(new Error('part parse')); }
+      };
+      xhr.onerror = xhr.onabort = xhr.ontimeout = function () { clearTimeout(stall); reject(new Error('part network')); };
+      arm();
+      xhr.send(blob);
     }).catch(function (e) {
-      if (attempt < RETRIES) return new Promise(function (res) { setTimeout(res, 800 * attempt); }).then(function () { return putPart(key, uploadId, n, blob, attempt + 1); });
+      if (attempt < RETRIES) return new Promise(function (res) { setTimeout(res, 1000 * attempt); }).then(function () { return putPart(key, uploadId, n, blob, attempt + 1, onProgress); });
       throw e;
     });
   }
@@ -204,7 +227,9 @@
       for (var i = 0; i < total; i++) (function (i) {
         chain = chain.then(function () {
           var blob = f.slice(i * part, Math.min(f.size, (i + 1) * part));
-          return putPart(o.key, o.uploadId, i + 1, blob, 1).then(function (p) {
+          return putPart(o.key, o.uploadId, i + 1, blob, 1, function (frac) {
+            q.rule.style.width = Math.round(((i + frac) / total) * 100) + '%';
+          }).then(function (p) {
             parts.push({ partNumber: p.partNumber, etag: p.etag });
             q.rule.style.width = Math.round(((i + 1) / total) * 100) + '%';
             if (total > 1) q.state.textContent = words(i + 1) + ' of ' + words(total);
@@ -228,7 +253,9 @@
     busy = true; sendBtn.disabled = true; chooseBtn.classList.add('btn-waiting');
     msg.textContent = 'Sending. Please keep this page open.';
     var wake = null;
-    try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (w) { wake = w; }).catch(function () {}); } catch (e) {}
+    function holdAwake() { try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (w) { wake = w; }).catch(function () {}); } catch (e) {} }
+    function onVisible() { if (document.visibilityState === 'visible' && busy) holdAwake(); }
+    holdAwake(); document.addEventListener('visibilitychange', onVisible);
 
     var guest = '';
     try { guest = localStorage.getItem('ca-guest') || ''; } catch (e) {}
@@ -257,6 +284,7 @@
       if (!queue.length) { ledger.hidden = true; actions.hidden = true; }
     }).catch(function () {}).then(function () {
       busy = false; sendBtn.disabled = false; chooseBtn.classList.remove('btn-waiting');
+      document.removeEventListener('visibilitychange', onVisible);
       if (wake) { try { wake.release(); } catch (e) {} }
     });
   });
