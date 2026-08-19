@@ -57,6 +57,15 @@
       return null;
     });
   }
+  // the drop (/your-photographs) asks the door for the admitted guest's
+  // fingerprint so the Worker can check it against the same list; nothing else
+  // is exposed and nothing leaves the device here.
+  window.caGate = {
+    fingerprint: function () {
+      try { var w = localStorage.getItem('ca-guest'); return w ? admitted(w) : Promise.resolve(null); }
+      catch (e) { return Promise.resolve(null); }
+    }
+  };
 
   // the visitors' book. Each admitted guest is known to the counter only by
   // a four-character mark cut from their fingerprint; no name rides in any
