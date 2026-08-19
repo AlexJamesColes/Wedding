@@ -180,6 +180,19 @@ section { scroll-margin-top: calc(var(--nav-h) + 8px); }
   margin-top: 10px; text-align: center;
   font-style: italic; font-size: 14.5px; color: var(--muted);
 }
+.hero-plate {
+  width: min(520px, 80vw);
+  border: 1px solid var(--hairline-strong);
+  outline: 1px solid var(--hairline); outline-offset: 5px;
+  padding: clamp(8px, 1.6vw, 14px); background: var(--paper);
+}
+.hero-plate img { height: auto; }
+
+/* ─── The Register ─── */
+.register {
+  margin: 0 auto; max-width: 560px; text-align: center;
+  font-size: clamp(17px, 2.3vw, 20.5px); line-height: 1.7;
+}
 
 /* ─── Day sheet ─── */
 .day-sheet {

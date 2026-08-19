@@ -177,7 +177,7 @@
     gate.innerHTML =
       '<div class="gate-inner">' +
       '<img src="/assets/img/seal-emboss-lg.png" width="92" height="92" alt="" style="display:block;margin:0 auto">' +
-      '<p class="gate-eyebrow">The wedding of</p>' +
+      '<p class="gate-eyebrow">The marriage of</p>' +
       '<p class="gate-names">Chelsey &amp; Alex</p>' +
       '<p class="gate-ask">May we take your name?</p>' +
       '<form class="gate-form">' +

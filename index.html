@@ -27,8 +27,8 @@
 <link rel="preload" href="/assets/fonts/cormorant-garamond-300-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/cormorant-sc-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/tenor-sans-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=18">
-<script src="/assets/gate.js?v=11"></script>
+<link rel="stylesheet" href="/assets/site.css?v=19">
+<script src="/assets/gate.js?v=12"></script>
 <script data-goatcounter="https://coleswedding.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -40,7 +40,7 @@
   <nav class="nav-links" aria-label="Site">
     <a href="/#day">The Day</a>
     <a class="nav-venues" href="/#venues">The Venues</a>
-    <a href="/inspiration">Inspiration</a>
+    <a href="/album">The Album</a>
     <a class="nav-cta" href="/menu"><span class="cta-long">The Menu</span><span class="cta-short">Menu</span></a>
   </nav>
 </header>
@@ -51,7 +51,7 @@
   <section class="hero">
     <img src="/assets/img/seal-emboss-lg.png" width="110" height="110" alt="C and A monogram seal, blind embossed" style="display:block">
     <div style="height:32px"></div>
-    <p class="eyebrow" style="margin:0">The wedding of</p>
+    <p class="eyebrow" style="margin:0">The marriage of</p>
     <div style="height:22px"></div>
     <h1 style="margin:0;font-weight:400">
       <span class="hero-names">Chelsey Albertyn</span><br>
@@ -66,11 +66,32 @@
     <p id="diary-line" style="margin:24px 0 0"><a class="venue-map" href="/assets/chelsey-and-alex.ics" download>Add to your diary</a></p>
     <p class="hero-weather it" id="weather-line" hidden></p>
 
-    <figure class="hero-art" style="margin-bottom:0">
-      <img src="/assets/img/town-hall.jpg" width="1229" height="555" alt="Old Marylebone Town Hall, pen and wash illustration" fetchpriority="high">
-      <figcaption>Old Marylebone Town Hall</figcaption>
+    <figure class="hero-art hero-plate" style="margin-bottom:0">
+      <img src="/assets/img/album/ph-01.jpg" srcset="/assets/img/album/ph-01-s.jpg 900w, /assets/img/album/ph-01.jpg 1800w"
+           sizes="(max-width: 700px) 80vw, 520px" width="1240" height="1800"
+           alt="Chelsey and Alex under the portico of Old Marylebone Town Hall, newly married, petals on the ground" fetchpriority="high">
+      <figcaption>Old Marylebone Town Hall, a little before six</figcaption>
     </figure>
     <div style="height:clamp(40px,8vh,72px)"></div>
+  </section>
+
+
+  <!-- ─── The Register ─────────────────────────────────────── -->
+  <section id="register" class="section" style="padding-top:0">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="eyebrow" style="font-size:12px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">The Register</h2>
+        <div class="orn"><span></span></div>
+      </div>
+      <p class="register">Chelsey Albertyn and Alex James Coles<br>
+      were married at Old Marylebone Town Hall,<br>
+      in the Mayfair Room,<br>
+      on Friday the fourteenth of August,<br>
+      two thousand and twenty-six,<br>
+      at half past five in the afternoon,<br>
+      in the presence of their family and friends.</p>
+      <img class="seal-emboss" src="/assets/img/seal-emboss.png" width="46" height="46" alt="" style="display:block;margin:30px auto 0">
+    </div>
   </section>
 
   <!-- ─── The Day ──────────────────────────────────────────── -->
@@ -84,11 +105,11 @@
         <div class="stop">
           <p class="stop-time" style="margin:0">Ceremony · half past five</p>
           <p class="stop-venue" style="margin:10px 0 0">Old Marylebone Town Hall</p>
-          <p class="stop-note" style="margin:6px 0 0">the Mayfair Room<br>guests arrive by five o&rsquo;clock,<br>seated by a quarter past</p>
+          <p class="stop-note" style="margin:6px 0 0">the Mayfair Room</p>
         </div>
         <div class="stop">
           <p class="stop-time" style="margin:0">Petals on the steps · quarter to six</p>
-          <p class="stop-note" style="margin:16px 0 0">as we step out, newly married</p>
+          <p class="stop-note" style="margin:16px 0 0">as we stepped out, newly married</p>
         </div>
         <div class="stop">
           <p class="stop-time" style="margin:0">Carriages · quarter past six</p>
@@ -97,7 +118,7 @@
         <div class="stop">
           <p class="stop-time" style="margin:0">Reception · seven o&rsquo;clock</p>
           <p class="stop-venue" style="margin:10px 0 0">The Ned</p>
-          <p class="stop-note" style="margin:6px 0 0">drinks on the terrace,<br>dinner thereafter</p>
+          <p class="stop-note" style="margin:6px 0 0">drinks on the terrace,<br>dinner in the Saloon</p>
         </div>
       </div>
       <div style="height:clamp(40px,7vw,60px)"></div>
@@ -106,33 +127,6 @@
         <p class="it" style="font-size:19px;margin:14px 0 0">black tie</p>
         <p style="margin:14px 0 0"><span class="smallcaps" style="font-size:13px;color:var(--ink)">Gentlemen</span><span class="it" style="font-size:15.5px;color:var(--muted)">&nbsp;&nbsp;dinner jackets &amp; bow ties</span></p>
         <p style="margin:6px 0 0"><span class="smallcaps" style="font-size:13px;color:var(--ink)">Ladies</span><span class="it" style="font-size:15.5px;color:var(--muted)">&nbsp;&nbsp;evening gowns</span></p>
-        <details class="dress-fold">
-          <summary class="venue-map">Inspiration<svg class="fold-chev" viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1,1 L5,5 L9,1" fill="none" stroke="#1d1a16" stroke-opacity="0.6" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"></path></svg></summary>
-          <p class="dress-foot">for inspiration, not instruction</p>
-          <div class="dress-photos">
-            <figure><img src="/assets/img/dress/dress-05.jpg" alt="an olive satin gown in evening light" loading="lazy" width="603" height="1082"></figure>
-            <figure><img src="/assets/img/dress/dress-02.jpg" alt="gentlemen in black tie and sunglasses at golden hour" loading="lazy" width="800" height="970"></figure>
-            <figure><img src="/assets/img/dress/dress-03.jpg" alt="a champagne pleated column gown by a stone doorway" loading="lazy" width="800" height="1061"></figure>
-            <figure><img src="/assets/img/dress/dress-04.jpg" alt="three gowns in bronze, smoke and gold with black tie" loading="lazy" width="573" height="726"></figure>
-            <figure><img src="/assets/img/dress/dress-01.jpg" alt="a lemon-yellow silk gown beside a black dinner jacket" loading="lazy" width="800" height="1158"></figure>
-            <figure><img src="/assets/img/dress/dress-11.jpg" alt="a caramel silk gown beside a shawl-lapel dinner jacket" loading="lazy" width="800" height="976"></figure>
-            <figure><img src="/assets/img/dress/dress-06.jpg" alt="guests in black tie crossing a formal garden" loading="lazy" width="800" height="984"></figure>
-            <figure><img src="/assets/img/dress/dress-07.jpg" alt="a sage strapless gown beside a classic dinner suit" loading="lazy" width="800" height="1076"></figure>
-            <figure><img src="/assets/img/dress/dress-08.jpg" alt="gentlemen in black tie by a carved fireplace" loading="lazy" width="800" height="980"></figure>
-            <figure><img src="/assets/img/dress/dress-16.jpg" alt="a sweeping black gown at dusk in the park" loading="lazy" width="800" height="1120"></figure>
-            <figure><img src="/assets/img/dress/dress-14.jpg" alt="four gentlemen in black tie" loading="lazy" width="573" height="861"></figure>
-            <figure><img src="/assets/img/dress/dress-09.jpg" alt="a backless scarlet silk gown at the reception" loading="lazy" width="746" height="979"></figure>
-            <figure><img src="/assets/img/dress/dress-12.jpg" alt="an evening party in black tie and jewel-tone gowns" loading="lazy" width="800" height="723"></figure>
-            <figure><img src="/assets/img/dress/dress-10.jpg" alt="an olive silk gown in a walled garden" loading="lazy" width="800" height="971"></figure>
-            <figure><img src="/assets/img/dress/dress-19.jpg" alt="an evening party on a staircase, black tie and sculpted gowns" loading="lazy" width="800" height="1116"></figure>
-            <figure><img src="/assets/img/dress/dress-13.jpg" alt="a dusky rose gown on a terrace at dusk" loading="lazy" width="800" height="1139"></figure>
-            <figure><img src="/assets/img/dress/dress-17.jpg" alt="a black column gown with a draped scarf" loading="lazy" width="564" height="862"></figure>
-            <figure><img src="/assets/img/dress/dress-20.jpg" alt="gowns in black and antique gold" loading="lazy" width="573" height="831"></figure>
-            <figure><img src="/assets/img/dress/dress-18.jpg" alt="a black sequin halter gown at night" loading="lazy" width="800" height="1023"></figure>
-            <figure><img src="/assets/img/dress/dress-15.jpg" alt="an antique-gold satin gown with a trailing scarf" loading="lazy" width="800" height="1041"></figure>
-            <figure><img src="/assets/img/dress/dress-21.jpg" alt="gowns in lace, sequin and black for the evening" loading="lazy" width="800" height="913"></figure>
-          </div>
-        </details>
       </div>
     </div>
   </section>
@@ -144,6 +138,10 @@
         <h2 class="eyebrow" style="font-size:12px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">The Venues</h2>
         <div class="orn"><span></span></div>
       </div>
+      <figure class="map-fig">
+        <img src="/assets/img/town-hall.jpg" width="1229" height="555" alt="Old Marylebone Town Hall, pen and wash illustration" loading="lazy" style="display:block;width:100%;height:auto">
+        <figcaption>Old Marylebone Town Hall</figcaption>
+      </figure>
       <figure class="map-fig">
         <svg viewBox="0 0 900 457" role="img" focusable="false" aria-label="Street map of central London in the wedding's ink-on-paper style: the real road network, the Thames, and the black-cab route east from Old Marylebone Town Hall past Soho and St Paul's to The Ned">
           <defs><clipPath id="mapclip"><rect x="8" y="8" width="884" height="441"></rect></clipPath><mask id="labelmask"><rect x="0" y="0" width="900" height="457" fill="#fff"></rect><g fill="#000"><rect x="128" y="197" width="114" height="20"></rect><rect x="289" y="303" width="83" height="20"></rect><rect x="404" y="243" width="52" height="20"></rect><rect x="379" y="273" width="145" height="20"></rect><rect x="745" y="171" width="93" height="20"></rect><rect x="535" y="341" width="114" height="20"></rect><rect x="117" y="127" width="92" height="18" transform="rotate(-4 163 136)"></rect><rect x="304" y="211" width="82" height="18" transform="rotate(-10 345 220)"></rect><rect x="534" y="220" width="76" height="18" transform="rotate(-11 572 229)"></rect><rect x="84" y="105" width="264" height="24"></rect><rect x="177" y="161" width="78" height="21"></rect><rect x="670" y="203" width="89" height="25"></rect><rect x="38" y="101" width="357" height="26"></rect><rect x="624" y="248" width="60" height="19"></rect><rect x="655" y="200" width="117" height="26"></rect><rect x="709" y="54" width="106" height="19"></rect><rect x="303" y="371" width="112" height="20"></rect><rect x="288" y="253" width="67" height="19"></rect></g></mask></defs>
@@ -469,7 +467,7 @@
           </g>
 
         </svg>
-        <figcaption>Marylebone to the City, carriages provided.</figcaption>
+        <figcaption>Marylebone to the City, as we went.</figcaption>
       </figure>
       <div class="venues">
         <div class="venue">
@@ -504,7 +502,8 @@
 <footer class="footer">
   <img class="seal-emboss" src="/assets/img/seal-emboss.png" width="46" height="46" alt="">
   <div class="orn"><span></span></div>
-  <p class="footer-line" id="footer-line" style="margin:0">We cannot wait to celebrate with you.</p>
+  <p class="footer-line" id="footer-line" style="margin:0">Thank you for being there.</p>
+  <p class="footer-line" style="margin:6px 0 0">With all our love, Chelsey &amp; Alex.</p>
   <p class="footer-mark" style="margin-bottom:0">C &amp; A · MMXXVI</p>
 </footer>
 
@@ -556,7 +555,7 @@
         var y = now.getFullYear() - 2026;
         el.textContent = 'married ' + (WORDS[y - 1] || y) + ' year' + (y > 1 ? 's' : '') + ' today';
       } else {
-        el.textContent = 'married, 14 August 2026';
+        el.textContent = 'married';
       }
       if (days === -1 && sheet) {
         sheet.textContent = 'yesterday: the Mayfair Room, the petals, the carriages, The Ned';
@@ -569,7 +568,7 @@
       var fl = document.getElementById('footer-line');
       if (note) note.textContent = 'thank you for celebrating with us';
       if (cta) cta.style.display = 'none';
-      if (fl) fl.textContent = 'With all our love, Chelsey & Alex.';
+      if (fl) fl.textContent = 'Thank you for being there.';
     }
   })();
 
