@@ -29,6 +29,11 @@
 <link rel="stylesheet" href="/assets/site.css?v=19">
 <script src="/assets/gate.js?v=13"></script>
 <script data-goatcounter="https://coleswedding.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<style>
+  .menu-served .dishes { pointer-events: none; }
+  .menu-served .dish { cursor: default; }
+  .menu-served .field, .menu-served .menu-actions { display: none; }
+</style>
 </head>
 <body>
 
@@ -183,7 +188,8 @@
 <footer class="footer">
   <img class="seal-emboss" src="/assets/img/seal-emboss.png" width="46" height="46" alt="">
   <div class="orn"><span></span></div>
-  <p class="footer-line" style="margin:0">We cannot wait to celebrate with you.</p>
+  <p class="footer-line" style="margin:0">Thank you for being there.</p>
+  <p class="footer-line" style="margin:6px 0 0">With all our love, Chelsey &amp; Alex.</p>
   <p class="footer-mark" style="margin-bottom:0">C &amp; A · MMXXVI</p>
 </footer>
 
@@ -275,13 +281,16 @@
       var dl = document.querySelector('.menu-deadline');
       if (dl) dl.hidden = true;
       var fl = document.querySelector('.footer-line');
-      if (fl) fl.textContent = 'With all our love, Chelsey & Alex.';
+      if (fl) fl.textContent = 'Thank you for being there.';
       var sub = document.querySelector('.menu-sub');
-      if (sub) sub.hidden = true;
-      if (form.hidden) return; // a receipt is showing; leave it be
-      form.hidden = true;
-      var retired = document.getElementById('menu-retired');
-      if (retired) retired.hidden = false;
+      if (sub) sub.textContent = 'dinner has been served, thank you all for being there';
+      // the menu stays, as a keepsake: the dishes as they were offered, nothing
+      // left to choose; a device that sent its choices keeps its receipt beneath
+      form.hidden = false;
+      form.classList.add('menu-served');
+      Array.prototype.forEach.call(form.querySelectorAll('input[type=radio]'), function (r) {
+        r.checked = false; r.disabled = true; r.tabIndex = -1;
+      });
     })();
 
 
