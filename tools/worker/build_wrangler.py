@@ -20,6 +20,7 @@ compatibility_date = "2026-08-01"
 [[r2_buckets]]
 binding = "PHOTOS"
 bucket_name = "ca-photographs"
+jurisdiction = "eu"
 
 [vars]
 ALLOWED_ORIGIN = "https://coleswedding.com"
