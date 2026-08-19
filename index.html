@@ -64,7 +64,7 @@
     <p class="hero-count" id="countdown"></p>
     <p class="day-sheet it" id="daysheet" hidden></p>
     <p id="diary-line" style="margin:24px 0 0"><a class="venue-map" href="/assets/chelsey-and-alex.ics" download>Add to your diary</a></p>
-    <p class="hero-weather it" id="weather-line" hidden></p>
+    <p class="hero-weather it" id="weather-line">the day itself: a clear sky, 34 degrees at five o&rsquo;clock, one of the hottest days of the year</p>
 
     <figure class="hero-art hero-plate" style="margin-bottom:0">
       <img src="/assets/img/album/ph-01.jpg" srcset="/assets/img/album/ph-01-s.jpg 900w, /assets/img/album/ph-01.jpg 1800w"
@@ -575,7 +575,8 @@
   // The forecast for the day, once it comes within Open-Meteo's
   // sixteen-day sight. Shows through the morning of the day itself,
   // retiring at five o'clock when the forecast becomes the weather;
-  // fails silently.
+  // fails silently. After the day the line carries the weather as it was,
+  // set in the markup: a clear sky and 33.8 degrees at five, per Open-Meteo's archive.
   (function () {
     var w = document.getElementById('weather-line');
     if (!w) return;
