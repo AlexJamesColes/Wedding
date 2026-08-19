@@ -33,7 +33,7 @@
 <style>
   .album-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 2vw, 18px); max-width: 760px; margin: 0 auto; }
   .album-plate { display: block; border: 1px solid var(--hairline-strong); outline: 1px solid var(--hairline); outline-offset: 4px; padding: clamp(5px, 1vw, 9px); background: var(--paper); }
-  .album-plate img { display: block; width: 100%; height: auto; }
+  .album-plate img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; }
   @media (max-width: 520px) { .album-row { gap: 8px; } .album-plate { outline-offset: 3px; padding: 4px; } }
 </style>
 </head>
@@ -83,7 +83,7 @@
 
 
   <!-- ─── The Register ─────────────────────────────────────── -->
-  <section id="register" class="section" style="padding-top:0">
+  <section id="register" class="section" style="padding-top:0;padding-bottom:0">
     <div class="section-inner">
       <div class="section-head">
         <h2 class="eyebrow" style="font-size:12px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">The Register</h2>
@@ -97,6 +97,24 @@
       at half past five in the afternoon,<br>
       in the presence of their family and friends.</p>
       <img class="seal-emboss" src="/assets/img/seal-emboss.png" width="46" height="46" alt="" style="display:block;margin:30px auto 0">
+    </div>
+  </section>
+
+  <!-- ─── The Album ────────────────────────────────────────── -->
+  <section id="album" class="section">
+    <div class="section-inner" style="text-align:center">
+      <div class="section-head">
+        <h2 class="eyebrow" style="font-size:12px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">The Album</h2>
+        <div class="orn"><span></span></div>
+      </div>
+      <div class="album-row">
+        <a class="album-plate" href="/album" aria-label="The Album"><img src="/assets/img/album/ph-02-t.jpg" srcset="/assets/img/album/ph-02-t.jpg 480w, /assets/img/album/ph-02-s.jpg 900w" sizes="(max-width: 800px) 30vw, 240px" decoding="async" width="326" height="480" alt="a kiss on the Town Hall steps as the petals fall" loading="lazy"></a>
+        <a class="album-plate" href="/album" aria-label="The Album"><img src="/assets/img/album/ph-05-t.jpg" srcset="/assets/img/album/ph-05-t.jpg 480w, /assets/img/album/ph-05-s.jpg 900w" sizes="(max-width: 800px) 30vw, 240px" decoding="async" width="334" height="480" alt="a kiss in a chandeliered corridor at The Ned" loading="lazy"></a>
+        <a class="album-plate" href="/album" aria-label="The Album"><img src="/assets/img/album/ph-08-t.jpg" srcset="/assets/img/album/ph-08-t.jpg 480w, /assets/img/album/ph-08-s.jpg 900w" sizes="(max-width: 800px) 30vw, 240px" decoding="async" width="347" height="480" alt="the two of us between the long tables in the Saloon, candles lit" loading="lazy"></a>
+      </div>
+      <p class="it" style="font-size:17px;color:var(--muted);margin:26px 0 0">the first photographs, and a place to send us yours</p>
+      <div style="height:26px"></div>
+      <a class="btn" href="/album">The Album</a>
     </div>
   </section>
 
@@ -489,24 +507,6 @@
           <a class="venue-map" href="https://maps.google.com/?q=The+Ned+London" target="_blank" rel="noopener" aria-label="Map to The Ned">Map</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ─── The Album ────────────────────────────────────────── -->
-  <section id="album" class="section">
-    <div class="section-inner" style="text-align:center">
-      <div class="section-head">
-        <h2 class="eyebrow" style="font-size:12px;letter-spacing:.5em;text-indent:.5em;margin:0;font-weight:400">The Album</h2>
-        <div class="orn"><span></span></div>
-      </div>
-      <div class="album-row">
-        <a class="album-plate" href="/album" aria-label="The Album"><img src="/assets/img/album/ph-02-t.jpg" srcset="/assets/img/album/ph-02-t.jpg 480w, /assets/img/album/ph-02-s.jpg 900w" sizes="(max-width: 800px) 30vw, 240px" decoding="async" width="326" height="480" alt="a kiss on the Town Hall steps as the petals fall" loading="lazy"></a>
-        <a class="album-plate" href="/album" aria-label="The Album"><img src="/assets/img/album/ph-05-t.jpg" srcset="/assets/img/album/ph-05-t.jpg 480w, /assets/img/album/ph-05-s.jpg 900w" sizes="(max-width: 800px) 30vw, 240px" decoding="async" width="334" height="480" alt="a kiss in a chandeliered corridor at The Ned" loading="lazy"></a>
-        <a class="album-plate" href="/album" aria-label="The Album"><img src="/assets/img/album/ph-08-t.jpg" srcset="/assets/img/album/ph-08-t.jpg 480w, /assets/img/album/ph-08-s.jpg 900w" sizes="(max-width: 800px) 30vw, 240px" decoding="async" width="347" height="480" alt="the two of us between the long tables in the Saloon, candles lit" loading="lazy"></a>
-      </div>
-      <p class="it" style="font-size:17px;color:var(--muted);margin:26px 0 0">the first photographs, and a place to send us yours</p>
-      <div style="height:26px"></div>
-      <a class="btn" href="/album">The Album</a>
     </div>
   </section>
 

@@ -32,14 +32,14 @@
 <style>
   .album-wrap { max-width: 980px; margin: 0 auto; padding: calc(var(--nav-h) + 34px) 20px 60px; text-align: center; }
   .plates { margin-top: clamp(36px, 6vw, 56px); }
+  .plate-grid { columns: 2 380px; column-gap: clamp(22px, 3.2vw, 40px); max-width: 900px; margin: 0 auto; }
   .plate {
-    width: min(640px, 92vw); margin: 0 auto clamp(52px, 9vh, 104px);
+    margin: 0 0 clamp(22px, 3.2vw, 40px); break-inside: avoid;
     border: 1px solid var(--hairline-strong); outline: 1px solid var(--hairline); outline-offset: 5px;
-    padding: clamp(8px, 1.6vw, 14px); background: var(--paper);
+    padding: clamp(8px, 1.4vw, 12px); background: var(--paper);
   }
-  .plate:last-child { margin-bottom: 0; }
   .plate img { display: block; width: 100%; height: auto; }
-  .plate figcaption { margin-top: 10px; text-align: center; font-style: italic; font-size: 14.5px; color: var(--muted); }
+  @media (max-width: 760px) { .plate-grid { columns: 1; max-width: 560px; } .plate { margin-bottom: 28px; } }
   .album-orn { width: 110px; margin: 0 auto; }
   .album-note { max-width: 520px; margin: clamp(30px, 5vw, 44px) auto 0; }
   .album-note p { margin: 0 0 16px; font-size: 17px; line-height: 1.65; text-wrap: balance; }
@@ -77,66 +77,56 @@
 
   <div class="plates">
     <div class="orn album-orn" style="margin-bottom:clamp(36px,6vw,56px)"><span></span></div>
+  <div class="plate-grid">
   <figure class="plate">
     <img src="/assets/img/album/ph-10.jpg" srcset="/assets/img/album/ph-10-s.jpg 900w, /assets/img/album/ph-10.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1252" height="1800" decoding="async" alt="getting ready, a coupe in hand, by a carved oak overmantel" fetchpriority="high">
-    <figcaption>Before</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-07.jpg" srcset="/assets/img/album/ph-07-s.jpg 900w, /assets/img/album/ph-07.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1221" height="1800" decoding="async" alt="the groom leaning against oak panelling in black tie" loading="lazy">
-    <figcaption>Before</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-12.jpg" srcset="/assets/img/album/ph-12-s.jpg 900w, /assets/img/album/ph-12.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1229" height="1800" decoding="async" alt="the bride crouched by a tall French window, veil trailing across a parquet floor" loading="lazy">
-    <figcaption>At the window</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-01.jpg" srcset="/assets/img/album/ph-01-s.jpg 900w, /assets/img/album/ph-01.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1240" height="1800" decoding="async" alt="the two of us under the portico at Old Marylebone Town Hall, petals on the ground" loading="lazy">
-    <figcaption>Old Marylebone Town Hall</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-02.jpg" srcset="/assets/img/album/ph-02-s.jpg 900w, /assets/img/album/ph-02.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1224" height="1800" decoding="async" alt="a kiss on the Town Hall steps as the petals fall, guests above" loading="lazy">
-    <figcaption>Petals on the steps</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-03.jpg" srcset="/assets/img/album/ph-03-s.jpg 900w, /assets/img/album/ph-03.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1221" height="1800" decoding="async" alt="descending the steps of the Royal Exchange hand in hand" loading="lazy">
-    <figcaption>The Royal Exchange</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-04.jpg" srcset="/assets/img/album/ph-04-s.jpg 900w, /assets/img/album/ph-04.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1256" height="1800" decoding="async" alt="walking past stone columns in the City, laughing, in sunglasses" loading="lazy">
-    <figcaption>The City, on foot</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-05.jpg" srcset="/assets/img/album/ph-05-s.jpg 900w, /assets/img/album/ph-05.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1251" height="1800" decoding="async" alt="a kiss in a chandeliered corridor at The Ned" loading="lazy">
-    <figcaption>The Ned, the corridor</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-09.jpg" srcset="/assets/img/album/ph-09-s.jpg 900w, /assets/img/album/ph-09.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1259" height="1800" decoding="async" alt="a kiss in a brass and mirrored lift" loading="lazy">
-    <figcaption>The lift</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-11.jpg" srcset="/assets/img/album/ph-11-s.jpg 900w, /assets/img/album/ph-11.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1200" height="1800" decoding="async" alt="the two of us on a gold velvet sofa at the foot of a four-poster bed, coupes in hand" loading="lazy">
-    <figcaption>The Ned, the suite</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-06.jpg" srcset="/assets/img/album/ph-06-s.jpg 900w, /assets/img/album/ph-06.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1244" height="1800" decoding="async" alt="a panelled room, one of us standing by the fireplace and one seated" loading="lazy">
-    <figcaption>By the fireplace</figcaption>
   </figure>
   <figure class="plate">
     <img src="/assets/img/album/ph-08.jpg" srcset="/assets/img/album/ph-08-s.jpg 900w, /assets/img/album/ph-08.jpg 1800w"
          sizes="(max-width: 700px) 92vw, 640px" width="1301" height="1800" decoding="async" alt="the two of us between the long tables in the Saloon, candles lit" loading="lazy">
-    <figcaption>The Saloon, by candlelight</figcaption>
   </figure>
+  </div>
     <div class="orn album-orn" style="margin-top:clamp(36px,6vw,56px)"><span></span></div>
   </div>
 
